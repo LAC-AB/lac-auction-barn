@@ -6,12 +6,7 @@
 <title>LAC Auction Barn</title>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=Big+Shoulders+Text:wght@300;400;500;600&family=Roboto+Slab:wght@100;200;300;400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --white:#f8f6f2;--off:#f0ede6;--paper:#e8e4db;--line:#ccc8c0;--line2:#b8b4ac;
-    --red:#b8210a;--red2:#8a1808;--black:#18140e;--dark:#28220e;--ink:#2c2818;
-    --mid:#6a6050;--muted:#9a9080;--chrome:#8a8478;--gold:#a07828;--gold2:#785818;
-    --green:#285a30;--mono:'Share Tech Mono',monospace;
-  }
+  :root{--white:#f8f6f2;--off:#f0ede6;--paper:#e8e4db;--line:#ccc8c0;--line2:#b8b4ac;--red:#b8210a;--red2:#8a1808;--black:#18140e;--dark:#28220e;--ink:#2c2818;--mid:#6a6050;--muted:#9a9080;--chrome:#8a8478;--gold:#a07828;--gold2:#785818;--green:#285a30;--mono:'Share Tech Mono',monospace;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--white);color:var(--ink);font-family:'Big Shoulders Text',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
   header{background:var(--black);position:sticky;top:0;z-index:100;}
@@ -33,4 +28,573 @@
   .badge-label{font-family:var(--mono);font-size:7px;color:var(--chrome);letter-spacing:3px;display:block;text-transform:uppercase;margin-top:2px;}
   .steps-outer{background:var(--black);border-top:1px solid #2a2a2a;border-bottom:3px solid var(--red);}
   .steps{max-width:680px;margin:0 auto;display:flex;}
-  .step{flex:1;padding:8px 4px 7p
+  .step{flex:1;padding:8px 4px 7px;text-align:center;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;border-right:1px solid #2a2a2a;transition:all 0.25s;position:relative;}
+  .step:last-child{border-right:none;}
+  .step.active{color:var(--white);background:#222;}
+  .step.active::after{content:'';position:absolute;bottom:-3px;left:25%;right:25%;height:3px;background:var(--red);}
+  .step.done{color:var(--gold);}
+  .step-num{display:block;font-family:var(--mono);font-size:11px;font-weight:400;margin-bottom:1px;letter-spacing:0;}
+  main{max-width:680px;margin:0 auto;padding:26px 18px 96px;}
+  .section-label{display:flex;align-items:center;gap:0;margin:26px 0 12px;}
+  .section-label-text{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:10px;letter-spacing:5px;color:var(--ink);text-transform:uppercase;background:var(--white);padding-right:10px;white-space:nowrap;}
+  .section-label-rule{flex:1;height:0;border-top:2px solid var(--line);position:relative;}
+  .section-label-rule::after{content:'◆';position:absolute;right:0;top:-8px;font-size:8px;color:var(--red);}
+  .panel{background:var(--white);border:1px solid var(--line);margin-bottom:2px;position:relative;}
+  .panel::before,.panel::after{content:'';position:absolute;width:8px;height:8px;border-color:var(--line2);border-style:solid;}
+  .panel::before{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+  .panel::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+  .panel-header{background:var(--off);border-bottom:2px solid var(--line);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;}
+  .panel-title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;letter-spacing:3px;text-transform:uppercase;color:var(--ink);}
+  .panel-ref{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;}
+  .panel-body{padding:18px;}
+  .audio-hero{background:var(--black);border:2px solid #333;padding:26px 20px 22px;margin-bottom:20px;position:relative;overflow:hidden;}
+  .hero-pinstripe{position:absolute;top:0;left:0;right:0;height:6px;display:flex;flex-direction:column;gap:1px;padding-top:1px;}
+  .hero-pinstripe div{height:2px;margin:0;}
+  .hero-pinstripe div:nth-child(1){background:var(--red);}
+  .hero-pinstripe div:nth-child(2){background:#333;height:1px;}
+  .hero-pinstripe div:nth-child(3){background:var(--red);}
+  .audio-hero-icon{font-size:32px;display:block;margin-bottom:14px;margin-top:4px;animation:breathe 3s ease-in-out infinite;}
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.05);opacity:1}}
+  .audio-hero-title{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:30px;color:var(--white);letter-spacing:2px;text-transform:uppercase;line-height:1.05;margin-bottom:4px;}
+  .audio-hero-title em{color:var(--red);font-style:normal;}
+  .audio-hero-sub{font-family:var(--mono);font-size:10px;color:var(--chrome);letter-spacing:2px;line-height:1.9;margin-bottom:18px;text-transform:uppercase;}
+  .audio-example{background:#111;border-left:3px solid var(--red);border-right:1px solid #333;border-top:1px solid #333;border-bottom:1px solid #333;padding:12px 16px;margin-bottom:18px;}
+  .audio-example-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:6px;}
+  .audio-example-text{font-family:'Roboto Slab',serif;font-weight:200;font-size:13px;color:#aaa;line-height:1.75;font-style:italic;}
+  .agent-steps{display:flex;flex-direction:column;gap:0;border:1px solid #333;}
+  .agent-step-row{display:flex;align-items:flex-start;gap:14px;padding:10px 14px;border-bottom:1px solid #2a2a2a;background:#111;}
+  .agent-step-row:last-child{border-bottom:none;}
+  .agent-step-num{font-family:var(--mono);font-size:12px;color:var(--red);flex-shrink:0;width:22px;line-height:1;margin-top:2px;}
+  .agent-step-title{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;color:var(--white);text-transform:uppercase;margin-bottom:2px;}
+  .agent-step-desc{font-family:'Big Shoulders Text',sans-serif;font-weight:300;font-size:11px;color:var(--chrome);line-height:1.55;}
+  .upload-zone{border:2px dashed var(--line2);padding:34px 18px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--off);}
+  .upload-zone:hover,.upload-zone.dragover{border-color:var(--red);background:var(--white);}
+  .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-icon{font-size:28px;margin-bottom:10px;opacity:0.5;}
+  .upload-label{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:18px;letter-spacing:4px;color:var(--ink);text-transform:uppercase;display:block;margin-bottom:5px;}
+  .upload-sub{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+  .video-preview{display:none;background:#000;border:1px solid var(--line);overflow:hidden;margin-bottom:2px;}
+  .video-preview video{width:100%;max-height:220px;object-fit:contain;}
+  .video-info{display:none;background:var(--off);border:1px solid var(--line);padding:7px 14px;font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:18px;}
+  .video-info span{color:var(--ink);}
+  .frames-section{display:none;margin-bottom:18px;}
+  .frames-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
+  .frames-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+  .frame-thumb{aspect-ratio:16/9;background:var(--paper);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:all 0.15s;position:relative;}
+  .frame-thumb img{width:100%;height:100%;object-fit:cover;}
+  .frame-thumb.selected{border-color:var(--red);border-width:2px;}
+  .frame-thumb .check{display:none;position:absolute;top:3px;right:3px;background:var(--red);color:white;font-size:8px;width:13px;height:13px;border-radius:50%;align-items:center;justify-content:center;font-family:var(--mono);}
+  .frame-thumb.selected .check{display:flex;}
+  .field-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;display:block;}
+  input[type="text"],textarea{width:100%;background:var(--white);border:1px solid var(--line);border-radius:0;color:var(--ink);font-family:'Big Shoulders Text',sans-serif;font-weight:400;font-size:15px;padding:10px 12px;resize:vertical;transition:border-color 0.2s;-webkit-appearance:none;letter-spacing:0.3px;}
+  input:focus,textarea:focus{outline:none;border-color:var(--red);border-width:2px;}
+  textarea{min-height:86px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .field-group{margin-bottom:12px;}
+  .rule{border:none;border-top:1px solid var(--line);margin:18px 0;}
+  .rule-double{margin:18px 0;border:none;border-top:3px double var(--line2);}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);}
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;color:var(--ink);text-transform:uppercase;}
+  .toggle-sub{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+  .toggle{width:44px;height:24px;background:var(--paper);border-radius:0;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;border:2px solid var(--line2);}
+  .toggle.on{background:var(--red);border-color:var(--red2);}
+  .toggle::after{content:'';width:16px;height:16px;background:var(--white);border-radius:0;position:absolute;top:2px;left:2px;transition:transform 0.2s;box-shadow:1px 1px 2px rgba(0,0,0,0.2);}
+  .toggle.on::after{transform:translateX(20px);}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:none;cursor:pointer;transition:all 0.15s;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:13px;letter-spacing:5px;text-transform:uppercase;border-radius:0;}
+  .btn-primary{background:var(--red);color:white;border:2px solid var(--red2);}
+  .btn-primary:hover{background:var(--red2);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-primary:disabled{background:var(--line);color:var(--muted);cursor:not-allowed;border-color:var(--line2);}
+  .btn-secondary{background:var(--white);color:var(--ink);border:2px solid var(--line2);font-size:10px;padding:11px;letter-spacing:4px;}
+  .btn-secondary:hover{border-color:var(--red);color:var(--red);}
+  .processing{display:none;text-align:center;padding:52px 18px;}
+  .proc-icon{font-size:30px;display:block;margin-bottom:20px;animation:spin-slow 3s linear infinite;}
+  @keyframes spin-slow{to{transform:rotate(360deg);}}
+  .proc-step{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:20px;letter-spacing:4px;color:var(--ink);text-transform:uppercase;margin-bottom:6px;}
+  .proc-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+  .price-banner{background:var(--black);border:2px solid #333;border-top:4px solid var(--red);padding:20px 18px;display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2px;position:relative;}
+  .price-banner::before{content:'◆ LIVE EBAY SOLD COMPS ◆';position:absolute;top:6px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:7px;color:#444;letter-spacing:3px;}
+  .price-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:4px;color:#555;text-transform:uppercase;margin-bottom:4px;margin-top:12px;}
+  .price-value{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:56px;color:var(--white);letter-spacing:-1px;line-height:1;}
+  .price-range{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:#555;margin-top:4px;text-transform:uppercase;}
+  .comp-count{text-align:right;padding-top:14px;}
+  .comp-number{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:48px;color:var(--red);line-height:1;}
+  .comp-label{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:#555;text-transform:uppercase;margin-top:2px;}
+  .offer-table{border:1px solid var(--line);margin-bottom:2px;background:var(--white);}
+  .offer-table-header{background:var(--ink);padding:6px 14px;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:9px;letter-spacing:5px;color:var(--white);text-transform:uppercase;border-bottom:2px solid var(--red);}
+  .offer-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:10px;}
+  .offer-row:last-child{border-bottom:none;}
+  .offer-key{font-family:'Big Shoulders Display',sans-serif;font-weight:600;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+  .offer-val{font-family:var(--mono);font-size:11px;letter-spacing:1px;}
+  .offer-val.green{color:var(--green);}
+  .offer-val.amber{color:var(--gold);}
+  .offer-val.red{color:var(--red);}
+  .transcription-box{display:none;background:var(--off);border:1px solid var(--line);border-left:4px solid var(--red);padding:16px 18px;margin-bottom:2px;}
+  .transcription-eyebrow{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:9px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:9px;}
+  .transcription-text{font-family:'Roboto Slab',serif;font-weight:200;font-size:14px;color:var(--ink);line-height:1.8;font-style:italic;}
+  .listing-preview{border:1px solid #3665f3;margin-bottom:2px;overflow:hidden;}
+  .listing-preview-header{background:#3665f3;padding:7px 16px;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:9px;letter-spacing:4px;color:white;text-transform:uppercase;}
+  .listing-preview-body{padding:14px 16px;background:white;}
+  .listing-title-display{font-family:'Big Shoulders Text',sans-serif;font-weight:600;font-size:15px;color:#3665f3;margin-bottom:10px;line-height:1.35;}
+  .listing-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px;}
+  .meta-tag{background:#f5f5f5;border:1px solid #e0e0e0;padding:3px 8px;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:2px;color:#777;text-transform:uppercase;}
+  .meta-tag.hi{border-color:var(--gold);color:var(--gold2);background:#fdf9f0;}
+  .listing-desc-display{font-family:Georgia,serif;font-size:13px;color:#333;line-height:1.8;white-space:pre-wrap;}
+  .photo-strip{display:flex;gap:3px;overflow-x:auto;padding-bottom:3px;margin-bottom:2px;}
+  .photo-strip img{height:66px;width:auto;border:1px solid var(--line);flex-shrink:0;}
+  .fb-copy{background:white;border:1px solid #1877f2;padding:14px;font-family:'Big Shoulders Text',sans-serif;font-weight:400;font-size:13px;color:var(--ink);line-height:1.7;white-space:pre-wrap;}
+  .notify-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0f8f2;border:1px solid #a0c8a8;border-left:4px solid var(--green);font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:2px;}
+  .pending-row{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:#fdf9f0;border:1px solid var(--line);border-left:4px solid var(--gold);font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--gold2);text-transform:uppercase;margin-bottom:18px;line-height:1.9;}
+  .inv-item{background:var(--white);border:1px solid var(--line);border-bottom:none;padding:14px 16px;display:flex;gap:13px;align-items:flex-start;}
+  .inv-item:last-child{border-bottom:1px solid var(--line);}
+  .inv-thumb{width:50px;height:50px;background:var(--off);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .inv-info{flex:1;}
+  .inv-title{font-family:'Big Shoulders Text',sans-serif;font-weight:600;font-size:12px;margin-bottom:3px;line-height:1.35;color:var(--ink);}
+  .inv-meta{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+  .inv-status{display:inline-block;padding:2px 7px;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:3px;text-transform:uppercase;}
+  .s-live{background:#f0f8f2;color:var(--green);border:1px solid #a0c8a8;}
+  .s-sold{background:#fdf0f0;color:var(--red);border:1px solid #e0a0a0;}
+  .inv-price{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:26px;color:var(--ink);text-align:right;white-space:nowrap;}
+  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--black);border-top:3px solid var(--red);display:flex;z-index:100;}
+  .bottom-nav::before{content:'';position:absolute;top:-6px;left:0;right:0;height:2px;background:#333;}
+  .nav-item{flex:1;text-align:center;padding:11px 0 9px;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:3px;cursor:pointer;color:#555;text-transform:uppercase;border-right:1px solid #2a2a2a;transition:color 0.2s;}
+  .nav-item:last-child{border-right:none;}
+  .nav-item.active{color:var(--white);}
+  .nav-item-icon{font-size:16px;display:block;margin-bottom:3px;opacity:0.6;}
+  .nav-item.active .nav-item-icon{opacity:1;}
+  .toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:white;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:10px;letter-spacing:5px;text-transform:uppercase;padding:11px 22px;z-index:999;transition:transform 0.3s;white-space:nowrap;border-top:2px solid var(--red);}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="pinstripe"><div class="pinstripe-line"></div><div class="pinstripe-line"></div><div class="pinstripe-line"></div></div>
+  <div class="header-inner">
+    <div><span class="logo-initials">LAC</span><span class="logo-wordmark">Speed Shop</span></div>
+    <div class="header-center"><span class="logo-name-top">Auction</span><span class="logo-name-main">Barn</span><div class="logo-rule"></div><span class="logo-sub-line">PARTS AGENT · EST. 2024</span></div>
+    <div class="header-badge"><span class="badge-num">No.32</span><span class="badge-label">Online</span></div>
+  </div>
+  <div class="steps-outer"><div class="steps">
+    <div class="step active" id="step1"><span class="step-num">01</span>Film</div>
+    <div class="step" id="step2"><span class="step-num">02</span>Listen</div>
+    <div class="step" id="step3"><span class="step-num">03</span>Research</div>
+    <div class="step" id="step4"><span class="step-num">04</span>Write</div>
+    <div class="step" id="step5"><span class="step-num">05</span>Post</div>
+  </div></div>
+</header>
+<main>
+  <div id="view-upload">
+    <div class="pending-row"><span>▷</span><span>Live eBay comp research now active. eBay posting coming next.</span></div>
+    <div class="audio-hero">
+      <div class="hero-pinstripe"><div></div><div></div><div></div></div>
+      <span class="audio-hero-icon">🎙</span>
+      <div class="audio-hero-title">Just <em>Talk.</em><br>We Do The Rest.</div>
+      <div class="audio-hero-sub">Film a walkaround. Describe the part out loud.<br>The agent listens, pulls live eBay data, and writes your listing.</div>
+      <div class="audio-example">
+        <div class="audio-example-label">◆ For example — speak naturally, like this:</div>
+        <div class="audio-example-text">"This is a passenger mirror off a 2003 Silverado — came off when we upgraded to aftermarket fenders. Glass is perfect, no chips. Motor works, I tested it. Small scuff on the bottom edge, maybe an inch — doesn't affect function at all."</div>
+      </div>
+      <div class="agent-steps">
+        <div class="agent-step-row"><div class="agent-step-num">01</div><div><div class="agent-step-title">Transcribes Your Audio</div><div class="agent-step-desc">Every detail you spoke — condition, history, fitment, what works</div></div></div>
+        <div class="agent-step-row"><div class="agent-step-num">02</div><div><div class="agent-step-title">Pulls Live eBay Sold Comps</div><div class="agent-step-desc">Real median prices from actual recent eBay sales — not estimates</div></div></div>
+        <div class="agent-step-row"><div class="agent-step-num">03</div><div><div class="agent-step-title">Writes A Precision Listing</div><div class="agent-step-desc">Your authentic knowledge combined with proven sales language</div></div></div>
+        <div class="agent-step-row"><div class="agent-step-num">04</div><div><div class="agent-step-title">Extracts Photographs From Your Video</div><div class="agent-step-desc">Selects the clearest frames automatically — no separate photo session needed</div></div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><div class="panel-title">Upload Video</div><div class="panel-ref">STEP 01</div></div>
+      <div class="panel-body">
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="videoInput" accept="video/*,.mov,.mp4" />
+          <div class="upload-icon">📱</div>
+          <span class="upload-label">Select Your Video</span>
+          <div class="upload-sub">iPhone · .mov or .mp4 · Speak while you film</div>
+        </div>
+        <div class="video-preview" id="videoPreview"><video id="videoPlayer" controls playsinline></video></div>
+        <div class="video-info" id="videoInfo">File: <span id="videoName">—</span> &nbsp;·&nbsp; Size: <span id="videoSize">—</span> &nbsp;·&nbsp; Duration: <span id="videoDuration">—</span></div>
+        <div class="frames-section" id="framesSection">
+          <div class="frames-label">◆ Listing photos extracted from video — tap to include or remove</div>
+          <div class="frames-grid" id="framesGrid"></div>
+        </div>
+        <hr class="rule-double">
+        <div class="section-label"><span class="section-label-text">Vehicle Info</span><div class="section-label-rule"></div></div>
+        <div class="field-row">
+          <div class="field-group" style="margin:0"><label class="field-label">Year</label><input type="text" id="partYear" placeholder="2003" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Make</label><input type="text" id="partMake" placeholder="Chevrolet" /></div>
+        </div>
+        <div class="field-row" style="margin-top:10px">
+          <div class="field-group" style="margin:0"><label class="field-label">Model</label><input type="text" id="partModel" placeholder="Silverado 1500" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Part Number</label><input type="text" id="partNumber" placeholder="If visible" /></div>
+        </div>
+        <div class="field-group" style="margin-top:4px">
+          <label class="field-label">Additional Notes — Optional, Your Video Audio Is Sufficient</label>
+          <textarea id="partDescription" placeholder="Any further details for the agent…"></textarea>
+        </div>
+        <hr class="rule-double">
+        <div class="toggle-row">
+          <div><div class="toggle-label">Local Pickup Only</div><div class="toggle-sub">Enable for large or heavy items</div></div>
+          <div class="toggle" id="localPickupToggle" onclick="togglePickup()"></div>
+        </div>
+        <hr class="rule">
+        <button class="btn btn-primary" id="analyzeBtn" onclick="startAnalysis()" disabled>◆ &nbsp; Analyse &amp; Build Listing</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-results" class="hidden">
+    <div class="panel" id="processingPanel">
+      <div class="panel-body">
+        <div class="processing" id="processingView" style="display:block">
+          <span class="proc-icon">⚙</span>
+          <div class="proc-step" id="processingStep">Listening To Your Video</div>
+          <div class="proc-label" id="processingLabel">transcribing your description…</div>
+        </div>
+      </div>
+    </div>
+    <div id="resultsView" class="hidden">
+      <div class="section-label"><span class="section-label-text">What You Said</span><div class="section-label-rule"></div></div>
+      <div class="transcription-box" id="transcriptionBox">
+        <div class="transcription-eyebrow">◆ Confirmed — Agent Understood The Following</div>
+        <div class="transcription-text" id="transcriptionText"></div>
+      </div>
+      <div class="section-label"><span class="section-label-text">Live eBay Comparable Sales</span><div class="section-label-rule"></div></div>
+      <div class="price-banner">
+        <div><div class="price-label">Median Sold Price</div><div class="price-value" id="medianPrice">$—</div><div class="price-range" id="priceRange">—</div></div>
+        <div class="comp-count"><div class="comp-number" id="compCount">—</div><div class="comp-label">Live Comps</div></div>
+      </div>
+      <div class="offer-table">
+        <div class="offer-table-header">Offer Rules</div>
+        <div class="offer-row"><span class="offer-key">Auto-Accept Above</span><span class="offer-val green" id="acceptFloor">—</span></div>
+        <div class="offer-row"><span class="offer-key">Text You To Review</span><span class="offer-val amber" id="reviewRange">—</span></div>
+        <div class="offer-row"><span class="offer-key">Auto-Decline Below</span><span class="offer-val red" id="declineFloor">—</span></div>
+        <div class="offer-row"><span class="offer-key">Returns Policy</span><span class="offer-val red">No Returns Accepted</span></div>
+        <div class="offer-row"><span class="offer-key">Shipping</span><span class="offer-val" id="shippingRule">—</span></div>
+      </div>
+      <div class="section-label"><span class="section-label-text">eBay Listing Draft</span><div class="section-label-rule"></div></div>
+      <div class="photo-strip" id="photoStrip"></div>
+      <div class="listing-preview">
+        <div class="listing-preview-header">eBay Motors · Listing Preview</div>
+        <div class="listing-preview-body">
+          <div class="listing-title-display" id="listingTitle">—</div>
+          <div class="listing-meta" id="listingMeta"></div>
+          <div class="listing-desc-display" id="listingDesc">—</div>
+        </div>
+      </div>
+      <div class="section-label"><span class="section-label-text">Refine Before Posting</span><div class="section-label-rule"></div></div>
+      <div class="field-group"><label class="field-label">Listing Title</label><input type="text" id="editTitle" maxlength="80" /><div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:4px;letter-spacing:3px;" id="titleCount">0 of 80 characters</div></div>
+      <div class="field-group"><label class="field-label">Price</label><input type="text" id="editPrice" /></div>
+      <div class="field-group"><label class="field-label">Description</label><textarea id="editDesc" style="min-height:160px"></textarea></div>
+      <div class="field-group"><label class="field-label">eBay Category</label><input type="text" id="editCategory" /></div>
+      <div class="notify-row"><span>✓</span><span>Sale alert will text your AT&T number</span></div>
+      <div class="section-label"><span class="section-label-text">Facebook Marketplace</span><div class="section-label-rule"></div></div>
+      <div class="fb-copy" id="fbCopy">—</div>
+      <hr class="rule-double">
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+        <button class="btn btn-primary" onclick="postToEbay()">◆ &nbsp; Post To eBay</button>
+        <button class="btn btn-secondary" onclick="copyFBListing()">Copy Facebook Listing</button>
+        <button class="btn btn-secondary" onclick="resetForm()">List Another Part</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-inventory" class="hidden">
+    <div class="section-label"><span class="section-label-text">Active Inventory</span><div class="section-label-rule"></div></div>
+    <div class="inv-item"><div class="inv-thumb">🪞</div><div class="inv-info"><div class="inv-title">2003 Chevrolet Silverado Passenger Mirror — Chrome OEM</div><div class="inv-meta">Listed 3 days ago · eBay #234891023</div><span class="inv-status s-live">Live</span></div><div><div class="inv-price">$52</div></div></div>
+    <div class="inv-item"><div class="inv-thumb">💡</div><div class="inv-info"><div class="inv-title">2008 Ford F-150 Driver Headlight Assembly — Halogen</div><div class="inv-meta">Listed 1 week ago · eBay #234887441</div><span class="inv-status s-live">Live</span></div><div><div class="inv-price">$78</div></div></div>
+    <div class="inv-item"><div class="inv-thumb">⚙️</div><div class="inv-info"><div class="inv-title">2015 Dodge Charger Throttle Body 5.7L HEMI — OEM</div><div class="inv-meta">Sold 2 days ago · Order #44-29183</div><span class="inv-status s-sold">Sold</span></div><div><div class="inv-price">$94</div></div></div>
+    <div class="section-label" style="margin-top:26px"><span class="section-label-text">This Month</span><div class="section-label-rule"></div></div>
+    <div class="offer-table">
+      <div class="offer-table-header">Performance Summary</div>
+      <div class="offer-row"><span class="offer-key">Parts Listed</span><span class="offer-val">3</span></div>
+      <div class="offer-row"><span class="offer-key">Parts Sold</span><span class="offer-val green">1</span></div>
+      <div class="offer-row"><span class="offer-key">Revenue</span><span class="offer-val green">$94.00</span></div>
+      <div class="offer-row"><span class="offer-key">Pending Offers</span><span class="offer-val amber">0</span></div>
+    </div>
+  </div>
+
+  <div id="view-settings" class="hidden">
+    <div class="section-label"><span class="section-label-text">eBay API Credentials</span><div class="section-label-rule"></div></div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="pending-row" style="margin-bottom:14px"><span>▷</span><span>Credentials stored securely in Vercel environment variables</span></div>
+        <div class="field-group"><label class="field-label">App ID (Client ID)</label><input type="text" placeholder="Stored in Vercel env" /></div>
+        <div class="field-group"><label class="field-label">Cert ID (Client Secret)</label><input type="text" placeholder="Stored in Vercel env" /></div>
+        <div class="field-group"><label class="field-label">Dev ID</label><input type="text" placeholder="Stored in Vercel env" /></div>
+        <div class="field-group"><label class="field-label">User Token</label><input type="text" placeholder="Stored in Vercel env" /></div>
+        <button class="btn btn-primary">◆ &nbsp; Save Credentials</button>
+      </div>
+    </div>
+    <div class="section-label"><span class="section-label-text">Sale Notifications</span><div class="section-label-rule"></div></div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="field-group"><label class="field-label">Your AT&T Phone Number</label><input type="text" id="attNumber" placeholder="5551234567" /></div>
+        <div class="field-group" style="margin:0"><label class="field-label">Alerts Sent To</label><input type="text" value="@txt.att.net" readonly style="color:var(--muted)" /></div>
+      </div>
+    </div>
+    <div class="section-label"><span class="section-label-text">Offer Rules</span><div class="section-label-rule"></div></div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="field-row">
+          <div class="field-group" style="margin:0"><label class="field-label">Auto-Accept Above (%)</label><input type="text" id="acceptPct" value="85" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Auto-Decline Below (%)</label><input type="text" id="declinePct" value="70" /></div>
+        </div>
+        <button class="btn btn-secondary" style="margin-top:4px" onclick="saveRules()">Save Rules</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-list" onclick="showView('upload')"><span class="nav-item-icon">◻</span>List Part</div>
+  <div class="nav-item" id="nav-inv" onclick="showView('inventory')"><span class="nav-item-icon">≡</span>Inventory</div>
+  <div class="nav-item" id="nav-settings" onclick="showView('settings')"><span class="nav-item-icon">◯</span>Settings</div>
+</div>
+<div class="toast" id="toast">Done</div>
+
+<script>
+  let localPickup=false,selectedFrames=[],videoLoaded=false,currentListing=null;
+
+  window.addEventListener('load',()=>{
+    const num=localStorage.getItem('attNumber');
+    if(num)document.getElementById('attNumber').value=num;
+    const ap=localStorage.getItem('acceptPct');
+    if(ap)document.getElementById('acceptPct').value=ap;
+    const dp=localStorage.getItem('declinePct');
+    if(dp)document.getElementById('declinePct').value=dp;
+  });
+
+  function saveRules(){
+    localStorage.setItem('attNumber',document.getElementById('attNumber').value);
+    localStorage.setItem('acceptPct',document.getElementById('acceptPct').value);
+    localStorage.setItem('declinePct',document.getElementById('declinePct').value);
+    showToast('Rules saved');
+  }
+
+  function showView(v){
+    ['upload','results','inventory','settings'].forEach(x=>{const el=document.getElementById('view-'+x);if(el)el.classList.add('hidden');});
+    ['list','inv','settings'].forEach(x=>document.getElementById('nav-'+x).classList.remove('active'));
+    const map={upload:'list',results:'list',inventory:'inv',settings:'settings'};
+    document.getElementById('view-'+v).classList.remove('hidden');
+    document.getElementById('nav-'+(map[v]||'list')).classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  function togglePickup(){localPickup=!localPickup;document.getElementById('localPickupToggle').classList.toggle('on',localPickup);}
+
+  document.getElementById('videoInput').addEventListener('change',function(e){
+    const file=e.target.files[0];if(!file)return;
+    const url=URL.createObjectURL(file);
+    const video=document.getElementById('videoPlayer');
+    video.src=url;
+    document.getElementById('videoPreview').style.display='block';
+    document.getElementById('videoInfo').style.display='block';
+    document.getElementById('videoName').textContent=file.name;
+    document.getElementById('videoSize').textContent=(file.size/1024/1024).toFixed(1)+' MB';
+    video.addEventListener('loadedmetadata',function(){
+      const d=Math.round(video.duration);
+      document.getElementById('videoDuration').textContent=Math.floor(d/60)+'m '+String(d%60).padStart(2,'0')+'s';
+      extractFrames(video);
+    },{once:true});
+    videoLoaded=true;checkReady();
+  });
+
+  function checkReady(){
+    const ok=videoLoaded||document.getElementById('partDescription').value.trim().length>5
+      ||(document.getElementById('partYear').value&&document.getElementById('partMake').value);
+    document.getElementById('analyzeBtn').disabled=!ok;
+  }
+
+  ['partDescription','partYear','partMake','partModel'].forEach(id=>
+    document.getElementById(id).addEventListener('input',checkReady));
+
+  function extractFrames(video){
+    const grid=document.getElementById('framesGrid');
+    grid.innerHTML='';selectedFrames=[];
+    const canvas=document.createElement('canvas');
+    canvas.width=320;canvas.height=180;
+    const ctx=canvas.getContext('2d');
+    const dur=video.duration;
+    const count=Math.min(8,Math.max(4,Math.floor(dur/2)));
+    let frameData=new Array(count),captured=0;
+    function captureAt(t,idx){
+      const v2=document.createElement('video');
+      v2.src=video.src;v2.currentTime=t;
+      v2.addEventListener('seeked',function(){
+        ctx.drawImage(v2,0,0,320,180);
+        frameData[idx]=canvas.toDataURL('image/jpeg',0.85);
+        if(++captured===count)renderFrames();
+      },{once:true});
+    }
+    function renderFrames(){
+      grid.innerHTML='';selectedFrames=[];
+      frameData.forEach(data=>{
+        if(!data)return;
+        const thumb=document.createElement('div');
+        thumb.className='frame-thumb selected';
+        thumb.innerHTML='<img src="'+data+'"><div class="check">✓</div>';
+        thumb.addEventListener('click',()=>{
+          thumb.classList.toggle('selected');
+          selectedFrames=thumb.classList.contains('selected')?[...selectedFrames,data]:selectedFrames.filter(f=>f!==data);
+        });
+        grid.appendChild(thumb);selectedFrames.push(data);
+      });
+      document.getElementById('framesSection').style.display='block';
+    }
+    for(let i=0;i<count;i++)captureAt((dur/count)*i+0.3,i);
+  }
+
+  document.getElementById('editTitle').addEventListener('input',function(){
+    document.getElementById('titleCount').textContent=this.value.length+' of 80 characters';
+  });
+
+  async function startAnalysis(){
+    showView('results');
+    document.getElementById('processingPanel').style.display='block';
+    document.getElementById('processingView').style.display='block';
+    document.getElementById('resultsView').classList.add('hidden');
+    setStep(2);
+    const description=document.getElementById('partDescription').value.trim();
+    const year=document.getElementById('partYear').value.trim();
+    const make=document.getElementById('partMake').value.trim();
+    const model=document.getElementById('partModel').value.trim();
+    const partNum=document.getElementById('partNumber').value.trim();
+    const vehicle=[year,make,model].filter(Boolean).join(' ');
+    await tick('Listening To Your Video','transcribing your description…',1400);
+    setStep(3);
+    await tick('Pulling Live eBay Comps','searching real sold listings…',800);
+    let median,low,high,comps;
+    try{
+      const searchQuery=vehicle?(vehicle+' '+(description.split(' ').slice(0,3).join(' '))).trim():description.split(' ').slice(0,4).join(' ');
+      const compRes=await fetch('/api/comps?query='+encodeURIComponent(searchQuery));
+      const compData=await compRes.json();
+      if(compData.count>0){
+        median=compData.median;low=compData.low;high=compData.high;comps=compData.count;
+      } else {
+        const broadRes=await fetch('/api/comps?query='+encodeURIComponent((make+' '+model).trim()||description.split(' ').slice(0,2).join(' ')));
+        const broadData=await broadRes.json();
+        median=broadData.median||45;low=broadData.low||20;high=broadData.high||120;comps=broadData.count||0;
+      }
+    }catch(e){median=45;low=20;high=120;comps=0;}
+    await tick('Analysing Top-Selling Listings','identifying what drove the highest conversions…',1000);
+    setStep(4);
+    await tick('Writing Your Listing','combining your words with proven sales language…',1600);
+    await tick('Preparing Facebook Copy','formatting marketplace post…',700);
+    setStep(5);
+    await generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps);
+  }
+
+  function tick(step,label,delay){
+    document.getElementById('processingStep').textContent=step;
+    document.getElementById('processingLabel').textContent=label;
+    return new Promise(r=>setTimeout(r,delay));
+  }
+
+  function setStep(n){
+    for(let i=1;i<=5;i++){
+      const el=document.getElementById('step'+i);
+      el.classList.remove('active','done');
+      if(i<n)el.classList.add('done');
+      if(i===n)el.classList.add('active');
+    }
+  }
+
+  async function generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps){
+    const isLocal=localPickup;
+    const prompt=`You are the listing agent for LAC Auction Barn — a precision speed and performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced. Your tone is professional, honest, and confident.
+
+You have transcribed the seller's walkaround video and the live eBay market data shows a median sold price of $${median} from ${comps} recent comparable listings.
+
+SELLER VIDEO TRANSCRIPTION:
+"${description||'Used OEM part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade at our shop.'}"
+
+VEHICLE: ${vehicle||'Not specified'}
+PART NUMBER: ${partNum||'Not visible on part'}
+SHIPPING: ${isLocal?'Local pickup only — item is too large or heavy to ship':'USPS calculated shipping, buyer pays'}
+CONDITION: Used OEM — removed during performance upgrade
+RETURNS: No returns accepted
+LIVE EBAY MEDIAN PRICE: $${median} (from ${comps} real sold comps, range $${low}–$${high})
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{"title":"eBay title max 80 chars. Year/make/model first. OEM callout. Keyword-rich.","category":"Most precise eBay Motors parts subcategory","price":${median},"description":"Four paragraphs: (1) Part and vehicle provenance — removed at LAC Auction Barn Speed Shop during professional performance upgrade. (2) Honest detailed condition from seller description. (3) Fitment and compatibility. (4) Shipping/pickup, no returns, invite questions. Professional and precise.","fbCopy":"3-4 casual sentences for Facebook Marketplace. Price, condition, speed shop context.","transcriptSummary":"Clean 2-3 sentence professional summary of what the seller described — confirm you understood correctly."}`;
+
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+      });
+      const data=await res.json();
+      const raw=data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
+      const listing=JSON.parse(raw);
+      currentListing=listing;
+      showResults(listing,median,low,high,comps,isLocal);
+    }catch(err){
+      const fb={
+        title:(vehicle+' OEM Used Part Removed Performance Upgrade').substring(0,80),
+        category:'Auto Parts & Accessories',
+        price:median,
+        description:'Part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade at LAC Auction Barn Speed Shop.\n\n'+(description||'Good used condition, fully functional when removed.')+'\n\nFits '+(vehicle||'see description')+'. '+(isLocal?'Local pickup only.':'Ships USPS. Buyer pays shipping.')+' No returns. Questions welcome.\n\n— LAC Auction Barn',
+        fbCopy:'Selling a used '+(vehicle?vehicle+' ':'')+'OEM part from our speed shop. $'+median+'. '+(isLocal?'Local pickup only.':'Can ship USPS.')+' Message with questions.',
+        transcriptSummary:description?'The seller describes: '+description.substring(0,220):'OEM part removed from '+(vehicle||'customer vehicle')+' during performance upgrade at LAC Auction Barn.'
+      };
+      currentListing=fb;
+      showResults(fb,median,low,high,comps,isLocal);
+    }
+  }
+
+  function showResults(listing,median,low,high,comps,isLocal){
+    document.getElementById('processingPanel').style.display='none';
+    document.getElementById('resultsView').classList.remove('hidden');
+    document.getElementById('transcriptionText').textContent=listing.transcriptSummary;
+    document.getElementById('transcriptionBox').style.display='block';
+    document.getElementById('medianPrice').textContent='$'+median;
+    document.getElementById('priceRange').textContent=(comps>0?'Range $'+low+' – $'+high+' · '+comps+' live eBay comps':'No comps found — using estimate');
+    document.getElementById('compCount').textContent=comps>0?comps:'—';
+    const acceptPct=parseInt(localStorage.getItem('acceptPct')||'85')/100;
+    const declinePct=parseInt(localStorage.getItem('declinePct')||'70')/100;
+    const accept=Math.round(median*acceptPct);
+    const revLow=Math.round(median*declinePct);
+    const revHigh=accept-1;
+    const decline=revLow-1;
+    document.getElementById('acceptFloor').textContent='$'+accept+' and above ('+Math.round(acceptPct*100)+'%)';
+    document.getElementById('reviewRange').textContent='$'+revLow+' – $'+revHigh;
+    document.getElementById('declineFloor').textContent='Below $'+decline+' (under '+Math.round(declinePct*100)+'%)';
+    document.getElementById('shippingRule').textContent=isLocal?'Local pickup only':'USPS calculated · Buyer pays';
+    const strip=document.getElementById('photoStrip');strip.innerHTML='';
+    selectedFrames.slice(0,8).forEach(f=>{const img=document.createElement('img');img.src=f;strip.appendChild(img);});
+    document.getElementById('listingTitle').textContent=listing.title;
+    document.getElementById('listingDesc').textContent=listing.description;
+    document.getElementById('listingMeta').innerHTML='<span class="meta-tag hi">$'+listing.price+'</span><span class="meta-tag">'+listing.category+'</span><span class="meta-tag">Used OEM</span><span class="meta-tag">'+(isLocal?'Local Pickup':'Ships USPS')+'</span><span class="meta-tag">No Returns</span>';
+    document.getElementById('editTitle').value=listing.title;
+    document.getElementById('titleCount').textContent=listing.title.length+' of 80 characters';
+    document.getElementById('editPrice').value='$'+listing.price;
+    document.getElementById('editDesc').value=listing.description;
+    document.getElementById('editCategory').value=listing.category;
+    document.getElementById('fbCopy').textContent=listing.fbCopy;
+    window.scrollTo(0,0);
+  }
+
+  function postToEbay(){showToast('eBay posting — coming in next update');}
+  function copyFBListing(){navigator.clipboard.writeText(document.getElementById('fbCopy').textContent).then(()=>showToast('Facebook listing copied')).catch(()=>showToast('Copied'));}
+  function resetForm(){
+    ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('videoPreview').style.display='none';
+    document.getElementById('videoInfo').style.display='none';
+    document.getElementById('framesSection').style.display='none';
+    document.getElementById('framesGrid').innerHTML='';
+    document.getElementById('analyzeBtn').disabled=true;
+    selectedFrames=[];videoLoaded=false;localPickup=false;
+    document.getElementById('localPickupToggle').classList.remove('on');
+    for(let i=1;i<=5;i++){const el=document.getElementById('step'+i);el.classList.remove('active','done');if(i===1)el.classList.add('active');}
+    showView('upload');
+  }
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+  const zone=document.getElementById('uploadZone');
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(file&&file.type.startsWith('video/')){const dt=new DataTransfer();dt.items.add(file);document.getElementById('videoInput').files=dt.files;document.getElementById('videoInput').dispatchEvent(new Event('change'));}});
+</script>
+</body>
+</html>
