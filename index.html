@@ -471,8 +471,8 @@
     // Build clean short query — just year make model + the main part noun
     const descWords=description.toLowerCase().split(/\s+/);
     const partNoun=descWords.find(w=>w.length>4&&!['removed','during','installed','aftermarket','performance','upgrade','original','factory'].includes(w))||descWords[0]||'';
-    const searchQuery=vehicle
-      ? (year+' '+make+' '+model+' '+partNoun).trim()
+   const searchQuery=vehicle
+      ? (year+' '+model+' '+partNoun).trim()
       : description.split(' ').slice(0,5).join(' ');
 
     let median=45,low=20,high=120,comps=0,compItems=[];
