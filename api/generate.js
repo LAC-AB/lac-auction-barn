@@ -50,8 +50,9 @@ JS
 great, just build me a step by step and I"ll get all that done
 
 3:21 PM
+V
 
-
+Connecting to visualize...
 Check off each item as you go. Step 2 is the only non-obvious one — the Anthropic key is new, everything else is standard Vercel/GitHub workflow you've already done. Once step 3's console test returns JSON, you're live.
 
 screenshot.png
@@ -238,7 +239,59 @@ body: JSON.stringify({
 })
 One line added after messages. That's the entire change to index.html. Commit both files and you're done.
 
+committed on both, titled "description reading" can we test
 
+3:44 PM
+Yes — open the live site at lac-auction-barn.vercel.app, upload a video, fill in the vehicle fields, and hit Analyse & Build Listing.
+
+While it's running, have your browser console open (F12 → Console) so if anything errors we can see it immediately. Let me know what comes back.
+
+no D12.  workaround please
+
+3:45 PM
+Open Safari on your Mac, go to lac-auction-barn.vercel.app, then in the menu bar go Develop → Show JavaScript Console.
+
+If you don't see Develop in the menu bar: Safari → Settings → Advanced → check "Show features for web developers" — then Develop appears.
+
+Run the listing and tell me what shows up in the console, or just tell me what the listing output looks like — is it still generic or does it look like it's modeling the real comps now?
+
+chromebook
+
+3:46 PM
+Got it. On Chromebook:
+
+Press Ctrl + Shift + J — that opens the console directly.
+
+Run the listing, then tell me what you see in the console, or just describe what the generated listing looks like — is the description still generic/canned or does it look like it's actually reading the eBay comp style now?
+
+photo.jpeg
+3:48 PM
+Two problems visible:
+
+500 Internal Server Error on the /api/generate call — the server is crashing
+SyntaxError at line 1852 — "A server e..." is not valid JSON — meaning the server returned an error message as plain text instead of JSON, and the frontend tried to parse it
+The description is still generic ("This part was professionally removed...") which confirms it fell back to the fallback listing, not the Claude output.
+
+The 500 is happening in the new generate.js. Most likely cause: AbortSignal.timeout() isn't supported in Vercel's Node version, or the eBay description fetch is crashing before it gets to Claude.
+
+Quick fix — replace the timeout line. In generate.js change:
+
+js
+signal: AbortSignal.timeout(5000)
+To:
+
+js
+signal: AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined
+Actually let me just make it bulletproof with a proper timeout wrapper. Here's the updated generate.js:
+
+
+Ran a command, created a file, read a file
+Ran a command, created a file, read a file
+Replace generate.js with this and push. The key fix is replacing AbortSignal.timeout() with a proper AbortController + setTimeout pattern that works on all Node versions. Every eBay fetch is also wrapped so if it fails it returns null instead of crashing the whole server.
+
+
+Generate
+JS 
 
 You've used 90% of your session limit
 Get more usage
@@ -252,6 +305,48 @@ Copy
 // /api/generate.js
 // Fetches real eBay listing descriptions from top comps, injects as style examples,
 // then proxies to Claude — keeps ANTHROPIC_API_KEY server-side
+ 
+function fetchWithTimeout(url, options, ms = 5000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(timer));
+}
+ 
+async function fetchEbayDescription(item, index) {
+  try {
+    const itemIdMatch = item.url && item.url.match(/\/itm\/(\d+)/);
+    if (!itemIdMatch) return null;
+    const itemId = itemIdMatch[1];
+ 
+    const descUrl = `https://vi.vipr.ebaydesc.com/ws/eBayISAPI.dll?ViewItemDescV4&item=${itemId}`;
+ 
+    const r = await fetchWithTimeout(descUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; LAC-Auction-Barn/1.0)',
+        'Accept': 'text/html'
+      }
+    }, 5000);
+ 
+    if (!r.ok) return null;
+ 
+    const html = await r.text();
+ 
+    const text = html
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 800);
+ 
+    if (!text || text.length < 40) return null;
+ 
+    return `COMP ${index + 1}: "${item.title}" — $${item.price}\nDESCRIPTION: ${text}`;
+  } catch (e) {
+    return null;
+  }
+}
  
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -270,70 +365,23 @@ export default async function handler(req, res) {
     let { messages, max_tokens = 1400, system, compItems } = req.body;
  
     // ── Fetch real eBay descriptions from top 3 comp listings ──────────────
-    let realDescriptions = '';
- 
-    if (compItems && compItems.length > 0) {
+    if (compItems && Array.isArray(compItems) && compItems.length > 0) {
       const top3 = compItems.slice(0, 3);
- 
-      const descriptionFetches = top3.map(async (item, i) => {
-        try {
-          // Extract item ID from eBay URL
-          const itemIdMatch = item.url && item.url.match(/\/itm\/(\d+)/);
-          if (!itemIdMatch) return null;
-          const itemId = itemIdMatch[1];
- 
-          // eBay description iframe endpoint — clean HTML, no login required
-          const descUrl = `https://vi.vipr.ebaydesc.com/ws/eBayISAPI.dll?ViewItemDescV4&item=${itemId}`;
- 
-          const r = await fetch(descUrl, {
-            headers: {
-              'User-Agent': 'Mozilla/5.0 (compatible; LAC-Auction-Barn/1.0)',
-              'Accept': 'text/html'
-            },
-            signal: AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined
-          });
- 
-          if (!r.ok) return null;
- 
-          const html = await r.text();
- 
-          // Strip all HTML tags and collapse whitespace
-          const text = html
-            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-            .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-            .replace(/<[^>]+>/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .slice(0, 800); // cap at 800 chars per listing
- 
-          if (!text || text.length < 40) return null;
- 
-          return `COMP ${i + 1}: "${item.title}" — $${item.price}\nDESCRIPTION: ${text}`;
-        } catch {
-          return null;
-        }
-      });
- 
-      const results = await Promise.all(descriptionFetches);
+      const results = await Promise.all(top3.map((item, i) => fetchEbayDescription(item, i)));
       const valid = results.filter(Boolean);
  
-      if (valid.length > 0) {
-        realDescriptions = valid.join('\n\n');
+      if (valid.length > 0 && messages && messages.length > 0) {
+        const realDescriptions = valid.join('\n\n');
+        const originalPrompt = messages[0].content;
+ 
+        const injection = `\nREAL LISTING DESCRIPTIONS FROM TOP SOLD COMPS — study these carefully, this is how winning sellers actually write:\n\n${realDescriptions}\n\nApply those exact patterns — structure, tone, keyword placement, condition language — to the seller facts below.\n`;
+ 
+        const updatedPrompt = originalPrompt.includes('STEP 2')
+          ? originalPrompt.replace('STEP 2', injection + '\nSTEP 2')
+          : originalPrompt + injection;
+ 
+        messages = [{ role: 'user', content: updatedPrompt }];
       }
-    }
- 
-    // ── Inject real descriptions into the prompt ───────────────────────────
-    if (realDescriptions && messages && messages.length > 0) {
-      const originalPrompt = messages[0].content;
- 
-      const injection = `\nREAL LISTING DESCRIPTIONS FROM TOP SOLD COMPS — study these carefully, this is how winning sellers actually write:\n\n${realDescriptions}\n\nApply those exact patterns — structure, tone, keyword placement, condition language — to the seller facts below.\n`;
- 
-      // Insert between STEP 1 and STEP 2 in the existing prompt
-      const updatedPrompt = originalPrompt.includes('STEP 2')
-        ? originalPrompt.replace('STEP 2', injection + '\nSTEP 2')
-        : originalPrompt + injection;
- 
-      messages = [{ role: 'user', content: updatedPrompt }];
     }
  
     // ── Proxy to Claude ────────────────────────────────────────────────────
