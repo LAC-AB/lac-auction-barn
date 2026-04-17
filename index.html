@@ -1,279 +1,1399 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>LAC Auction Barn</title>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=Big+Shoulders+Text:wght@300;400;500;600&family=Roboto+Slab:wght@100;200;300;400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>LAC Speed Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Josefin+Sans:wght@200;300;400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root{--white:#f8f6f2;--off:#f0ede6;--paper:#e8e4db;--line:#ccc8c0;--line2:#b8b4ac;--red:#b8210a;--red2:#8a1808;--black:#18140e;--dark:#28220e;--ink:#2c2818;--mid:#6a6050;--muted:#9a9080;--chrome:#8a8478;--gold:#a07828;--gold2:#785818;--green:#285a30;--mono:'Share Tech Mono',monospace;}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--white);color:var(--ink);font-family:'Big Shoulders Text',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
-  header{background:var(--black);position:sticky;top:0;z-index:100;}
-  .pinstripe{display:flex;flex-direction:column;gap:2px;padding:5px 0 4px;background:var(--black);border-bottom:1px solid #333;}
-  .pinstripe-line{height:2px;margin:0 16px;}
-  .pinstripe-line:nth-child(1){background:var(--red);}
-  .pinstripe-line:nth-child(2){background:#555;height:1px;}
-  .pinstripe-line:nth-child(3){background:var(--red);}
-  .header-inner{max-width:680px;margin:0 auto;padding:10px 18px 12px;display:flex;align-items:center;justify-content:space-between;}
-  .logo-initials{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:42px;color:var(--red);line-height:1;letter-spacing:-1px;display:block;border-bottom:3px solid var(--red);padding-bottom:1px;margin-bottom:3px;}
-  .logo-wordmark{font-family:'Big Shoulders Display',sans-serif;font-weight:600;font-size:11px;letter-spacing:5px;color:var(--line2);text-transform:uppercase;display:block;}
-  .header-center{text-align:center;flex:1;padding:0 14px;}
-  .logo-name-top{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:13px;letter-spacing:8px;color:var(--white);text-transform:uppercase;display:block;margin-bottom:1px;}
-  .logo-name-main{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:26px;letter-spacing:4px;color:var(--white);text-transform:uppercase;display:block;line-height:1;}
-  .logo-rule{height:1px;background:#444;margin:4px 0;}
-  .logo-sub-line{font-family:var(--mono);font-size:8px;color:var(--chrome);letter-spacing:3px;display:block;}
-  .header-badge{text-align:right;}
-  .badge-num{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:30px;color:var(--red);line-height:1;display:block;letter-spacing:-1px;}
-  .badge-label{font-family:var(--mono);font-size:7px;color:var(--chrome);letter-spacing:3px;display:block;text-transform:uppercase;margin-top:2px;}
-  .steps-outer{background:var(--black);border-top:1px solid #2a2a2a;border-bottom:3px solid var(--red);}
-  .steps{max-width:680px;margin:0 auto;display:flex;}
-  .step{flex:1;padding:8px 4px 7px;text-align:center;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:3px;color:#555;text-transform:uppercase;border-right:1px solid #2a2a2a;transition:all 0.25s;position:relative;}
-  .step:last-child{border-right:none;}
-  .step.active{color:var(--white);background:#222;}
-  .step.active::after{content:'';position:absolute;bottom:-3px;left:25%;right:25%;height:3px;background:var(--red);}
-  .step.done{color:var(--gold);}
-  .step-num{display:block;font-family:var(--mono);font-size:11px;font-weight:400;margin-bottom:1px;letter-spacing:0;}
-  main{max-width:680px;margin:0 auto;padding:26px 18px 96px;}
-  .section-label{display:flex;align-items:center;gap:0;margin:26px 0 12px;}
-  .section-label-text{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:10px;letter-spacing:5px;color:var(--ink);text-transform:uppercase;background:var(--white);padding-right:10px;white-space:nowrap;}
-  .section-label-rule{flex:1;height:0;border-top:2px solid var(--line);position:relative;}
-  .section-label-rule::after{content:'◆';position:absolute;right:0;top:-8px;font-size:8px;color:var(--red);}
-  .panel{background:var(--white);border:1px solid var(--line);margin-bottom:2px;position:relative;}
-  .panel::before,.panel::after{content:'';position:absolute;width:8px;height:8px;border-color:var(--line2);border-style:solid;}
-  .panel::before{top:-1px;left:-1px;border-width:2px 0 0 2px;}
-  .panel::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
-  .panel-header{background:var(--off);border-bottom:2px solid var(--line);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;}
-  .panel-title{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:16px;letter-spacing:3px;text-transform:uppercase;color:var(--ink);}
-  .panel-ref{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;}
-  .panel-body{padding:18px;}
-  .audio-hero{background:var(--black);border:2px solid #333;padding:26px 20px 22px;margin-bottom:20px;position:relative;overflow:hidden;}
-  .hero-pinstripe{position:absolute;top:0;left:0;right:0;height:6px;display:flex;flex-direction:column;gap:1px;padding-top:1px;}
-  .hero-pinstripe div{height:2px;margin:0;}
-  .hero-pinstripe div:nth-child(1){background:var(--red);}
-  .hero-pinstripe div:nth-child(2){background:#333;height:1px;}
-  .hero-pinstripe div:nth-child(3){background:var(--red);}
-  .audio-hero-icon{font-size:32px;display:block;margin-bottom:14px;margin-top:4px;animation:breathe 3s ease-in-out infinite;}
-  @keyframes breathe{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.05);opacity:1}}
-  .audio-hero-title{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:30px;color:var(--white);letter-spacing:2px;text-transform:uppercase;line-height:1.05;margin-bottom:4px;}
-  .audio-hero-title em{color:var(--red);font-style:normal;}
-  .audio-hero-sub{font-family:var(--mono);font-size:10px;color:var(--chrome);letter-spacing:2px;line-height:1.9;margin-bottom:18px;text-transform:uppercase;}
-  .audio-example{background:#111;border-left:3px solid var(--red);border-right:1px solid #333;border-top:1px solid #333;border-bottom:1px solid #333;padding:12px 16px;margin-bottom:18px;}
-  .audio-example-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:6px;}
-  .audio-example-text{font-family:'Roboto Slab',serif;font-weight:200;font-size:13px;color:#aaa;line-height:1.75;font-style:italic;}
-  .agent-steps{display:flex;flex-direction:column;gap:0;border:1px solid #333;}
-  .agent-step-row{display:flex;align-items:flex-start;gap:14px;padding:10px 14px;border-bottom:1px solid #2a2a2a;background:#111;}
-  .agent-step-row:last-child{border-bottom:none;}
-  .agent-step-num{font-family:var(--mono);font-size:12px;color:var(--red);flex-shrink:0;width:22px;line-height:1;margin-top:2px;}
-  .agent-step-title{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;color:var(--white);text-transform:uppercase;margin-bottom:2px;}
-  .agent-step-desc{font-family:'Big Shoulders Text',sans-serif;font-weight:300;font-size:11px;color:var(--chrome);line-height:1.55;}
-  .upload-zone{border:2px dashed var(--line2);padding:34px 18px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;background:var(--off);}
-  .upload-zone:hover,.upload-zone.dragover{border-color:var(--red);background:var(--white);}
-  .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .upload-icon{font-size:28px;margin-bottom:10px;opacity:0.5;}
-  .upload-label{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:18px;letter-spacing:4px;color:var(--ink);text-transform:uppercase;display:block;margin-bottom:5px;}
-  .upload-sub{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
-  .video-preview{display:none;background:#000;border:1px solid var(--line);overflow:hidden;margin-bottom:2px;}
-  .video-preview video{width:100%;max-height:220px;object-fit:contain;}
-  .video-info{display:none;background:var(--off);border:1px solid var(--line);padding:7px 14px;font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:18px;}
-  .video-info span{color:var(--ink);}
-  .frames-section{display:none;margin-bottom:18px;}
-  .frames-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
-  .frames-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
-  .frame-thumb{aspect-ratio:16/9;background:var(--paper);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:all 0.15s;position:relative;}
-  .frame-thumb img{width:100%;height:100%;object-fit:cover;}
-  .frame-thumb.selected{border-color:var(--red);border-width:2px;}
-  .frame-thumb .check{display:none;position:absolute;top:3px;right:3px;background:var(--red);color:white;font-size:8px;width:13px;height:13px;border-radius:50%;align-items:center;justify-content:center;font-family:var(--mono);}
-  .frame-thumb.selected .check{display:flex;}
-  .field-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;display:block;}
-  input[type="text"],textarea{width:100%;background:var(--white);border:1px solid var(--line);border-radius:0;color:var(--ink);font-family:'Big Shoulders Text',sans-serif;font-weight:400;font-size:15px;padding:10px 12px;resize:vertical;transition:border-color 0.2s;-webkit-appearance:none;letter-spacing:0.3px;}
-  input:focus,textarea:focus{outline:none;border-color:var(--red);border-width:2px;}
-  textarea{min-height:86px;}
-  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-  .field-group{margin-bottom:12px;}
-  .rule{border:none;border-top:1px solid var(--line);margin:18px 0;}
-  .rule-double{margin:18px 0;border:none;border-top:3px double var(--line2);}
-  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);}
-  .toggle-row:last-child{border-bottom:none;}
-  .toggle-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;color:var(--ink);text-transform:uppercase;}
-  .toggle-sub{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
-  .toggle{width:44px;height:24px;background:var(--paper);border-radius:0;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;border:2px solid var(--line2);}
-  .toggle.on{background:var(--red);border-color:var(--red2);}
-  .toggle::after{content:'';width:16px;height:16px;background:var(--white);border-radius:0;position:absolute;top:2px;left:2px;transition:transform 0.2s;box-shadow:1px 1px 2px rgba(0,0,0,0.2);}
-  .toggle.on::after{transform:translateX(20px);}
-  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:none;cursor:pointer;transition:all 0.15s;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:13px;letter-spacing:5px;text-transform:uppercase;border-radius:0;}
-  .btn-primary{background:var(--red);color:white;border:2px solid var(--red2);}
-  .btn-primary:hover{background:var(--red2);}
-  .btn-primary:active{transform:translateY(1px);}
-  .btn-primary:disabled{background:var(--line);color:var(--muted);cursor:not-allowed;border-color:var(--line2);}
-  .btn-secondary{background:var(--white);color:var(--ink);border:2px solid var(--line2);font-size:10px;padding:11px;letter-spacing:4px;}
-  .btn-secondary:hover{border-color:var(--red);color:var(--red);}
-  .processing{display:none;text-align:center;padding:52px 18px;}
-  .proc-icon{font-size:30px;display:block;margin-bottom:20px;animation:spin-slow 3s linear infinite;}
-  @keyframes spin-slow{to{transform:rotate(360deg);}}
-  .proc-step{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:20px;letter-spacing:4px;color:var(--ink);text-transform:uppercase;margin-bottom:6px;}
-  .proc-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
-  .price-banner{background:var(--black);border:2px solid #333;border-top:4px solid var(--red);padding:20px 18px;display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2px;position:relative;}
-  .price-banner::before{content:'◆ LIVE EBAY SOLD COMPS ◆';position:absolute;top:6px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:7px;color:#444;letter-spacing:3px;}
-  .price-label{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:9px;letter-spacing:4px;color:#555;text-transform:uppercase;margin-bottom:4px;margin-top:12px;}
-  .price-value{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:56px;color:var(--white);letter-spacing:-1px;line-height:1;}
-  .price-range{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:#555;margin-top:4px;text-transform:uppercase;}
-  .comp-count{text-align:right;padding-top:14px;}
-  .comp-number{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:48px;color:var(--red);line-height:1;}
-  .comp-label{font-family:var(--mono);font-size:7px;letter-spacing:3px;color:#555;text-transform:uppercase;margin-top:2px;}
-  .offer-table{border:1px solid var(--line);margin-bottom:2px;background:var(--white);}
-  .offer-table-header{background:var(--ink);padding:6px 14px;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:9px;letter-spacing:5px;color:var(--white);text-transform:uppercase;border-bottom:2px solid var(--red);}
-  .offer-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:10px;}
-  .offer-row:last-child{border-bottom:none;}
-  .offer-key{font-family:'Big Shoulders Display',sans-serif;font-weight:600;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
-  .offer-val{font-family:var(--mono);font-size:11px;letter-spacing:1px;}
-  .offer-val.green{color:var(--green);}
-  .offer-val.amber{color:var(--gold);}
-  .offer-val.red{color:var(--red);}
-  .transcription-box{display:none;background:var(--off);border:1px solid var(--line);border-left:4px solid var(--red);padding:16px 18px;margin-bottom:2px;}
-  .transcription-eyebrow{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:9px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:9px;}
-  .transcription-text{font-family:'Roboto Slab',serif;font-weight:200;font-size:14px;color:var(--ink);line-height:1.8;font-style:italic;}
-  .listing-preview{border:1px solid #3665f3;margin-bottom:2px;overflow:hidden;}
-  .listing-preview-header{background:#3665f3;padding:7px 16px;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:9px;letter-spacing:4px;color:white;text-transform:uppercase;}
-  .listing-preview-body{padding:14px 16px;background:white;}
-  .listing-title-display{font-family:'Big Shoulders Text',sans-serif;font-weight:600;font-size:15px;color:#3665f3;margin-bottom:10px;line-height:1.35;}
-  .listing-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px;}
-  .meta-tag{background:#f5f5f5;border:1px solid #e0e0e0;padding:3px 8px;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:2px;color:#777;text-transform:uppercase;}
-  .meta-tag.hi{border-color:var(--gold);color:var(--gold2);background:#fdf9f0;}
-  .listing-desc-display{font-family:Georgia,serif;font-size:13px;color:#333;line-height:1.8;white-space:pre-wrap;}
-  .photo-strip{display:flex;gap:3px;overflow-x:auto;padding-bottom:3px;margin-bottom:2px;}
-  .photo-strip img{height:66px;width:auto;border:1px solid var(--line);flex-shrink:0;}
-  .fb-copy{background:white;border:1px solid #1877f2;padding:14px;font-family:'Big Shoulders Text',sans-serif;font-weight:400;font-size:13px;color:var(--ink);line-height:1.7;white-space:pre-wrap;}
-  .notify-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0f8f2;border:1px solid #a0c8a8;border-left:4px solid var(--green);font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:2px;}
-  .pending-row{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:#fdf9f0;border:1px solid var(--line);border-left:4px solid var(--gold);font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--gold2);text-transform:uppercase;margin-bottom:18px;line-height:1.9;}
-  .inv-item{background:var(--white);border:1px solid var(--line);border-bottom:none;padding:14px 16px;display:flex;gap:13px;align-items:flex-start;}
-  .inv-item:last-child{border-bottom:1px solid var(--line);}
-  .inv-thumb{width:50px;height:50px;background:var(--off);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-  .inv-info{flex:1;}
-  .inv-title{font-family:'Big Shoulders Text',sans-serif;font-weight:600;font-size:12px;margin-bottom:3px;line-height:1.35;color:var(--ink);}
-  .inv-meta{font-family:var(--mono);font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
-  .inv-status{display:inline-block;padding:2px 7px;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:3px;text-transform:uppercase;}
-  .s-live{background:#f0f8f2;color:var(--green);border:1px solid #a0c8a8;}
-  .s-sold{background:#fdf0f0;color:var(--red);border:1px solid #e0a0a0;}
-  .inv-price{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:26px;color:var(--ink);text-align:right;white-space:nowrap;}
-  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--black);border-top:3px solid var(--red);display:flex;z-index:100;}
-  .bottom-nav::before{content:'';position:absolute;top:-6px;left:0;right:0;height:2px;background:#333;}
-  .nav-item{flex:1;text-align:center;padding:11px 0 9px;font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:8px;letter-spacing:3px;cursor:pointer;color:#555;text-transform:uppercase;border-right:1px solid #2a2a2a;transition:color 0.2s;}
-  .nav-item:last-child{border-right:none;}
-  .nav-item.active{color:var(--white);}
-  .nav-item-icon{font-size:16px;display:block;margin-bottom:3px;opacity:0.6;}
-  .nav-item.active .nav-item-icon{opacity:1;}
-  .toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:white;font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:10px;letter-spacing:5px;text-transform:uppercase;padding:11px 22px;z-index:999;transition:transform 0.3s;white-space:nowrap;border-top:2px solid var(--red);}
-  .toast.show{transform:translateX(-50%) translateY(0);}
-  .hidden{display:none !important;}
+  :root {
+    --ivory:     #faf7f0;
+    --warm:      #f5f0e4;
+    --parchment: #ede6d4;
+    --tan:       #d4c9a8;
+    --gold:      #c8a84b;
+    --gold2:     #a8883a;
+    --amber:     #e8a020;
+    --red:       #c0291a;
+    --red2:      #8a1a10;
+    --black:     #1a1510;
+    --ink:       #2a2218;
+    --dark:      #3a3028;
+    --mid:       #786858;
+    --muted:     #a89880;
+    --green:     #2a5830;
+    --sky:       #4a7fa8;
+    --line:      #d8cdb0;
+    --line2:     #c4b898;
+    --glow:      rgba(200,168,75,0.15);
+    --serif:     'Playfair Display', Georgia, serif;
+    --sans:      'Josefin Sans', sans-serif;
+    --body:      'Libre Baskerville', Georgia, serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ivory);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Warm garage light from top left */
+    background-image:
+      radial-gradient(ellipse at -10% -5%, rgba(232,160,32,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 110% 90%, rgba(200,168,75,0.06) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ─────────────────────────────── */
+  header {
+    background: var(--black);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  /* The golden garage light flooding in from top */
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -60px;
+    width: 300px; height: 120px;
+    background: radial-gradient(ellipse, rgba(232,160,32,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-gold-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--amber) 50%, var(--gold) 80%, transparent 100%);
+  }
+
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 12px 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-left {}
+
+  .logo-lac {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 36px;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -1px;
+    display: block;
+    text-shadow: 0 0 30px rgba(200,168,75,0.4);
+  }
+
+  .logo-tagline {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 1px;
+  }
+
+  .header-center {
+    text-align: center;
+    flex: 1;
+    padding: 0 16px;
+  }
+
+  .header-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--tan);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .header-subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--ivory);
+    display: block;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .header-est {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .header-live {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 3px;
+  }
+
+  .header-live::before {
+    content: '● ';
+    animation: pulse-green 2s infinite;
+  }
+
+  @keyframes pulse-green {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── STEP NAV ───────────────────────────── */
+  .steps-bar {
+    background: var(--dark);
+    border-top: 1px solid #3a3020;
+    border-bottom: 2px solid var(--gold2);
+  }
+
+  .steps {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  .step {
+    flex: 1;
+    padding: 8px 4px;
+    text-align: center;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #555;
+    text-transform: uppercase;
+    border-right: 1px solid #3a3020;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .step:last-child { border-right: none; }
+
+  .step.active {
+    color: var(--gold);
+    background: rgba(200,168,75,0.08);
+  }
+
+  .step.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 20%; right: 20%;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .step.done { color: var(--gold2); }
+
+  .step-num {
+    display: block;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 1px;
+    letter-spacing: 0;
+  }
+
+  /* ── LAYOUT ─────────────────────────────── */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 18px 100px;
+  }
+
+  /* ── SECTION LABELS ─────────────────────── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 12px;
+  }
+
+  .section-label-text {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: var(--mid);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--line), transparent);
+  }
+
+  /* ── PANELS ─────────────────────────────── */
+  .panel {
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    margin-bottom: 2px;
+    position: relative;
+  }
+
+  /* Subtle warm glow on panels */
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold2), transparent);
+    opacity: 0.4;
+  }
+
+  .panel-header {
+    background: var(--warm);
+    border-bottom: 1px solid var(--line);
+    padding: 11px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    color: var(--ink);
+  }
+
+  .panel-ref {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .panel-body { padding: 18px; }
+
+  /* ── HERO CARD ───────────────────────────── */
+  /* The garage door opening — warm light flooding in */
+  .hero {
+    background: var(--black);
+    border: 1px solid #3a3020;
+    padding: 32px 22px 28px;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* The golden garage light */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 400px; height: 300px;
+    background: radial-gradient(ellipse, rgba(232,160,32,0.18) 0%, rgba(200,168,75,0.08) 30%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* Subtle warm horizon line at the bottom */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  .hero-icon {
+    font-size: 36px;
+    display: block;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    animation: breathe 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px rgba(232,160,32,0.3));
+  }
+
+  @keyframes breathe {
+    0%,100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(232,160,32,0.2)); }
+    50% { transform: scale(1.04); filter: drop-shadow(0 0 18px rgba(232,160,32,0.5)); }
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--ivory);
+    line-height: 1.1;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(200,168,75,0.4);
+  }
+
+  .hero-sub {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 2;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-example {
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--gold);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-example-label {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: var(--gold2);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .hero-example-text {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.75;
+  }
+
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid rgba(200,168,75,0.2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(200,168,75,0.1);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .process-step:last-child { border-bottom: none; }
+
+  .process-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    color: var(--gold);
+    flex-shrink: 0;
+    width: 22px;
+    line-height: 1;
+    margin-top: 1px;
+    text-shadow: 0 0 10px rgba(200,168,75,0.3);
+  }
+
+  .process-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--ivory);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .process-desc {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── UPLOAD ZONE ────────────────────────── */
+  .upload-zone {
+    border: 1px dashed var(--line2);
+    padding: 36px 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    background: var(--warm);
+  }
+
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--gold);
+    background: var(--parchment);
+    box-shadow: inset 0 0 30px rgba(200,168,75,0.08);
+  }
+
+  .upload-zone input {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer;
+    width: 100%; height: 100%;
+  }
+
+  .upload-icon { font-size: 30px; margin-bottom: 10px; opacity: 0.5; }
+
+  .upload-label {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .upload-sub {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── VIDEO ──────────────────────────────── */
+  .video-preview {
+    display: none;
+    background: #000;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    margin-bottom: 2px;
+  }
+
+  .video-preview video { width: 100%; max-height: 220px; object-fit: contain; }
+
+  .video-info {
+    display: none;
+    background: var(--warm);
+    border: 1px solid var(--line);
+    padding: 7px 14px;
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .video-info span { color: var(--ink); }
+
+  /* ── FRAMES ─────────────────────────────── */
+  .frames-section { display: none; margin-bottom: 18px; }
+
+  .frames-label {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .frames-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+  }
+
+  .frame-thumb {
+    aspect-ratio: 16/9;
+    background: var(--parchment);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .frame-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .frame-thumb.selected { border-color: var(--gold); border-width: 2px; }
+
+  .frame-thumb .check {
+    display: none;
+    position: absolute;
+    top: 3px; right: 3px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 8px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--sans);
+    font-weight: 600;
+  }
+
+  .frame-thumb.selected .check { display: flex; }
+
+  /* ── FORM ───────────────────────────────── */
+  .field-label {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 14px;
+    padding: 10px 13px;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    letter-spacing: 0.2px;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,168,75,0.1);
+  }
+
+  textarea { min-height: 88px; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .field-group { margin-bottom: 12px; }
+
+  .rule { border: none; border-top: 1px solid var(--line); margin: 18px 0; }
+  .rule-gold { border: none; border-top: 1px solid var(--gold2); margin: 18px 0; opacity: 0.3; }
+
+  /* ── TOGGLE ─────────────────────────────── */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toggle-row:last-child { border-bottom: none; }
+
+  .toggle-label {
+    font-family: var(--body);
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: 0.3px;
+  }
+
+  .toggle-sub {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .toggle {
+    width: 44px; height: 24px;
+    background: var(--tan);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.25s;
+    flex-shrink: 0;
+    border: 1px solid var(--line2);
+  }
+
+  .toggle.on { background: var(--gold); border-color: var(--gold2); }
+
+  .toggle::after {
+    content: '';
+    width: 18px; height: 18px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 2px;
+    transition: transform 0.25s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .toggle.on::after { transform: translateX(20px); }
+
+  /* ── BUTTONS ────────────────────────────── */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    border-radius: 0;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: white;
+    border: 1px solid var(--red2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.4s;
+  }
+
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { background: var(--red2); }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-primary:disabled { background: var(--tan); color: var(--muted); cursor: not-allowed; border-color: var(--line2); }
+
+  .btn-secondary {
+    background: var(--ivory);
+    color: var(--ink);
+    border: 1px solid var(--line2);
+    font-size: 9px;
+    padding: 12px;
+  }
+
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold2); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--black);
+    border: 1px solid var(--gold2);
+    font-size: 10px;
+  }
+
+  .btn-gold:hover { background: var(--gold2); color: white; }
+
+  /* ── PROCESSING ─────────────────────────── */
+  .processing { display: none; text-align: center; padding: 56px 18px; }
+
+  .proc-icon {
+    font-size: 34px;
+    display: block;
+    margin-bottom: 20px;
+    animation: spin-slow 4s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(200,168,75,0.4));
+  }
+
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+  .proc-step {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .proc-label {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── PRICE BANNER ───────────────────────── */
+  /* The holy grail moment */
+  .price-banner {
+    background: var(--black);
+    border: 1px solid #3a3020;
+    padding: 22px 18px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* The golden light from above */
+  .price-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -40px;
+    width: 300px; height: 180px;
+    background: radial-gradient(ellipse, rgba(232,160,32,0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .price-banner::after {
+    content: '✦  live ebay comps  ✦';
+    position: absolute;
+    top: 7px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 7px;
+    letter-spacing: 4px;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  .price-label {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    margin-top: 14px;
+    position: relative; z-index: 1;
+  }
+
+  .price-value {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 58px;
+    color: var(--gold);
+    letter-spacing: -1px;
+    line-height: 1;
+    position: relative; z-index: 1;
+    text-shadow: 0 0 30px rgba(200,168,75,0.3);
+  }
+
+  .price-range {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #555;
+    margin-top: 5px;
+    text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+
+  .comp-count { text-align: right; padding-top: 16px; position: relative; z-index: 1; }
+
+  .comp-number {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 50px;
+    color: var(--ivory);
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  .comp-label {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 7px;
+    letter-spacing: 4px;
+    color: #555;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* ── OFFER TABLE ────────────────────────── */
+  .offer-table {
+    border: 1px solid var(--line);
+    margin-bottom: 2px;
+    background: var(--ivory);
+    overflow: hidden;
+  }
+
+  .offer-table-header {
+    background: var(--parchment);
+    border-bottom: 1px solid var(--line2);
+    padding: 7px 14px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 5px;
+    color: var(--mid);
+    text-transform: uppercase;
+  }
+
+  .offer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 10px;
+  }
+
+  .offer-row:last-child { border-bottom: none; }
+
+  .offer-key {
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .offer-val {
+    font-family: var(--body);
+    font-size: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  .offer-val.green { color: var(--green); }
+  .offer-val.amber-v { color: var(--gold2); }
+  .offer-val.red { color: var(--red); }
+
+  /* ── TRANSCRIPTION ──────────────────────── */
+  .transcription-box {
+    display: none;
+    background: var(--warm);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    padding: 16px 18px;
+    margin-bottom: 2px;
+  }
+
+  .transcription-eyebrow {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 5px;
+    color: var(--gold2);
+    text-transform: uppercase;
+    margin-bottom: 9px;
+  }
+
+  .transcription-text {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.8;
+  }
+
+  /* ── LISTING PREVIEW ────────────────────── */
+  .listing-preview {
+    border: 1px solid #3665f3;
+    margin-bottom: 2px;
+    overflow: hidden;
+  }
+
+  .listing-preview-header {
+    background: #3665f3;
+    padding: 7px 16px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: white;
+    text-transform: uppercase;
+  }
+
+  .listing-preview-body { padding: 14px 16px; background: white; }
+
+  .listing-title-display {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    color: #3665f3;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .listing-meta { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 11px; }
+
+  .meta-tag {
+    background: #f8f8f8;
+    border: 1px solid #eee;
+    padding: 3px 8px;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #888;
+    text-transform: uppercase;
+  }
+
+  .meta-tag.hi { border-color: var(--gold); color: var(--gold2); background: #fdf9ee; }
+
+  .listing-desc-display {
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  /* ── PHOTO STRIP ────────────────────────── */
+  .photo-strip {
+    display: flex;
+    gap: 3px;
+    overflow-x: auto;
+    padding-bottom: 3px;
+    margin-bottom: 2px;
+  }
+
+  .photo-strip img {
+    height: 68px;
+    width: auto;
+    border: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  /* ── FB COPY ────────────────────────────── */
+  .fb-copy {
+    background: white;
+    border: 1px solid #1877f2;
+    padding: 14px;
+    font-family: var(--body);
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  /* ── STATUS ROWS ────────────────────────── */
+  .notify-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #f4faf5;
+    border: 1px solid #b0d8b8;
+    border-left: 3px solid var(--green);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .pending-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #fdf9f0;
+    border: 1px solid var(--tan);
+    border-left: 3px solid var(--gold);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--gold2);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    line-height: 1.9;
+  }
+
+  /* ── INVENTORY ──────────────────────────── */
+  .inv-item {
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-bottom: none;
+    padding: 14px 16px;
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+  }
+
+  .inv-item:last-child { border-bottom: 1px solid var(--line); }
+
+  .inv-thumb {
+    width: 52px; height: 52px;
+    background: var(--warm);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .inv-info { flex: 1; }
+
+  .inv-title {
+    font-family: var(--body);
+    font-size: 12px;
+    margin-bottom: 3px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .inv-meta {
+    font-family: var(--sans);
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .inv-status {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 7px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .s-live { background: #f0f8f2; color: var(--green); border: 1px solid #a0c8a8; }
+  .s-sold { background: #fdf0f0; color: var(--red); border: 1px solid #e0a0a0; }
+
+  .inv-price {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── BOTTOM NAV ─────────────────────────── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--black);
+    border-top: 1px solid #3a3020;
+    display: flex;
+    z-index: 100;
+  }
+
+  .bottom-nav::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+
+  .nav-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0 10px;
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 7px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    color: #555;
+    text-transform: uppercase;
+    border-right: 1px solid #2a2018;
+    transition: color 0.2s;
+  }
+
+  .nav-item:last-child { border-right: none; }
+  .nav-item.active { color: var(--gold); }
+  .nav-item-icon { font-size: 18px; display: block; margin-bottom: 3px; opacity: 0.6; }
+  .nav-item.active .nav-item-icon { opacity: 1; }
+
+  /* ── TOAST ──────────────────────────────── */
+  .toast {
+    position: fixed;
+    bottom: 76px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--black);
+    color: var(--gold);
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 11px 22px;
+    z-index: 999;
+    transition: transform 0.3s;
+    white-space: nowrap;
+    border: 1px solid var(--gold2);
+    box-shadow: 0 0 20px rgba(200,168,75,0.2);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
+
+<!-- ══ HEADER ════════════════════════════ -->
 <header>
-  <div class="pinstripe"><div class="pinstripe-line"></div><div class="pinstripe-line"></div><div class="pinstripe-line"></div></div>
+  <div class="header-gold-line"></div>
   <div class="header-inner">
-    <div><span class="logo-initials">LAC</span><span class="logo-wordmark">Speed Shop</span></div>
-    <div class="header-center"><span class="logo-name-top">Auction</span><span class="logo-name-main">Barn</span><div class="logo-rule"></div><span class="logo-sub-line">PARTS AGENT · EST. 2024</span></div>
-    <div class="header-badge"><span class="badge-num">No.32</span><span class="badge-label">Online</span></div>
+    <div class="logo-left">
+      <span class="logo-lac">LAC</span>
+      <span class="logo-tagline">Speed Shop</span>
+    </div>
+    <div class="header-center">
+      <span class="header-title">Parts Agent</span>
+      <span class="header-subtitle">Auction Barn</span>
+    </div>
+    <div class="header-right">
+      <span class="header-est">Est. 2024</span>
+      <span class="header-live">Online</span>
+    </div>
   </div>
-  <div class="steps-outer"><div class="steps">
-    <div class="step active" id="step1"><span class="step-num">01</span>Film</div>
-    <div class="step" id="step2"><span class="step-num">02</span>Listen</div>
-    <div class="step" id="step3"><span class="step-num">03</span>Research</div>
-    <div class="step" id="step4"><span class="step-num">04</span>Write</div>
-    <div class="step" id="step5"><span class="step-num">05</span>Post</div>
-  </div></div>
+  <div class="steps-bar">
+    <div class="steps">
+      <div class="step active" id="step1"><span class="step-num">I</span>Film</div>
+      <div class="step" id="step2"><span class="step-num">II</span>Listen</div>
+      <div class="step" id="step3"><span class="step-num">III</span>Research</div>
+      <div class="step" id="step4"><span class="step-num">IV</span>Write</div>
+      <div class="step" id="step5"><span class="step-num">V</span>Post</div>
+    </div>
+  </div>
 </header>
+
 <main>
+
+  <!-- ═══ UPLOAD VIEW ═══════════════════════ -->
   <div id="view-upload">
-    <div class="pending-row"><span>▷</span><span>Live eBay comp research active. eBay posting coming next.</span></div>
-    <div class="audio-hero">
-      <div class="hero-pinstripe"><div></div><div></div><div></div></div>
-      <span class="audio-hero-icon">🎙</span>
-      <div class="audio-hero-title">Just <em>Talk.</em><br>We Do The Rest.</div>
-      <div class="audio-hero-sub">Film a walkaround. Describe the part out loud.<br>The agent listens, pulls live eBay data, and writes your listing.</div>
-      <div class="audio-example">
-        <div class="audio-example-label">◆ For example — speak naturally, like this:</div>
-        <div class="audio-example-text">"This is a passenger mirror off a 2003 Silverado — came off when we upgraded to aftermarket fenders. Glass is perfect, no chips. Motor works, I tested it. Small scuff on the bottom edge, maybe an inch — doesn't affect function at all."</div>
+
+    <div class="pending-row">
+      <span>◦</span>
+      <span>Live eBay comp research is active. eBay posting coming in the next update.</span>
+    </div>
+
+    <!-- HERO — The Garage Door Opening -->
+    <div class="hero">
+      <span class="hero-icon">🎙</span>
+      <div class="hero-title">Just <em>speak.</em><br>We handle everything.</div>
+      <div class="hero-sub">
+        Film a walkaround. Describe the part out loud.<br>
+        The agent listens, researches live eBay data, and writes your listing.
       </div>
-      <div class="agent-steps">
-        <div class="agent-step-row"><div class="agent-step-num">01</div><div><div class="agent-step-title">Transcribes Your Audio</div><div class="agent-step-desc">Every detail you spoke — condition, history, fitment, what works</div></div></div>
-        <div class="agent-step-row"><div class="agent-step-num">02</div><div><div class="agent-step-title">Pulls Live eBay Sold Comps</div><div class="agent-step-desc">Real median prices from actual recent eBay sales — not estimates</div></div></div>
-        <div class="agent-step-row"><div class="agent-step-num">03</div><div><div class="agent-step-title">Models After Top Selling Listings</div><div class="agent-step-desc">Studies what the highest converting listings said and writes like them</div></div></div>
-        <div class="agent-step-row"><div class="agent-step-num">04</div><div><div class="agent-step-title">Extracts Photographs From Your Video</div><div class="agent-step-desc">Selects the clearest frames automatically — no separate photo session needed</div></div></div>
+
+      <div class="hero-example">
+        <div class="hero-example-label">✦  For example — speak naturally, just like this</div>
+        <div class="hero-example-text">"This is a passenger mirror off a 2003 Silverado — came off when we upgraded to aftermarket fenders. Glass is perfect, no chips. Motor works, I tested it. Small scuff on the bottom edge, maybe an inch — doesn't affect function at all."</div>
+      </div>
+
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="process-num">I</div>
+          <div>
+            <div class="process-title">Transcribes your audio</div>
+            <div class="process-desc">Every detail you spoke — condition, history, fitment, what works</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-num">II</div>
+          <div>
+            <div class="process-title">Pulls live eBay comparable sales</div>
+            <div class="process-desc">Real median prices from actual recent listings — never estimates</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-num">III</div>
+          <div>
+            <div class="process-title">Writes in the style of top sellers</div>
+            <div class="process-desc">Studies the highest-converting listings for this part and writes like them — using your facts as the foundation</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-num">IV</div>
+          <div>
+            <div class="process-title">Extracts photographs from your video</div>
+            <div class="process-desc">Selects the clearest frames automatically — no separate photo session required</div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- VIDEO PANEL -->
     <div class="panel">
-      <div class="panel-header"><div class="panel-title">Upload Video</div><div class="panel-ref">STEP 01</div></div>
+      <div class="panel-header">
+        <div class="panel-title">Upload Your Video</div>
+        <div class="panel-ref">Step I</div>
+      </div>
       <div class="panel-body">
         <div class="upload-zone" id="uploadZone">
           <input type="file" id="videoInput" accept="video/*,.mov,.mp4" />
           <div class="upload-icon">📱</div>
-          <span class="upload-label">Select Your Video</span>
+          <span class="upload-label">Select your video</span>
           <div class="upload-sub">iPhone · .mov or .mp4 · Speak while you film</div>
         </div>
-        <div class="video-preview" id="videoPreview"><video id="videoPlayer" controls playsinline></video></div>
-        <div class="video-info" id="videoInfo">File: <span id="videoName">—</span> &nbsp;·&nbsp; Size: <span id="videoSize">—</span> &nbsp;·&nbsp; Duration: <span id="videoDuration">—</span></div>
+
+        <div class="video-preview" id="videoPreview">
+          <video id="videoPlayer" controls playsinline></video>
+        </div>
+
+        <div class="video-info" id="videoInfo">
+          <span id="videoName">—</span> &nbsp;·&nbsp;
+          <span id="videoSize">—</span> &nbsp;·&nbsp;
+          <span id="videoDuration">—</span>
+        </div>
+
         <div class="frames-section" id="framesSection">
-          <div class="frames-label">◆ Listing photos extracted from video — tap to include or remove</div>
+          <div class="frames-label">✦ Listing photographs extracted from your video — tap to include or remove</div>
           <div class="frames-grid" id="framesGrid"></div>
         </div>
-        <hr class="rule-double">
-        <div class="section-label"><span class="section-label-text">Vehicle Info</span><div class="section-label-rule"></div></div>
+
+        <hr class="rule-gold">
+
+        <div class="section-label">
+          <span class="section-label-text">Vehicle</span>
+          <div class="section-label-line"></div>
+        </div>
+
         <div class="field-row">
-          <div class="field-group" style="margin:0"><label class="field-label">Year</label><input type="text" id="partYear" placeholder="2003" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Year</label><input type="text" id="partYear" placeholder="1968" /></div>
           <div class="field-group" style="margin:0"><label class="field-label">Make</label><input type="text" id="partMake" placeholder="Chevrolet" /></div>
         </div>
         <div class="field-row" style="margin-top:10px">
-          <div class="field-group" style="margin:0"><label class="field-label">Model</label><input type="text" id="partModel" placeholder="Silverado 1500" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Model</label><input type="text" id="partModel" placeholder="Camaro" /></div>
           <div class="field-group" style="margin:0"><label class="field-label">Part Number</label><input type="text" id="partNumber" placeholder="If visible" /></div>
         </div>
+
         <div class="field-group" style="margin-top:4px">
-          <label class="field-label">Additional Notes — Optional, Your Video Audio Is Sufficient</label>
+          <label class="field-label">Additional notes — optional, your video audio is sufficient</label>
           <textarea id="partDescription" placeholder="Any further details for the agent…"></textarea>
         </div>
-        <hr class="rule-double">
+
+        <hr class="rule-gold">
+
         <div class="toggle-row">
-          <div><div class="toggle-label">Local Pickup Only</div><div class="toggle-sub">Enable for large or heavy items</div></div>
+          <div>
+            <div class="toggle-label">Local pickup only</div>
+            <div class="toggle-sub">Enable for large or heavy items</div>
+          </div>
           <div class="toggle" id="localPickupToggle" onclick="togglePickup()"></div>
         </div>
+
         <hr class="rule">
-        <button class="btn btn-primary" id="analyzeBtn" onclick="startAnalysis()" disabled>◆ &nbsp; Analyse &amp; Build Listing</button>
+
+        <button class="btn btn-primary" id="analyzeBtn" onclick="startAnalysis()" disabled>
+          ✦ &nbsp; Analyse &amp; Build Listing
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- ═══ RESULTS VIEW ══════════════════════ -->
   <div id="view-results" class="hidden">
+
     <div class="panel" id="processingPanel">
       <div class="panel-body">
         <div class="processing" id="processingView" style="display:block">
           <span class="proc-icon">⚙</span>
-          <div class="proc-step" id="processingStep">Listening To Your Video</div>
+          <div class="proc-step" id="processingStep">Listening to your video</div>
           <div class="proc-label" id="processingLabel">transcribing your description…</div>
         </div>
       </div>
     </div>
+
     <div id="resultsView" class="hidden">
-      <div class="section-label"><span class="section-label-text">What You Said</span><div class="section-label-rule"></div></div>
+
+      <!-- Transcription -->
+      <div class="section-label">
+        <span class="section-label-text">What you said</span>
+        <div class="section-label-line"></div>
+      </div>
+
       <div class="transcription-box" id="transcriptionBox">
-        <div class="transcription-eyebrow">◆ Confirmed — Agent Understood The Following</div>
+        <div class="transcription-eyebrow">✦ Confirmed — agent understood the following</div>
         <div class="transcription-text" id="transcriptionText"></div>
       </div>
-      <div class="section-label"><span class="section-label-text">Live eBay Comparable Sales</span><div class="section-label-rule"></div></div>
-      <div class="price-banner">
-        <div><div class="price-label">Median Sold Price</div><div class="price-value" id="medianPrice">$—</div><div class="price-range" id="priceRange">—</div></div>
-        <div class="comp-count"><div class="comp-number" id="compCount">—</div><div class="comp-label">Live Comps</div></div>
+
+      <!-- Price -->
+      <div class="section-label">
+        <span class="section-label-text">Live eBay comparable sales</span>
+        <div class="section-label-line"></div>
       </div>
+
+      <div class="price-banner">
+        <div>
+          <div class="price-label">Median sold price</div>
+          <div class="price-value" id="medianPrice">$—</div>
+          <div class="price-range" id="priceRange">—</div>
+        </div>
+        <div class="comp-count">
+          <div class="comp-number" id="compCount">—</div>
+          <div class="comp-label">Live comps</div>
+        </div>
+      </div>
+
       <div class="offer-table">
         <div class="offer-table-header">Offer Rules</div>
-        <div class="offer-row"><span class="offer-key">Auto-Accept Above</span><span class="offer-val green" id="acceptFloor">—</span></div>
-        <div class="offer-row"><span class="offer-key">Text You To Review</span><span class="offer-val amber" id="reviewRange">—</span></div>
-        <div class="offer-row"><span class="offer-key">Auto-Decline Below</span><span class="offer-val red" id="declineFloor">—</span></div>
-        <div class="offer-row"><span class="offer-key">Returns Policy</span><span class="offer-val red">No Returns Accepted</span></div>
+        <div class="offer-row"><span class="offer-key">Auto-accept above</span><span class="offer-val green" id="acceptFloor">—</span></div>
+        <div class="offer-row"><span class="offer-key">Text you to review</span><span class="offer-val amber-v" id="reviewRange">—</span></div>
+        <div class="offer-row"><span class="offer-key">Auto-decline below</span><span class="offer-val red" id="declineFloor">—</span></div>
+        <div class="offer-row"><span class="offer-key">Returns policy</span><span class="offer-val red">No returns accepted</span></div>
         <div class="offer-row"><span class="offer-key">Shipping</span><span class="offer-val" id="shippingRule">—</span></div>
       </div>
-      <div class="section-label"><span class="section-label-text">eBay Listing Draft</span><div class="section-label-rule"></div></div>
+
+      <!-- Listing Draft -->
+      <div class="section-label">
+        <span class="section-label-text">eBay listing draft</span>
+        <div class="section-label-line"></div>
+      </div>
+
       <div class="photo-strip" id="photoStrip"></div>
+
       <div class="listing-preview">
         <div class="listing-preview-header">eBay Motors · Listing Preview</div>
         <div class="listing-preview-body">
@@ -282,75 +1402,178 @@
           <div class="listing-desc-display" id="listingDesc">—</div>
         </div>
       </div>
-      <div class="section-label"><span class="section-label-text">Refine Before Posting</span><div class="section-label-rule"></div></div>
-      <div class="field-group"><label class="field-label">Listing Title</label><input type="text" id="editTitle" maxlength="80" /><div style="font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:4px;letter-spacing:3px;" id="titleCount">0 of 80 characters</div></div>
-      <div class="field-group"><label class="field-label">Price</label><input type="text" id="editPrice" /></div>
-      <div class="field-group"><label class="field-label">Description</label><textarea id="editDesc" style="min-height:160px"></textarea></div>
-      <div class="field-group"><label class="field-label">eBay Category</label><input type="text" id="editCategory" /></div>
-      <div class="notify-row"><span>✓</span><span>Sale alert will text your AT&T number</span></div>
-      <div class="section-label"><span class="section-label-text">Facebook Marketplace</span><div class="section-label-rule"></div></div>
+
+      <!-- Edit -->
+      <div class="section-label">
+        <span class="section-label-text">Refine before posting</span>
+        <div class="section-label-line"></div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Listing title</label>
+        <input type="text" id="editTitle" maxlength="80" />
+        <div style="font-family:var(--sans);font-weight:200;font-size:8px;color:var(--muted);margin-top:4px;letter-spacing:3px;" id="titleCount">0 of 80 characters</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Your listing price</label>
+        <input type="text" id="editPrice" />
+        <div style="font-family:var(--sans);font-weight:200;font-size:8px;color:var(--muted);margin-top:4px;letter-spacing:2px;" id="priceNote">Edit if you'd like to list at a different price than the median</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Description</label>
+        <textarea id="editDesc" style="min-height:180px"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">eBay category</label>
+        <input type="text" id="editCategory" />
+      </div>
+
+      <div class="notify-row">
+        <span>✓</span>
+        <span>Sale alert will be sent to your AT&T number</span>
+      </div>
+
+      <!-- Facebook -->
+      <div class="section-label">
+        <span class="section-label-text">Facebook Marketplace</span>
+        <div class="section-label-line"></div>
+      </div>
+
       <div class="fb-copy" id="fbCopy">—</div>
-      <hr class="rule-double">
+
+      <hr class="rule-gold" style="margin-top:20px">
+
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
-        <button class="btn btn-primary" onclick="postToEbay()">◆ &nbsp; Post To eBay</button>
+        <button class="btn btn-primary" onclick="postToEbay()">✦ &nbsp; Post to eBay</button>
         <button class="btn btn-secondary" onclick="copyFBListing()">Copy Facebook Listing</button>
         <button class="btn btn-secondary" onclick="resetForm()">List Another Part</button>
       </div>
+
     </div>
   </div>
 
+  <!-- ═══ INVENTORY VIEW ════════════════════ -->
   <div id="view-inventory" class="hidden">
-    <div class="section-label"><span class="section-label-text">Active Inventory</span><div class="section-label-rule"></div></div>
-    <div class="inv-item"><div class="inv-thumb">🪞</div><div class="inv-info"><div class="inv-title">2003 Chevrolet Silverado Passenger Mirror — Chrome OEM</div><div class="inv-meta">Listed 3 days ago · eBay #234891023</div><span class="inv-status s-live">Live</span></div><div><div class="inv-price">$52</div></div></div>
-    <div class="inv-item"><div class="inv-thumb">💡</div><div class="inv-info"><div class="inv-title">2008 Ford F-150 Driver Headlight Assembly — Halogen</div><div class="inv-meta">Listed 1 week ago · eBay #234887441</div><span class="inv-status s-live">Live</span></div><div><div class="inv-price">$78</div></div></div>
-    <div class="inv-item"><div class="inv-thumb">⚙️</div><div class="inv-info"><div class="inv-title">2015 Dodge Charger Throttle Body 5.7L HEMI — OEM</div><div class="inv-meta">Sold 2 days ago · Order #44-29183</div><span class="inv-status s-sold">Sold</span></div><div><div class="inv-price">$94</div></div></div>
-    <div class="section-label" style="margin-top:26px"><span class="section-label-text">This Month</span><div class="section-label-rule"></div></div>
-    <div class="offer-table">
-      <div class="offer-table-header">Performance Summary</div>
-      <div class="offer-row"><span class="offer-key">Parts Listed</span><span class="offer-val">3</span></div>
-      <div class="offer-row"><span class="offer-key">Parts Sold</span><span class="offer-val green">1</span></div>
-      <div class="offer-row"><span class="offer-key">Revenue</span><span class="offer-val green">$94.00</span></div>
-      <div class="offer-row"><span class="offer-key">Pending Offers</span><span class="offer-val amber">0</span></div>
+
+    <div class="section-label">
+      <span class="section-label-text">Active Inventory</span>
+      <div class="section-label-line"></div>
     </div>
+
+    <div class="inv-item">
+      <div class="inv-thumb">🪞</div>
+      <div class="inv-info">
+        <div class="inv-title">2003 Chevrolet Silverado Passenger Mirror — Chrome OEM</div>
+        <div class="inv-meta">Listed 3 days ago · eBay #234891023</div>
+        <span class="inv-status s-live">Live</span>
+      </div>
+      <div><div class="inv-price">$52</div></div>
+    </div>
+
+    <div class="inv-item">
+      <div class="inv-thumb">💡</div>
+      <div class="inv-info">
+        <div class="inv-title">2008 Ford F-150 Driver Headlight Assembly — Halogen</div>
+        <div class="inv-meta">Listed 1 week ago · eBay #234887441</div>
+        <span class="inv-status s-live">Live</span>
+      </div>
+      <div><div class="inv-price">$78</div></div>
+    </div>
+
+    <div class="inv-item">
+      <div class="inv-thumb">⚙️</div>
+      <div class="inv-info">
+        <div class="inv-title">2015 Dodge Charger Throttle Body 5.7L HEMI — OEM</div>
+        <div class="inv-meta">Sold 2 days ago · Order #44-29183</div>
+        <span class="inv-status s-sold">Sold</span>
+      </div>
+      <div><div class="inv-price">$94</div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px">
+      <span class="section-label-text">This Month</span>
+      <div class="section-label-line"></div>
+    </div>
+
+    <div class="offer-table">
+      <div class="offer-table-header">Performance</div>
+      <div class="offer-row"><span class="offer-key">Parts listed</span><span class="offer-val">3</span></div>
+      <div class="offer-row"><span class="offer-key">Parts sold</span><span class="offer-val green">1</span></div>
+      <div class="offer-row"><span class="offer-key">Revenue</span><span class="offer-val green">$94.00</span></div>
+      <div class="offer-row"><span class="offer-key">Pending offers</span><span class="offer-val amber-v">0</span></div>
+    </div>
+
   </div>
 
+  <!-- ═══ SETTINGS VIEW ═════════════════════ -->
   <div id="view-settings" class="hidden">
-    <div class="section-label"><span class="section-label-text">eBay API Credentials</span><div class="section-label-rule"></div></div>
+
+    <div class="section-label">
+      <span class="section-label-text">eBay API Credentials</span>
+      <div class="section-label-line"></div>
+    </div>
+
     <div class="panel">
       <div class="panel-body">
-        <div class="pending-row" style="margin-bottom:14px"><span>▷</span><span>Credentials stored securely in Vercel environment variables</span></div>
+        <div class="pending-row" style="margin-bottom:14px">
+          <span>◦</span>
+          <span>Credentials are stored securely in Vercel environment variables</span>
+        </div>
         <div class="field-group"><label class="field-label">App ID (Client ID)</label><input type="text" placeholder="Stored in Vercel env" /></div>
         <div class="field-group"><label class="field-label">Cert ID (Client Secret)</label><input type="text" placeholder="Stored in Vercel env" /></div>
         <div class="field-group"><label class="field-label">Dev ID</label><input type="text" placeholder="Stored in Vercel env" /></div>
         <div class="field-group"><label class="field-label">User Token</label><input type="text" placeholder="Stored in Vercel env" /></div>
-        <button class="btn btn-primary">◆ &nbsp; Save Credentials</button>
+        <button class="btn btn-primary">✦ &nbsp; Save Credentials</button>
       </div>
     </div>
-    <div class="section-label"><span class="section-label-text">Sale Notifications</span><div class="section-label-rule"></div></div>
+
+    <div class="section-label">
+      <span class="section-label-text">Sale Notifications</span>
+      <div class="section-label-line"></div>
+    </div>
+
     <div class="panel">
       <div class="panel-body">
-        <div class="field-group"><label class="field-label">Your AT&T Phone Number</label><input type="text" id="attNumber" placeholder="5551234567" /></div>
-        <div class="field-group" style="margin:0"><label class="field-label">Alerts Sent To</label><input type="text" value="@txt.att.net" readonly style="color:var(--muted)" /></div>
+        <div class="field-group"><label class="field-label">Your AT&T phone number</label><input type="text" id="attNumber" placeholder="5551234567" /></div>
+        <div class="field-group" style="margin:0"><label class="field-label">Sale alerts sent to</label><input type="text" value="@txt.att.net" readonly style="color:var(--muted)" /></div>
       </div>
     </div>
-    <div class="section-label"><span class="section-label-text">Offer Rules</span><div class="section-label-rule"></div></div>
+
+    <div class="section-label">
+      <span class="section-label-text">Offer Rules</span>
+      <div class="section-label-line"></div>
+    </div>
+
     <div class="panel">
       <div class="panel-body">
         <div class="field-row">
-          <div class="field-group" style="margin:0"><label class="field-label">Auto-Accept Above (%)</label><input type="text" id="acceptPct" value="85" /></div>
-          <div class="field-group" style="margin:0"><label class="field-label">Auto-Decline Below (%)</label><input type="text" id="declinePct" value="70" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Auto-accept above (%)</label><input type="text" id="acceptPct" value="85" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Auto-decline below (%)</label><input type="text" id="declinePct" value="70" /></div>
         </div>
         <button class="btn btn-secondary" style="margin-top:4px" onclick="saveRules()">Save Rules</button>
       </div>
     </div>
+
   </div>
+
 </main>
 
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="nav-item active" id="nav-list" onclick="showView('upload')"><span class="nav-item-icon">◻</span>List Part</div>
-  <div class="nav-item" id="nav-inv" onclick="showView('inventory')"><span class="nav-item-icon">≡</span>Inventory</div>
-  <div class="nav-item" id="nav-settings" onclick="showView('settings')"><span class="nav-item-icon">◯</span>Settings</div>
+  <div class="nav-item active" id="nav-list" onclick="showView('upload')">
+    <span class="nav-item-icon">◻</span>List Part
+  </div>
+  <div class="nav-item" id="nav-inv" onclick="showView('inventory')">
+    <span class="nav-item-icon">≡</span>Inventory
+  </div>
+  <div class="nav-item" id="nav-settings" onclick="showView('settings')">
+    <span class="nav-item-icon">◯</span>Settings
+  </div>
 </div>
+
 <div class="toast" id="toast">Done</div>
 
 <script>
@@ -463,31 +1686,25 @@
     const partNum=document.getElementById('partNumber').value.trim();
     const vehicle=[year,make,model].filter(Boolean).join(' ');
 
-    await tick('Listening To Your Video','transcribing your description…',1400);
+    await tick('Listening to your video','transcribing your description…',1400);
     setStep(3);
-    await tick('Pulling Live eBay Comps','searching real listings…',800);
+    await tick('Pulling live eBay comps','searching real listings…',800);
 
-    // ── LIVE EBAY COMP RESEARCH ──
-    // Build clean short query — just year make model + the main part noun
-    const descWords=description.toLowerCase().split(/\s+/);
-    const partNoun=descWords.find(w=>w.length>4&&!['removed','during','installed','aftermarket','performance','upgrade','original','factory'].includes(w))||descWords[0]||'';
-   const searchQuery=vehicle
-      ? (year+' '+model+' '+partNoun).trim()
-      : description.split(' ').slice(0,5).join(' ');
+    // Build clean search query — year model + main part noun from description
+    const skipWords=new Set(['removed','during','installed','aftermarket','performance','upgrade','original','factory','when','glass','clean','needle','works','tabs','intact','chrome','bezel','light','patina','consistent','with','age','from','this','that','have','been','were','they','came','came','what','some','very','just']);
+    const descWords=description.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/);
+    const partNoun=descWords.find(w=>w.length>3&&!skipWords.has(w)&&isNaN(w))||descWords.filter(w=>w.length>3)[0]||'';
+    const searchQuery=vehicle?(year+' '+model+' '+partNoun).trim():description.split(' ').slice(0,5).join(' ');
 
     let median=45,low=20,high=120,comps=0,compItems=[];
     try{
       const compRes=await fetch('/api/comps?query='+encodeURIComponent(searchQuery));
       const compData=await compRes.json();
       if(compData.count>0){
-        median=compData.median;
-        low=compData.low;
-        high=compData.high;
-        comps=compData.count;
-        compItems=compData.items||[];
+        median=compData.median;low=compData.low;high=compData.high;
+        comps=compData.count;compItems=compData.items||[];
       } else {
-        // Fallback — try just year make model
-        const fallbackRes=await fetch('/api/comps?query='+encodeURIComponent((year+' '+make+' '+model).trim()));
+        const fallbackRes=await fetch('/api/comps?query='+encodeURIComponent((year+' '+model).trim()));
         const fallbackData=await fallbackRes.json();
         if(fallbackData.count>0){
           median=fallbackData.median;low=fallbackData.low;high=fallbackData.high;
@@ -496,10 +1713,10 @@
       }
     }catch(e){console.log('comp error',e);}
 
-    await tick('Studying Top-Selling Listings','modelling after highest converting comps…',1000);
+    await tick('Studying top-selling listings','modelling after the highest converting comps…',1200);
     setStep(4);
-    await tick('Writing Your Listing','combining your words with proven sales language…',1600);
-    await tick('Preparing Facebook Copy','formatting marketplace post…',700);
+    await tick('Writing your listing','combining your facts with proven sales language…',1600);
+    await tick('Preparing Facebook copy','formatting marketplace post…',700);
     setStep(5);
 
     await generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps,compItems,searchQuery);
@@ -525,39 +1742,41 @@
 
     const compTitles=compItems.length>0
       ? compItems.map((item,i)=>`${i+1}. "${item.title}" — $${item.price}`).join('\n')
-      : 'No comp titles available';
+      : 'No comp data available';
 
-    const prompt=`You are the listing agent for LAC Auction Barn — a precision speed and performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced.
+    const prompt=`You are the listing agent for LAC Speed Shop — a precision performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced.
 
-You have access to REAL live eBay listing data for this exact part. Study the top listings below and model your title and description after their keyword patterns and terminology — these are what buyers search for and click on.
+Your job: write a complete eBay listing that reads EXACTLY like the top-selling listings below — same terminology, same keyword structure, same professional tone. Use the seller's facts as your foundation but write in the proven style of what converts on eBay for this exact part.
 
-TOP LIVE EBAY LISTINGS FOR THIS PART (eBay search: "${searchQuery}"):
+TOP-SELLING EBAY LISTINGS FOR THIS PART (search: "${searchQuery}"):
 ${compTitles}
 
-SELLER'S DESCRIPTION OF THIS SPECIFIC PART:
+SELLER'S PART DESCRIPTION:
 "${description||'Used OEM part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade.'}"
 
 VEHICLE: ${vehicle||'Not specified'}
-PART NUMBER: ${partNum||'Not visible'}
-SHIPPING: ${isLocal?'Local pickup only':'USPS calculated, buyer pays'}
-CONDITION: Used OEM — removed during performance upgrade at LAC Auction Barn Speed Shop
-RETURNS: No returns
-LIVE EBAY MEDIAN PRICE: $${median} (${comps} comparable listings, range $${low}–$${high})
+PART NUMBER: ${partNum||'Not visible on part'}
+SHIPPING: ${isLocal?'Local pickup only — too large to ship':'USPS calculated shipping, buyer pays'}
+CONDITION: Used OEM — removed during a professional performance upgrade at LAC Speed Shop
+RETURNS: No returns accepted
+LIVE EBAY MEDIAN: $${median} from ${comps} comparable listings (range $${low}–$${high})
 
-INSTRUCTIONS:
-- Title MUST use the same keywords as the top listings — buyers search for exactly those terms
-- Description: (1) Part provenance — removed at LAC Auction Barn during upgrade. (2) Honest condition from seller description — be specific. (3) Fitment and compatibility. (4) Shipping/returns/questions
-- Price at the median: $${median}
-- Be specific, professional, honest — like an expert who knows these parts
+WRITING INSTRUCTIONS:
+- TITLE: Mirror the keyword structure of the top listings above. Include year, make/model, part name, OEM/Genuine callout, and any key specs (like "120 MPH", "w/Speed Warning"). Max 80 characters.
+- DESCRIPTION paragraph 1: Establish provenance — this part came off a customer vehicle during a professional performance upgrade at LAC Speed Shop. This builds trust and explains why a quality OEM part is available.
+- DESCRIPTION paragraph 2: Detailed condition — be specific and honest using the seller's exact observations. Buyers trust specificity.
+- DESCRIPTION paragraph 3: Fitment and compatibility — what it fits, any compatibility notes from the comp listings.
+- DESCRIPTION paragraph 4: Practical info — shipping or pickup, no returns, invite questions. End with "— LAC Speed Shop"
+- Write the way the TOP listings write — confident, specific, keyword-rich, honest. Not generic.
 
 Respond ONLY with valid JSON, no markdown:
-{"title":"eBay title max 80 chars","category":"Most precise eBay Motors subcategory","price":${median},"description":"Four clear paragraphs as instructed","fbCopy":"3-4 casual sentences with price and speed shop context","transcriptSummary":"2-3 sentence summary of the full seller description — confirm you understood everything they said"}`;
+{"title":"eBay title max 80 chars","category":"Most precise eBay Motors subcategory","price":${median},"description":"Four paragraphs as instructed — written in the style of top sellers","fbCopy":"3-4 casual sentences. Price, condition, LAC Speed Shop context.","transcriptSummary":"2-3 sentence professional summary confirming you understood the seller's full description"}`;
 
     try{
       const res=await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,messages:[{role:'user',content:prompt}]})
       });
       const data=await res.json();
       const raw=data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
@@ -569,8 +1788,8 @@ Respond ONLY with valid JSON, no markdown:
         title:(vehicle+' OEM '+description.split(' ').slice(0,4).join(' ')+' Used').substring(0,80),
         category:'Auto Parts & Accessories',
         price:median,
-        description:'This part was removed from a '+(vehicle||'customer vehicle')+' during a professional performance upgrade at LAC Auction Barn Speed Shop.\n\n'+description+'\n\nFits '+(vehicle||'see description')+'. '+(isLocal?'Local pickup only.':'Ships USPS. Buyer pays shipping.')+' No returns. Questions welcome.\n\n— LAC Auction Barn',
-        fbCopy:'Selling a used '+(vehicle?vehicle+' ':'')+'OEM part from our speed shop. $'+median+'. '+(isLocal?'Local pickup only.':'Can ship USPS.')+' Message with questions.',
+        description:'This part was professionally removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade at LAC Speed Shop.\n\n'+description+'\n\nFits '+(vehicle||'— please verify compatibility')+'. '+(isLocal?'Available for local pickup only.':'Ships USPS. Buyer pays calculated shipping.')+' No returns accepted. Questions welcome — we know our parts.\n\n— LAC Speed Shop',
+        fbCopy:'Selling a used '+(vehicle?vehicle+' ':'')+'OEM part from LAC Speed Shop — came off during a performance upgrade. $'+median+'. '+(isLocal?'Local pickup only.':'Can ship USPS.')+' Message with questions.',
         transcriptSummary:'The seller describes: '+description
       };
       currentListing=fb;
@@ -581,11 +1800,14 @@ Respond ONLY with valid JSON, no markdown:
   function showResults(listing,median,low,high,comps,isLocal){
     document.getElementById('processingPanel').style.display='none';
     document.getElementById('resultsView').classList.remove('hidden');
+
     document.getElementById('transcriptionText').textContent=listing.transcriptSummary;
     document.getElementById('transcriptionBox').style.display='block';
+
     document.getElementById('medianPrice').textContent='$'+median;
-    document.getElementById('priceRange').textContent=(comps>0?'Range $'+low+' – $'+high+' · '+comps+' live eBay comps':'No comps found — using estimate');
+    document.getElementById('priceRange').textContent=(comps>0?'Range $'+low+' – $'+high+' · '+comps+' live comps':'No comps found — using estimate');
     document.getElementById('compCount').textContent=comps>0?comps:'—';
+
     const acceptPct=parseInt(localStorage.getItem('acceptPct')||'85')/100;
     const declinePct=parseInt(localStorage.getItem('declinePct')||'70')/100;
     const accept=Math.round(median*acceptPct);
@@ -596,11 +1818,19 @@ Respond ONLY with valid JSON, no markdown:
     document.getElementById('reviewRange').textContent='$'+revLow+' – $'+revHigh;
     document.getElementById('declineFloor').textContent='Below $'+decline+' (under '+Math.round(declinePct*100)+'%)';
     document.getElementById('shippingRule').textContent=isLocal?'Local pickup only':'USPS calculated · Buyer pays';
+
     const strip=document.getElementById('photoStrip');strip.innerHTML='';
     selectedFrames.slice(0,8).forEach(f=>{const img=document.createElement('img');img.src=f;strip.appendChild(img);});
+
     document.getElementById('listingTitle').textContent=listing.title;
     document.getElementById('listingDesc').textContent=listing.description;
-    document.getElementById('listingMeta').innerHTML='<span class="meta-tag hi">$'+listing.price+'</span><span class="meta-tag">'+listing.category+'</span><span class="meta-tag">Used OEM</span><span class="meta-tag">'+(isLocal?'Local Pickup':'Ships USPS')+'</span><span class="meta-tag">No Returns</span>';
+    document.getElementById('listingMeta').innerHTML=
+      '<span class="meta-tag hi">$'+listing.price+'</span>'+
+      '<span class="meta-tag">'+listing.category+'</span>'+
+      '<span class="meta-tag">Used OEM</span>'+
+      '<span class="meta-tag">'+(isLocal?'Local Pickup':'Ships USPS')+'</span>'+
+      '<span class="meta-tag">No Returns</span>';
+
     document.getElementById('editTitle').value=listing.title;
     document.getElementById('titleCount').textContent=listing.title.length+' of 80 characters';
     document.getElementById('editPrice').value='$'+listing.price;
@@ -610,8 +1840,12 @@ Respond ONLY with valid JSON, no markdown:
     window.scrollTo(0,0);
   }
 
-  function postToEbay(){showToast('eBay posting — coming in next update');}
-  function copyFBListing(){navigator.clipboard.writeText(document.getElementById('fbCopy').textContent).then(()=>showToast('Facebook listing copied')).catch(()=>showToast('Copied'));}
+  function postToEbay(){showToast('eBay posting — coming in the next update');}
+  function copyFBListing(){
+    navigator.clipboard.writeText(document.getElementById('fbCopy').textContent)
+      .then(()=>showToast('Facebook listing copied'))
+      .catch(()=>showToast('Copied'));
+  }
   function resetForm(){
     ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('videoPreview').style.display='none';
@@ -624,11 +1858,24 @@ Respond ONLY with valid JSON, no markdown:
     for(let i=1;i<=5;i++){const el=document.getElementById('step'+i);el.classList.remove('active','done');if(i===1)el.classList.add('active');}
     showView('upload');
   }
-  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+  function showToast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),3200);
+  }
+
   const zone=document.getElementById('uploadZone');
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});
   zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
-  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(file&&file.type.startsWith('video/')){const dt=new DataTransfer();dt.items.add(file);document.getElementById('videoInput').files=dt.files;document.getElementById('videoInput').dispatchEvent(new Event('change'));}});
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('dragover');
+    const file=e.dataTransfer.files[0];
+    if(file&&file.type.startsWith('video/')){
+      const dt=new DataTransfer();dt.items.add(file);
+      document.getElementById('videoInput').files=dt.files;
+      document.getElementById('videoInput').dispatchEvent(new Event('change'));
+    }
+  });
 </script>
 </body>
 </html>
