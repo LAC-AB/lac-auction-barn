@@ -1,7 +1,5 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -9,36 +7,49 @@ export default async function handler(req, res) {
   if (!query) return res.status(400).json({ error: 'No query provided' });
 
   const appId = process.env.EBAY_APP_ID;
-  if (!appId) return res.status(500).json({ error: 'No App ID found in environment' });
+  const certId = process.env.EBAY_CERT_ID;
 
   try {
-    const searchUrl = `https://svcs.ebay.com/services/search/FindingService/v1?` +
-      `OPERATION-NAME=findCompletedItems&` +
-      `SERVICE-VERSION=1.0.0&` +
-      `SECURITY-APPNAME=${encodeURIComponent(appId)}&` +
-      `RESPONSE-DATA-FORMAT=JSON&` +
-      `keywords=${encodeURIComponent(query)}&` +
-      `itemFilter(0).name=SoldItemsOnly&` +
-      `itemFilter(0).value=true&` +
-      `sortOrder=EndTimeSoonest&` +
-      `paginationInput.entriesPerPage=20`;
+    // Get OAuth token first
+    const tokenResponse = await fetch('https://api.ebay.com/identity/v1/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + Buffer.from(`${appId}:${certId}`).toString('base64'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials&scope=https://api.ebay.com/oauth/api_scope'
+    });
 
-    const response = await fetch(searchUrl);
-    const data = await response.json();
+    const tokenData = await tokenResponse.json();
 
-    const ackValue = data?.findCompletedItemsResponse?.[0]?.ack?.[0];
-    const errorMessage = data?.findCompletedItemsResponse?.[0]?.errorMessage?.[0];
-    const items = data?.findCompletedItemsResponse?.[0]?.searchResult?.[0]?.item || [];
+    if (!tokenData.access_token) {
+      return res.status(500).json({ error: 'Failed to get token', detail: tokenData });
+    }
+
+    // Search for sold items using Browse API
+    const searchResponse = await fetch(
+      `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&filter=buyingOptions:{FIXED_PRICE}&limit=20`,
+      {
+        headers: {
+          'Authorization': `Bearer ${tokenData.access_token}`,
+          'Content-Type': 'application/json',
+          'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US'
+        }
+      }
+    );
+
+    const searchData = await searchResponse.json();
+    const items = searchData?.itemSummaries || [];
 
     if (items.length === 0) {
       return res.status(200).json({
         median: null, low: null, high: null, count: 0,
-        debug: { ack: ackValue, error: errorMessage, appIdUsed: appId.substring(0, 10) + '...' }
+        debug: { tokenOk: true, itemCount: 0, searchStatus: searchData?.warnings || 'no results' }
       });
     }
 
     const prices = items
-      .map(item => parseFloat(item?.sellingStatus?.[0]?.currentPrice?.[0]?.__value__))
+      .map(item => parseFloat(item?.price?.value))
       .filter(p => !isNaN(p) && p > 0)
       .sort((a, b) => a - b);
 
@@ -54,9 +65,9 @@ export default async function handler(req, res) {
       high: Math.round(high * 100) / 100,
       count,
       items: items.slice(0, 5).map(item => ({
-        title: item?.title?.[0],
-        price: parseFloat(item?.sellingStatus?.[0]?.currentPrice?.[0]?.__value__),
-        url: item?.viewItemURL?.[0]
+        title: item?.title,
+        price: parseFloat(item?.price?.value),
+        url: item?.itemWebUrl
       }))
     });
 
