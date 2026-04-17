@@ -41,7 +41,6 @@
     font-weight: 300;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Warm garage light from top left */
     background-image:
       radial-gradient(ellipse at -10% -5%, rgba(232,160,32,0.12) 0%, transparent 55%),
       radial-gradient(ellipse at 110% 90%, rgba(200,168,75,0.06) 0%, transparent 50%);
@@ -56,7 +55,6 @@
     overflow: hidden;
   }
 
-  /* The golden garage light flooding in from top */
   header::before {
     content: '';
     position: absolute;
@@ -81,8 +79,6 @@
     position: relative;
     z-index: 1;
   }
-
-  .logo-left {}
 
   .logo-lac {
     font-family: var(--serif);
@@ -134,9 +130,7 @@
     letter-spacing: 1px;
   }
 
-  .header-right {
-    text-align: right;
-  }
+  .header-right { text-align: right; }
 
   .header-est {
     font-family: var(--sans);
@@ -198,12 +192,7 @@
   }
 
   .step:last-child { border-right: none; }
-
-  .step.active {
-    color: var(--gold);
-    background: rgba(200,168,75,0.08);
-  }
-
+  .step.active { color: var(--gold); background: rgba(200,168,75,0.08); }
   .step.active::after {
     content: '';
     position: absolute;
@@ -211,7 +200,6 @@
     height: 2px;
     background: var(--gold);
   }
-
   .step.done { color: var(--gold2); }
 
   .step-num {
@@ -263,7 +251,6 @@
     position: relative;
   }
 
-  /* Subtle warm glow on panels */
   .panel::before {
     content: '';
     position: absolute;
@@ -301,8 +288,7 @@
 
   .panel-body { padding: 18px; }
 
-  /* ── HERO CARD ───────────────────────────── */
-  /* The garage door opening — warm light flooding in */
+  /* ── HERO ───────────────────────────────── */
   .hero {
     background: var(--black);
     border: 1px solid #3a3020;
@@ -312,7 +298,6 @@
     overflow: hidden;
   }
 
-  /* The golden garage light */
   .hero::before {
     content: '';
     position: absolute;
@@ -322,7 +307,6 @@
     pointer-events: none;
   }
 
-  /* Subtle warm horizon line at the bottom */
   .hero::after {
     content: '';
     position: absolute;
@@ -359,11 +343,7 @@
     letter-spacing: 0.5px;
   }
 
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-    text-shadow: 0 0 20px rgba(200,168,75,0.4);
-  }
+  .hero-title em { font-style: italic; color: var(--gold); text-shadow: 0 0 20px rgba(200,168,75,0.4); }
 
   .hero-sub {
     font-family: var(--sans);
@@ -628,12 +608,7 @@
 
   .toggle-row:last-child { border-bottom: none; }
 
-  .toggle-label {
-    font-family: var(--body);
-    font-size: 13px;
-    color: var(--ink);
-    letter-spacing: 0.3px;
-  }
+  .toggle-label { font-family: var(--body); font-size: 13px; color: var(--ink); letter-spacing: 0.3px; }
 
   .toggle-sub {
     font-family: var(--sans);
@@ -763,7 +738,6 @@
   }
 
   /* ── PRICE BANNER ───────────────────────── */
-  /* The holy grail moment */
   .price-banner {
     background: var(--black);
     border: 1px solid #3a3020;
@@ -776,7 +750,6 @@
     overflow: hidden;
   }
 
-  /* The golden light from above */
   .price-banner::before {
     content: '';
     position: absolute;
@@ -894,12 +867,7 @@
     text-transform: uppercase;
   }
 
-  .offer-val {
-    font-family: var(--body);
-    font-size: 12px;
-    letter-spacing: 0.3px;
-  }
-
+  .offer-val { font-family: var(--body); font-size: 12px; letter-spacing: 0.3px; }
   .offer-val.green { color: var(--green); }
   .offer-val.amber-v { color: var(--gold2); }
   .offer-val.red { color: var(--red); }
@@ -1049,6 +1017,33 @@
     line-height: 1.9;
   }
 
+  /* ── eBay posted confirmation ───────────── */
+  .ebay-confirm {
+    display: none;
+    background: #edf7f0;
+    border: 1px solid #7ec89a;
+    border-left: 3px solid var(--green);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+  }
+
+  .ebay-confirm-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .ebay-confirm-link {
+    font-family: var(--body);
+    font-size: 13px;
+    color: #3665f3;
+    word-break: break-all;
+  }
+
   /* ── INVENTORY ──────────────────────────── */
   .inv-item {
     background: var(--ivory);
@@ -1075,13 +1070,7 @@
 
   .inv-info { flex: 1; }
 
-  .inv-title {
-    font-family: var(--body);
-    font-size: 12px;
-    margin-bottom: 3px;
-    line-height: 1.4;
-    color: var(--ink);
-  }
+  .inv-title { font-family: var(--body); font-size: 12px; margin-bottom: 3px; line-height: 1.4; color: var(--ink); }
 
   .inv-meta {
     font-family: var(--sans);
@@ -1193,7 +1182,7 @@
       <span class="header-subtitle">Auction Barn</span>
     </div>
     <div class="header-right">
-      <span class="header-est">Est. 2024</span>
+      <span class="header-est">Est. 2020</span>
       <span class="header-live">Online</span>
     </div>
   </div>
@@ -1213,12 +1202,7 @@
   <!-- ═══ UPLOAD VIEW ═══════════════════════ -->
   <div id="view-upload">
 
-    <div class="pending-row">
-      <span>◦</span>
-      <span>Live eBay comp research is active. eBay posting coming in the next update.</span>
-    </div>
-
-    <!-- HERO — The Garage Door Opening -->
+    <!-- HERO -->
     <div class="hero">
       <span class="hero-icon">🎙</span>
       <div class="hero-title">Just <em>speak.</em><br>We handle everything.</div>
@@ -1433,7 +1417,13 @@
 
       <div class="notify-row">
         <span>✓</span>
-        <span>Sale alert will be sent to your AT&T number</span>
+        <span id="notifyRowText">Sale alert will be sent to your AT&T number</span>
+      </div>
+
+      <!-- eBay posted confirmation (hidden until live post) -->
+      <div class="ebay-confirm" id="ebayConfirm">
+        <div class="ebay-confirm-title">✦ Listed on eBay</div>
+        <a class="ebay-confirm-link" id="ebayConfirmLink" href="#" target="_blank">—</a>
       </div>
 
       <!-- Facebook -->
@@ -1447,7 +1437,7 @@
       <hr class="rule-gold" style="margin-top:20px">
 
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
-        <button class="btn btn-primary" onclick="postToEbay()">✦ &nbsp; Post to eBay</button>
+        <button class="btn btn-primary" id="postEbayBtn" onclick="postToEbay()">✦ &nbsp; Post to eBay</button>
         <button class="btn btn-secondary" onclick="copyFBListing()">Copy Facebook Listing</button>
         <button class="btn btn-secondary" onclick="resetForm()">List Another Part</button>
       </div>
@@ -1463,34 +1453,37 @@
       <div class="section-label-line"></div>
     </div>
 
-    <div class="inv-item">
-      <div class="inv-thumb">🪞</div>
-      <div class="inv-info">
-        <div class="inv-title">2003 Chevrolet Silverado Passenger Mirror — Chrome OEM</div>
-        <div class="inv-meta">Listed 3 days ago · eBay #234891023</div>
-        <span class="inv-status s-live">Live</span>
+    <div id="inventoryList">
+      <!-- Seed items — will be joined by dynamically listed parts -->
+      <div class="inv-item">
+        <div class="inv-thumb">🪞</div>
+        <div class="inv-info">
+          <div class="inv-title">2003 Chevrolet Silverado Passenger Mirror — Chrome OEM</div>
+          <div class="inv-meta">Listed 3 days ago · eBay #234891023</div>
+          <span class="inv-status s-live">Live</span>
+        </div>
+        <div><div class="inv-price">$52</div></div>
       </div>
-      <div><div class="inv-price">$52</div></div>
-    </div>
 
-    <div class="inv-item">
-      <div class="inv-thumb">💡</div>
-      <div class="inv-info">
-        <div class="inv-title">2008 Ford F-150 Driver Headlight Assembly — Halogen</div>
-        <div class="inv-meta">Listed 1 week ago · eBay #234887441</div>
-        <span class="inv-status s-live">Live</span>
+      <div class="inv-item">
+        <div class="inv-thumb">💡</div>
+        <div class="inv-info">
+          <div class="inv-title">2008 Ford F-150 Driver Headlight Assembly — Halogen</div>
+          <div class="inv-meta">Listed 1 week ago · eBay #234887441</div>
+          <span class="inv-status s-live">Live</span>
+        </div>
+        <div><div class="inv-price">$78</div></div>
       </div>
-      <div><div class="inv-price">$78</div></div>
-    </div>
 
-    <div class="inv-item">
-      <div class="inv-thumb">⚙️</div>
-      <div class="inv-info">
-        <div class="inv-title">2015 Dodge Charger Throttle Body 5.7L HEMI — OEM</div>
-        <div class="inv-meta">Sold 2 days ago · Order #44-29183</div>
-        <span class="inv-status s-sold">Sold</span>
+      <div class="inv-item">
+        <div class="inv-thumb">⚙️</div>
+        <div class="inv-info">
+          <div class="inv-title">2015 Dodge Charger Throttle Body 5.7L HEMI — OEM</div>
+          <div class="inv-meta">Sold 2 days ago · Order #44-29183</div>
+          <span class="inv-status s-sold">Sold</span>
+        </div>
+        <div><div class="inv-price">$94</div></div>
       </div>
-      <div><div class="inv-price">$94</div></div>
     </div>
 
     <div class="section-label" style="margin-top:28px">
@@ -1500,9 +1493,9 @@
 
     <div class="offer-table">
       <div class="offer-table-header">Performance</div>
-      <div class="offer-row"><span class="offer-key">Parts listed</span><span class="offer-val">3</span></div>
-      <div class="offer-row"><span class="offer-key">Parts sold</span><span class="offer-val green">1</span></div>
-      <div class="offer-row"><span class="offer-key">Revenue</span><span class="offer-val green">$94.00</span></div>
+      <div class="offer-row"><span class="offer-key">Parts listed</span><span class="offer-val" id="statListed">3</span></div>
+      <div class="offer-row"><span class="offer-key">Parts sold</span><span class="offer-val green" id="statSold">1</span></div>
+      <div class="offer-row"><span class="offer-key">Revenue</span><span class="offer-val green" id="statRevenue">$94.00</span></div>
       <div class="offer-row"><span class="offer-key">Pending offers</span><span class="offer-val amber-v">0</span></div>
     </div>
 
@@ -1537,8 +1530,11 @@
 
     <div class="panel">
       <div class="panel-body">
-        <div class="field-group"><label class="field-label">Your AT&T phone number</label><input type="text" id="attNumber" placeholder="5551234567" /></div>
-        <div class="field-group" style="margin:0"><label class="field-label">Sale alerts sent to</label><input type="text" value="@txt.att.net" readonly style="color:var(--muted)" /></div>
+        <div class="field-group"><label class="field-label">Your AT&T phone number</label><input type="text" id="attNumber" placeholder="3105551234" maxlength="10" /></div>
+        <div class="field-group" style="margin:0">
+          <label class="field-label">Sale alerts sent to</label>
+          <input type="text" id="attGatewayDisplay" value="@txt.att.net" readonly style="color:var(--muted)" />
+        </div>
       </div>
     </div>
 
@@ -1577,174 +1573,219 @@
 <div class="toast" id="toast">Done</div>
 
 <script>
-  let localPickup=false,selectedFrames=[],videoLoaded=false,currentListing=null;
+  // ── State ──────────────────────────────────────────────────────────────────
+  let localPickup = false;
+  let selectedFrames = [];
+  let videoLoaded = false;
+  let currentListing = null;
+  let currentMeta = {};   // year, make, model, partNumber, isLocal for post-listing
 
-  window.addEventListener('load',()=>{
-    const num=localStorage.getItem('attNumber');
-    if(num)document.getElementById('attNumber').value=num;
-    const ap=localStorage.getItem('acceptPct');
-    if(ap)document.getElementById('acceptPct').value=ap;
-    const dp=localStorage.getItem('declinePct');
-    if(dp)document.getElementById('declinePct').value=dp;
+  // ── On load ────────────────────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    const num = localStorage.getItem('attNumber');
+    if (num) {
+      document.getElementById('attNumber').value = num;
+      document.getElementById('attGatewayDisplay').value = num + '@txt.att.net';
+    }
+    const ap = localStorage.getItem('acceptPct');
+    if (ap) document.getElementById('acceptPct').value = ap;
+    const dp = localStorage.getItem('declinePct');
+    if (dp) document.getElementById('declinePct').value = dp;
   });
 
-  function saveRules(){
-    localStorage.setItem('attNumber',document.getElementById('attNumber').value);
-    localStorage.setItem('acceptPct',document.getElementById('acceptPct').value);
-    localStorage.setItem('declinePct',document.getElementById('declinePct').value);
+  // ── Settings ───────────────────────────────────────────────────────────────
+  document.getElementById('attNumber').addEventListener('input', function () {
+    const digits = this.value.replace(/\D/g, '').substring(0, 10);
+    this.value = digits;
+    document.getElementById('attGatewayDisplay').value = digits ? digits + '@txt.att.net' : '@txt.att.net';
+  });
+
+  function saveRules() {
+    localStorage.setItem('attNumber', document.getElementById('attNumber').value);
+    localStorage.setItem('acceptPct', document.getElementById('acceptPct').value);
+    localStorage.setItem('declinePct', document.getElementById('declinePct').value);
     showToast('Rules saved');
   }
 
-  function showView(v){
-    ['upload','results','inventory','settings'].forEach(x=>{const el=document.getElementById('view-'+x);if(el)el.classList.add('hidden');});
-    ['list','inv','settings'].forEach(x=>document.getElementById('nav-'+x).classList.remove('active'));
-    const map={upload:'list',results:'list',inventory:'inv',settings:'settings'};
-    document.getElementById('view-'+v).classList.remove('hidden');
-    document.getElementById('nav-'+(map[v]||'list')).classList.add('active');
-    window.scrollTo(0,0);
+  // ── View routing ───────────────────────────────────────────────────────────
+  function showView(v) {
+    ['upload','results','inventory','settings'].forEach(x => {
+      const el = document.getElementById('view-' + x);
+      if (el) el.classList.add('hidden');
+    });
+    ['list','inv','settings'].forEach(x => document.getElementById('nav-' + x).classList.remove('active'));
+    const map = { upload:'list', results:'list', inventory:'inv', settings:'settings' };
+    document.getElementById('view-' + v).classList.remove('hidden');
+    document.getElementById('nav-' + (map[v] || 'list')).classList.add('active');
+    window.scrollTo(0, 0);
   }
 
-  function togglePickup(){localPickup=!localPickup;document.getElementById('localPickupToggle').classList.toggle('on',localPickup);}
+  function togglePickup() {
+    localPickup = !localPickup;
+    document.getElementById('localPickupToggle').classList.toggle('on', localPickup);
+  }
 
-  document.getElementById('videoInput').addEventListener('change',function(e){
-    const file=e.target.files[0];if(!file)return;
-    const url=URL.createObjectURL(file);
-    const video=document.getElementById('videoPlayer');
-    video.src=url;
-    document.getElementById('videoPreview').style.display='block';
-    document.getElementById('videoInfo').style.display='block';
-    document.getElementById('videoName').textContent=file.name;
-    document.getElementById('videoSize').textContent=(file.size/1024/1024).toFixed(1)+' MB';
-    video.addEventListener('loadedmetadata',function(){
-      const d=Math.round(video.duration);
-      document.getElementById('videoDuration').textContent=Math.floor(d/60)+'m '+String(d%60).padStart(2,'0')+'s';
+  // ── Video upload ───────────────────────────────────────────────────────────
+  document.getElementById('videoInput').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    const video = document.getElementById('videoPlayer');
+    video.src = url;
+    document.getElementById('videoPreview').style.display = 'block';
+    document.getElementById('videoInfo').style.display = 'block';
+    document.getElementById('videoName').textContent = file.name;
+    document.getElementById('videoSize').textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB';
+    video.addEventListener('loadedmetadata', function () {
+      const d = Math.round(video.duration);
+      document.getElementById('videoDuration').textContent = Math.floor(d / 60) + 'm ' + String(d % 60).padStart(2, '0') + 's';
       extractFrames(video);
-    },{once:true});
-    videoLoaded=true;checkReady();
+    }, { once: true });
+    videoLoaded = true;
+    checkReady();
   });
 
-  function checkReady(){
-    const ok=videoLoaded||document.getElementById('partDescription').value.trim().length>5
-      ||(document.getElementById('partYear').value&&document.getElementById('partMake').value);
-    document.getElementById('analyzeBtn').disabled=!ok;
+  function checkReady() {
+    const ok = videoLoaded
+      || document.getElementById('partDescription').value.trim().length > 5
+      || (document.getElementById('partYear').value && document.getElementById('partMake').value);
+    document.getElementById('analyzeBtn').disabled = !ok;
   }
 
-  ['partDescription','partYear','partMake','partModel'].forEach(id=>
-    document.getElementById(id).addEventListener('input',checkReady));
+  ['partDescription','partYear','partMake','partModel'].forEach(id =>
+    document.getElementById(id).addEventListener('input', checkReady));
 
-  function extractFrames(video){
-    const grid=document.getElementById('framesGrid');
-    grid.innerHTML='';selectedFrames=[];
-    const canvas=document.createElement('canvas');
-    canvas.width=320;canvas.height=180;
-    const ctx=canvas.getContext('2d');
-    const dur=video.duration;
-    const count=Math.min(8,Math.max(4,Math.floor(dur/2)));
-    let frameData=new Array(count),captured=0;
-    function captureAt(t,idx){
-      const v2=document.createElement('video');
-      v2.src=video.src;v2.currentTime=t;
-      v2.addEventListener('seeked',function(){
-        ctx.drawImage(v2,0,0,320,180);
-        frameData[idx]=canvas.toDataURL('image/jpeg',0.85);
-        if(++captured===count)renderFrames();
-      },{once:true});
+  // ── Frame extraction ───────────────────────────────────────────────────────
+  function extractFrames(video) {
+    const grid = document.getElementById('framesGrid');
+    grid.innerHTML = '';
+    selectedFrames = [];
+    const canvas = document.createElement('canvas');
+    canvas.width = 320; canvas.height = 180;
+    const ctx = canvas.getContext('2d');
+    const dur = video.duration;
+    const count = Math.min(8, Math.max(4, Math.floor(dur / 2)));
+    let frameData = new Array(count), captured = 0;
+
+    function captureAt(t, idx) {
+      const v2 = document.createElement('video');
+      v2.src = video.src;
+      v2.currentTime = t;
+      v2.addEventListener('seeked', function () {
+        ctx.drawImage(v2, 0, 0, 320, 180);
+        frameData[idx] = canvas.toDataURL('image/jpeg', 0.85);
+        if (++captured === count) renderFrames();
+      }, { once: true });
     }
-    function renderFrames(){
-      grid.innerHTML='';selectedFrames=[];
-      frameData.forEach(data=>{
-        if(!data)return;
-        const thumb=document.createElement('div');
-        thumb.className='frame-thumb selected';
-        thumb.innerHTML='<img src="'+data+'"><div class="check">✓</div>';
-        thumb.addEventListener('click',()=>{
+
+    function renderFrames() {
+      grid.innerHTML = '';
+      selectedFrames = [];
+      frameData.forEach(data => {
+        if (!data) return;
+        const thumb = document.createElement('div');
+        thumb.className = 'frame-thumb selected';
+        thumb.innerHTML = '<img src="' + data + '"><div class="check">✓</div>';
+        thumb.addEventListener('click', () => {
           thumb.classList.toggle('selected');
-          selectedFrames=thumb.classList.contains('selected')?[...selectedFrames,data]:selectedFrames.filter(f=>f!==data);
+          selectedFrames = thumb.classList.contains('selected')
+            ? [...selectedFrames, data]
+            : selectedFrames.filter(f => f !== data);
         });
-        grid.appendChild(thumb);selectedFrames.push(data);
+        grid.appendChild(thumb);
+        selectedFrames.push(data);
       });
-      document.getElementById('framesSection').style.display='block';
+      document.getElementById('framesSection').style.display = 'block';
     }
-    for(let i=0;i<count;i++)captureAt((dur/count)*i+0.3,i);
+
+    for (let i = 0; i < count; i++) captureAt((dur / count) * i + 0.3, i);
   }
 
-  document.getElementById('editTitle').addEventListener('input',function(){
-    document.getElementById('titleCount').textContent=this.value.length+' of 80 characters';
+  // ── Title counter ──────────────────────────────────────────────────────────
+  document.getElementById('editTitle').addEventListener('input', function () {
+    document.getElementById('titleCount').textContent = this.value.length + ' of 80 characters';
   });
 
-  async function startAnalysis(){
+  // ── Analysis pipeline ──────────────────────────────────────────────────────
+  async function startAnalysis() {
     showView('results');
-    document.getElementById('processingPanel').style.display='block';
-    document.getElementById('processingView').style.display='block';
+    document.getElementById('processingPanel').style.display = 'block';
+    document.getElementById('processingView').style.display = 'block';
     document.getElementById('resultsView').classList.add('hidden');
+    document.getElementById('ebayConfirm').style.display = 'none';
     setStep(2);
 
-    const description=document.getElementById('partDescription').value.trim();
-    const year=document.getElementById('partYear').value.trim();
-    const make=document.getElementById('partMake').value.trim();
-    const model=document.getElementById('partModel').value.trim();
-    const partNum=document.getElementById('partNumber').value.trim();
-    const vehicle=[year,make,model].filter(Boolean).join(' ');
+    const description = document.getElementById('partDescription').value.trim();
+    const year        = document.getElementById('partYear').value.trim();
+    const make        = document.getElementById('partMake').value.trim();
+    const model       = document.getElementById('partModel').value.trim();
+    const partNum     = document.getElementById('partNumber').value.trim();
+    const vehicle     = [year, make, model].filter(Boolean).join(' ');
 
-    await tick('Listening to your video','transcribing your description…',1400);
+    // Store for post-listing call
+    currentMeta = { year, make, model, partNum, isLocal: localPickup };
+
+    await tick('Listening to your video', 'transcribing your description…', 1400);
     setStep(3);
-    await tick('Pulling live eBay comps','searching real listings…',800);
+    await tick('Pulling live eBay comps', 'searching real listings…', 800);
 
-    // Build clean search query — year model + main part noun from description
-    const skipWords=new Set(['removed','during','installed','aftermarket','performance','upgrade','original','factory','when','glass','clean','needle','works','tabs','intact','chrome','bezel','light','patina','consistent','with','age','from','this','that','have','been','were','they','came','came','what','some','very','just']);
-    const descWords=description.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/);
-    const partNoun=descWords.find(w=>w.length>3&&!skipWords.has(w)&&isNaN(w))||descWords.filter(w=>w.length>3)[0]||'';
-    const searchQuery=vehicle?(year+' '+model+' '+partNoun).trim():description.split(' ').slice(0,5).join(' ');
+    const skipWords = new Set(['removed','during','installed','aftermarket','performance','upgrade','original','factory','when','glass','clean','needle','works','tabs','intact','chrome','bezel','light','patina','consistent','with','age','from','this','that','have','been','were','they','came','what','some','very','just']);
+    const descWords = description.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/);
+    const partNoun  = descWords.find(w => w.length > 3 && !skipWords.has(w) && isNaN(w)) || descWords.filter(w => w.length > 3)[0] || '';
+    const searchQuery = vehicle
+      ? (year + ' ' + model + ' ' + partNoun).trim()
+      : description.split(' ').slice(0, 5).join(' ');
 
-    let median=45,low=20,high=120,comps=0,compItems=[];
-    try{
-      const compRes=await fetch('/api/comps?query='+encodeURIComponent(searchQuery));
-      const compData=await compRes.json();
-      if(compData.count>0){
-        median=compData.median;low=compData.low;high=compData.high;
-        comps=compData.count;compItems=compData.items||[];
+    let median = 45, low = 20, high = 120, comps = 0, compItems = [];
+    try {
+      const compRes = await fetch('/api/comps?query=' + encodeURIComponent(searchQuery));
+      const compData = await compRes.json();
+      if (compData.count > 0) {
+        median = compData.median; low = compData.low; high = compData.high;
+        comps = compData.count; compItems = compData.items || [];
       } else {
-        const fallbackRes=await fetch('/api/comps?query='+encodeURIComponent((year+' '+model).trim()));
-        const fallbackData=await fallbackRes.json();
-        if(fallbackData.count>0){
-          median=fallbackData.median;low=fallbackData.low;high=fallbackData.high;
-          comps=fallbackData.count;compItems=fallbackData.items||[];
+        const fallback = await fetch('/api/comps?query=' + encodeURIComponent((year + ' ' + model).trim()));
+        const fallbackData = await fallback.json();
+        if (fallbackData.count > 0) {
+          median = fallbackData.median; low = fallbackData.low; high = fallbackData.high;
+          comps = fallbackData.count; compItems = fallbackData.items || [];
         }
       }
-    }catch(e){console.log('comp error',e);}
+    } catch (e) { console.log('comp error', e); }
 
-    await tick('Studying top-selling listings','modelling after the highest converting comps…',1200);
+    await tick('Studying top-selling listings', 'modelling after the highest converting comps…', 1200);
     setStep(4);
-    await tick('Writing your listing','combining your facts with proven sales language…',1600);
-    await tick('Preparing Facebook copy','formatting marketplace post…',700);
+    await tick('Writing your listing', 'combining your facts with proven sales language…', 1600);
+    await tick('Preparing Facebook copy', 'formatting marketplace post…', 700);
     setStep(5);
 
-    await generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps,compItems,searchQuery);
+    await generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery);
   }
 
-  function tick(step,label,delay){
-    document.getElementById('processingStep').textContent=step;
-    document.getElementById('processingLabel').textContent=label;
-    return new Promise(r=>setTimeout(r,delay));
+  function tick(step, label, delay) {
+    document.getElementById('processingStep').textContent = step;
+    document.getElementById('processingLabel').textContent = label;
+    return new Promise(r => setTimeout(r, delay));
   }
 
-  function setStep(n){
-    for(let i=1;i<=5;i++){
-      const el=document.getElementById('step'+i);
-      el.classList.remove('active','done');
-      if(i<n)el.classList.add('done');
-      if(i===n)el.classList.add('active');
+  function setStep(n) {
+    for (let i = 1; i <= 5; i++) {
+      const el = document.getElementById('step' + i);
+      el.classList.remove('active', 'done');
+      if (i < n) el.classList.add('done');
+      if (i === n) el.classList.add('active');
     }
   }
 
-  async function generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps,compItems,searchQuery){
-    const isLocal=localPickup;
+  // ── Generate listing via /api/generate proxy ───────────────────────────────
+  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {
+    const isLocal = localPickup;
 
-    const compTitles=compItems.length>0
-      ? compItems.map((item,i)=>`${i+1}. "${item.title}" — $${item.price}`).join('\n')
+    const compTitles = compItems.length > 0
+      ? compItems.map((item, i) => `${i + 1}. "${item.title}" — $${item.price}`).join('\n')
       : 'No comp data available';
 
-    const prompt=`You are the listing agent for LAC Speed Shop — a precision performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced.
+    const prompt = `You are the listing agent for LAC Speed Shop — a precision performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced.
 
 Your job: write a complete eBay listing that reads EXACTLY like the top-selling listings below — same terminology, same keyword structure, same professional tone. Use the seller's facts as your foundation but write in the proven style of what converts on eBay for this exact part.
 
@@ -1752,127 +1793,290 @@ TOP-SELLING EBAY LISTINGS FOR THIS PART (search: "${searchQuery}"):
 ${compTitles}
 
 SELLER'S PART DESCRIPTION:
-"${description||'Used OEM part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade.'}"
+"${description || 'Used OEM part removed from a ' + (vehicle || 'customer vehicle') + ' during a performance upgrade.'}"
 
-VEHICLE: ${vehicle||'Not specified'}
-PART NUMBER: ${partNum||'Not visible on part'}
-SHIPPING: ${isLocal?'Local pickup only — too large to ship':'USPS calculated shipping, buyer pays'}
+VEHICLE: ${vehicle || 'Not specified'}
+PART NUMBER: ${partNum || 'Not visible on part'}
+SHIPPING: ${isLocal ? 'Local pickup only — too large to ship' : 'USPS calculated shipping, buyer pays'}
 CONDITION: Used OEM — removed during a professional performance upgrade at LAC Speed Shop
 RETURNS: No returns accepted
 LIVE EBAY MEDIAN: $${median} from ${comps} comparable listings (range $${low}–$${high})
 
 WRITING INSTRUCTIONS:
-- TITLE: Mirror the keyword structure of the top listings above. Include year, make/model, part name, OEM/Genuine callout, and any key specs (like "120 MPH", "w/Speed Warning"). Max 80 characters.
-- DESCRIPTION paragraph 1: Establish provenance — this part came off a customer vehicle during a professional performance upgrade at LAC Speed Shop. This builds trust and explains why a quality OEM part is available.
-- DESCRIPTION paragraph 2: Detailed condition — be specific and honest using the seller's exact observations. Buyers trust specificity.
-- DESCRIPTION paragraph 3: Fitment and compatibility — what it fits, any compatibility notes from the comp listings.
+- TITLE: Mirror the keyword structure of the top listings above. Include year, make/model, part name, OEM/Genuine callout. Max 80 characters.
+- DESCRIPTION paragraph 1: Establish provenance — this part came off a customer vehicle during a professional performance upgrade at LAC Speed Shop.
+- DESCRIPTION paragraph 2: Detailed condition — be specific and honest using the seller's exact observations.
+- DESCRIPTION paragraph 3: Fitment and compatibility.
 - DESCRIPTION paragraph 4: Practical info — shipping or pickup, no returns, invite questions. End with "— LAC Speed Shop"
 - Write the way the TOP listings write — confident, specific, keyword-rich, honest. Not generic.
 
 Respond ONLY with valid JSON, no markdown:
-{"title":"eBay title max 80 chars","category":"Most precise eBay Motors subcategory","price":${median},"description":"Four paragraphs as instructed — written in the style of top sellers","fbCopy":"3-4 casual sentences. Price, condition, LAC Speed Shop context.","transcriptSummary":"2-3 sentence professional summary confirming you understood the seller's full description"}`;
+{"title":"eBay title max 80 chars","category":"Most precise eBay Motors subcategory","categoryId":"numeric eBay category ID if known, else empty string","price":${median},"description":"Four paragraphs as instructed","fbCopy":"3-4 casual sentences. Price, condition, LAC Speed Shop context.","transcriptSummary":"2-3 sentence professional summary confirming you understood the seller's full description"}`;
 
-    try{
-      const res=await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,messages:[{role:'user',content:prompt}]})
+    try {
+      // ── Call /api/generate proxy (not Anthropic directly) ──────────────────
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          max_tokens: 1400,
+          messages: [{ role: 'user', content: prompt }]
+        })
       });
-      const data=await res.json();
-      const raw=data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
-      const listing=JSON.parse(raw);
-      currentListing=listing;
-      showResults(listing,median,low,high,comps,isLocal);
-    }catch(err){
-      const fb={
-        title:(vehicle+' OEM '+description.split(' ').slice(0,4).join(' ')+' Used').substring(0,80),
-        category:'Auto Parts & Accessories',
-        price:median,
-        description:'This part was professionally removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade at LAC Speed Shop.\n\n'+description+'\n\nFits '+(vehicle||'— please verify compatibility')+'. '+(isLocal?'Available for local pickup only.':'Ships USPS. Buyer pays calculated shipping.')+' No returns accepted. Questions welcome — we know our parts.\n\n— LAC Speed Shop',
-        fbCopy:'Selling a used '+(vehicle?vehicle+' ':'')+'OEM part from LAC Speed Shop — came off during a performance upgrade. $'+median+'. '+(isLocal?'Local pickup only.':'Can ship USPS.')+' Message with questions.',
-        transcriptSummary:'The seller describes: '+description
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        // Surface the error message from the proxy (e.g. missing env var)
+        console.error('generate error:', data);
+        throw new Error(data.error || 'generate failed');
+      }
+
+      const raw = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+      const listing = JSON.parse(raw);
+      currentListing = listing;
+      showResults(listing, median, low, high, comps, isLocal);
+    } catch (err) {
+      // Fallback listing if the API call fails
+      console.error(err);
+      const fb = {
+        title: (vehicle + ' OEM ' + description.split(' ').slice(0, 4).join(' ') + ' Used').substring(0, 80),
+        category: 'Auto Parts & Accessories',
+        categoryId: '',
+        price: median,
+        description: 'This part was professionally removed from a ' + (vehicle || 'customer vehicle') + ' during a performance upgrade at LAC Speed Shop.\n\n' + description + '\n\nFits ' + (vehicle || '— please verify compatibility') + '. ' + (isLocal ? 'Available for local pickup only.' : 'Ships USPS. Buyer pays calculated shipping.') + ' No returns accepted. Questions welcome — we know our parts.\n\n— LAC Speed Shop',
+        fbCopy: 'Selling a used ' + (vehicle ? vehicle + ' ' : '') + 'OEM part from LAC Speed Shop — came off during a performance upgrade. $' + median + '. ' + (isLocal ? 'Local pickup only.' : 'Can ship USPS.') + ' Message with questions.',
+        transcriptSummary: 'The seller describes: ' + description
       };
-      currentListing=fb;
-      showResults(fb,median,low,high,comps,isLocal);
+      currentListing = fb;
+      showResults(fb, median, low, high, comps, isLocal);
     }
   }
 
-  function showResults(listing,median,low,high,comps,isLocal){
-    document.getElementById('processingPanel').style.display='none';
+  // ── Render results ─────────────────────────────────────────────────────────
+  function showResults(listing, median, low, high, comps, isLocal) {
+    document.getElementById('processingPanel').style.display = 'none';
     document.getElementById('resultsView').classList.remove('hidden');
 
-    document.getElementById('transcriptionText').textContent=listing.transcriptSummary;
-    document.getElementById('transcriptionBox').style.display='block';
+    document.getElementById('transcriptionText').textContent = listing.transcriptSummary;
+    document.getElementById('transcriptionBox').style.display = 'block';
 
-    document.getElementById('medianPrice').textContent='$'+median;
-    document.getElementById('priceRange').textContent=(comps>0?'Range $'+low+' – $'+high+' · '+comps+' live comps':'No comps found — using estimate');
-    document.getElementById('compCount').textContent=comps>0?comps:'—';
+    document.getElementById('medianPrice').textContent = '$' + median;
+    document.getElementById('priceRange').textContent = comps > 0
+      ? 'Range $' + low + ' – $' + high + ' · ' + comps + ' live comps'
+      : 'No comps found — using estimate';
+    document.getElementById('compCount').textContent = comps > 0 ? comps : '—';
 
-    const acceptPct=parseInt(localStorage.getItem('acceptPct')||'85')/100;
-    const declinePct=parseInt(localStorage.getItem('declinePct')||'70')/100;
-    const accept=Math.round(median*acceptPct);
-    const revLow=Math.round(median*declinePct);
-    const revHigh=accept-1;
-    const decline=revLow-1;
-    document.getElementById('acceptFloor').textContent='$'+accept+' and above ('+Math.round(acceptPct*100)+'%)';
-    document.getElementById('reviewRange').textContent='$'+revLow+' – $'+revHigh;
-    document.getElementById('declineFloor').textContent='Below $'+decline+' (under '+Math.round(declinePct*100)+'%)';
-    document.getElementById('shippingRule').textContent=isLocal?'Local pickup only':'USPS calculated · Buyer pays';
+    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
+    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
+    const accept  = Math.round(median * acceptPct);
+    const revLow  = Math.round(median * declinePct);
+    const revHigh = accept - 1;
+    const decline = revLow - 1;
 
-    const strip=document.getElementById('photoStrip');strip.innerHTML='';
-    selectedFrames.slice(0,8).forEach(f=>{const img=document.createElement('img');img.src=f;strip.appendChild(img);});
+    document.getElementById('acceptFloor').textContent  = '$' + accept  + ' and above (' + Math.round(acceptPct * 100)  + '%)';
+    document.getElementById('reviewRange').textContent   = '$' + revLow  + ' – $' + revHigh;
+    document.getElementById('declineFloor').textContent  = 'Below $' + decline + ' (under ' + Math.round(declinePct * 100) + '%)';
+    document.getElementById('shippingRule').textContent  = isLocal ? 'Local pickup only' : 'USPS calculated · Buyer pays';
 
-    document.getElementById('listingTitle').textContent=listing.title;
-    document.getElementById('listingDesc').textContent=listing.description;
-    document.getElementById('listingMeta').innerHTML=
-      '<span class="meta-tag hi">$'+listing.price+'</span>'+
-      '<span class="meta-tag">'+listing.category+'</span>'+
-      '<span class="meta-tag">Used OEM</span>'+
-      '<span class="meta-tag">'+(isLocal?'Local Pickup':'Ships USPS')+'</span>'+
+    // Notify row
+    const attNum = localStorage.getItem('attNumber');
+    document.getElementById('notifyRowText').textContent = attNum
+      ? 'Sale alert will be sent to ' + attNum + '@txt.att.net'
+      : 'Add your AT&T number in Settings to receive sale alerts';
+
+    // Photo strip
+    const strip = document.getElementById('photoStrip');
+    strip.innerHTML = '';
+    selectedFrames.slice(0, 8).forEach(f => {
+      const img = document.createElement('img');
+      img.src = f;
+      strip.appendChild(img);
+    });
+
+    // Listing preview
+    document.getElementById('listingTitle').textContent = listing.title;
+    document.getElementById('listingDesc').textContent  = listing.description;
+    document.getElementById('listingMeta').innerHTML =
+      '<span class="meta-tag hi">$' + listing.price + '</span>' +
+      '<span class="meta-tag">' + listing.category + '</span>' +
+      '<span class="meta-tag">Used OEM</span>' +
+      '<span class="meta-tag">' + (isLocal ? 'Local Pickup' : 'Ships USPS') + '</span>' +
       '<span class="meta-tag">No Returns</span>';
 
-    document.getElementById('editTitle').value=listing.title;
-    document.getElementById('titleCount').textContent=listing.title.length+' of 80 characters';
-    document.getElementById('editPrice').value='$'+listing.price;
-    document.getElementById('editDesc').value=listing.description;
-    document.getElementById('editCategory').value=listing.category;
-    document.getElementById('fbCopy').textContent=listing.fbCopy;
-    window.scrollTo(0,0);
+    // Editable fields
+    document.getElementById('editTitle').value   = listing.title;
+    document.getElementById('titleCount').textContent = listing.title.length + ' of 80 characters';
+    document.getElementById('editPrice').value   = '$' + listing.price;
+    document.getElementById('editDesc').value    = listing.description;
+    document.getElementById('editCategory').value = listing.category;
+    document.getElementById('fbCopy').textContent = listing.fbCopy;
+
+    // Reset post button
+    const btn = document.getElementById('postEbayBtn');
+    btn.disabled = false;
+    btn.textContent = '✦   Post to eBay';
+
+    window.scrollTo(0, 0);
   }
 
-  function postToEbay(){showToast('eBay posting — coming in the next update');}
-  function copyFBListing(){
-    navigator.clipboard.writeText(document.getElementById('fbCopy').textContent)
-      .then(()=>showToast('Facebook listing copied'))
-      .catch(()=>showToast('Copied'));
+  // ── Post to eBay ──────────────────────────────────────────────────────────
+  async function postToEbay() {
+    if (!currentListing) return;
+
+    const btn = document.getElementById('postEbayBtn');
+    btn.disabled = true;
+    btn.textContent = '⚙  Posting to eBay…';
+
+    const title       = document.getElementById('editTitle').value.trim();
+    const description = document.getElementById('editDesc').value.trim();
+    const rawPrice    = document.getElementById('editPrice').value.replace(/[^0-9.]/g, '');
+    const price       = parseFloat(rawPrice) || currentListing.price;
+    const category    = currentListing.categoryId || '';
+    const categoryName = document.getElementById('editCategory').value.trim();
+
+    try {
+      const res = await fetch('/api/post-listing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          description,
+          price,
+          category,
+          categoryName,
+          shippingLocal: currentMeta.isLocal,
+          images: [],   // base64 frames not yet uploaded to EPS — future task
+          partNumber: currentMeta.partNum,
+          year:  currentMeta.year,
+          make:  currentMeta.make,
+          model: currentMeta.model,
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        // Show confirmation banner
+        const confirm = document.getElementById('ebayConfirm');
+        const link    = document.getElementById('ebayConfirmLink');
+        link.href = data.listingUrl;
+        link.textContent = data.listingUrl;
+        confirm.style.display = 'block';
+
+        btn.textContent = '✓  Listed — eBay #' + data.itemId;
+        btn.style.background = 'var(--green)';
+
+        // Add to inventory list
+        addInventoryItem(title, price, data.itemId);
+
+        // Fire sale notification if AT&T number is set
+        const attNum = localStorage.getItem('attNumber');
+        if (attNum) {
+          await sendSaleNotification({
+            phone: attNum,
+            itemTitle: title,
+            salePrice: price,
+            itemId: data.itemId,
+            orderId: ''
+          });
+        }
+
+        showToast('Listed on eBay ✓');
+      } else {
+        btn.disabled = false;
+        btn.textContent = '✦   Post to eBay';
+        showToast('eBay error — check console');
+        console.error('eBay post error:', data);
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = '✦   Post to eBay';
+      showToast('Network error — try again');
+      console.error(err);
+    }
   }
-  function resetForm(){
-    ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('videoPreview').style.display='none';
-    document.getElementById('videoInfo').style.display='none';
-    document.getElementById('framesSection').style.display='none';
-    document.getElementById('framesGrid').innerHTML='';
-    document.getElementById('analyzeBtn').disabled=true;
-    selectedFrames=[];videoLoaded=false;localPickup=false;
+
+  // ── Send sale notification ─────────────────────────────────────────────────
+  async function sendSaleNotification({ phone, itemTitle, salePrice, itemId, orderId }) {
+    try {
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, itemTitle, salePrice, itemId, orderId })
+      });
+    } catch (e) {
+      console.warn('Notify failed (non-blocking):', e);
+    }
+  }
+
+  // ── Add item to inventory view ─────────────────────────────────────────────
+  function addInventoryItem(title, price, ebayId) {
+    const list = document.getElementById('inventoryList');
+    const div = document.createElement('div');
+    div.className = 'inv-item';
+    div.innerHTML = `
+      <div class="inv-thumb">🔧</div>
+      <div class="inv-info">
+        <div class="inv-title">${title}</div>
+        <div class="inv-meta">Just listed · eBay #${ebayId}</div>
+        <span class="inv-status s-live">Live</span>
+      </div>
+      <div><div class="inv-price">$${price}</div></div>`;
+    list.insertBefore(div, list.firstChild);
+  }
+
+  // ── Clipboard ──────────────────────────────────────────────────────────────
+  function copyFBListing() {
+    navigator.clipboard.writeText(document.getElementById('fbCopy').textContent)
+      .then(() => showToast('Facebook listing copied'))
+      .catch(() => showToast('Copied'));
+  }
+
+  // ── Reset ──────────────────────────────────────────────────────────────────
+  function resetForm() {
+    ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id =>
+      document.getElementById(id).value = '');
+    document.getElementById('videoPreview').style.display = 'none';
+    document.getElementById('videoInfo').style.display = 'none';
+    document.getElementById('framesSection').style.display = 'none';
+    document.getElementById('framesGrid').innerHTML = '';
+    document.getElementById('analyzeBtn').disabled = true;
+    const btn = document.getElementById('postEbayBtn');
+    btn.disabled = false;
+    btn.textContent = '✦   Post to eBay';
+    btn.style.background = '';
+    document.getElementById('ebayConfirm').style.display = 'none';
+    selectedFrames = []; videoLoaded = false; localPickup = false; currentListing = null; currentMeta = {};
     document.getElementById('localPickupToggle').classList.remove('on');
-    for(let i=1;i<=5;i++){const el=document.getElementById('step'+i);el.classList.remove('active','done');if(i===1)el.classList.add('active');}
+    for (let i = 1; i <= 5; i++) {
+      const el = document.getElementById('step' + i);
+      el.classList.remove('active', 'done');
+      if (i === 1) el.classList.add('active');
+    }
     showView('upload');
   }
-  function showToast(msg){
-    const t=document.getElementById('toast');
-    t.textContent=msg;t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),3200);
+
+  // ── Toast ──────────────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3200);
   }
 
-  const zone=document.getElementById('uploadZone');
-  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});
-  zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
-  zone.addEventListener('drop',e=>{
-    e.preventDefault();zone.classList.remove('dragover');
-    const file=e.dataTransfer.files[0];
-    if(file&&file.type.startsWith('video/')){
-      const dt=new DataTransfer();dt.items.add(file);
-      document.getElementById('videoInput').files=dt.files;
+  // ── Drag & drop ────────────────────────────────────────────────────────────
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('video/')) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      document.getElementById('videoInput').files = dt.files;
       document.getElementById('videoInput').dispatchEvent(new Event('change'));
     }
   });
