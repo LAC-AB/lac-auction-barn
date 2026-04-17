@@ -23,9 +23,9 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to get token', detail: tokenData });
     }
 
-    // Search with Motors category filter (category 6000 = eBay Motors Parts)
+    // Search without category filter — broader but we filter by relevance
     const searchResponse = await fetch(
-      `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&category_ids=6000&filter=buyingOptions:{FIXED_PRICE}&limit=20&sort=price`,
+      `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&filter=buyingOptions:{FIXED_PRICE}&limit=50&sort=relevance`,
       {
         headers: {
           'Authorization': `Bearer ${tokenData.access_token}`,
@@ -42,20 +42,34 @@ export default async function handler(req, res) {
       return res.status(200).json({ median: null, low: null, high: null, count: 0 });
     }
 
-    // Filter out items that are way too cheap (likely unrelated)
-    const prices = items
+    // Filter to only items priced above $10 to remove junk listings
+    const queryWords = query.toLowerCase().split(' ').filter(w => w.length > 3);
+    const relevant = items.filter(item => {
+      const price = parseFloat(item?.price?.value);
+      const title = (item?.title || '').toLowerCase();
+      if (isNaN(price) || price < 10) return false;
+      // Must match at least half the query words in the title
+      const matches = queryWords.filter(w => title.includes(w));
+      return matches.length >= Math.floor(queryWords.length * 0.5);
+    });
+
+    const pool = relevant.length >= 5 ? relevant : items.filter(i => parseFloat(i?.price?.value) >= 10);
+
+    const prices = pool
       .map(item => parseFloat(item?.price?.value))
-      .filter(p => !isNaN(p) && p > 5)
+      .filter(p => !isNaN(p) && p > 10)
       .sort((a, b) => a - b);
 
-    // Remove outliers — drop bottom 10% and top 10%
-    const trimStart = Math.floor(prices.length * 0.1);
-    const trimEnd = Math.ceil(prices.length * 0.9);
+    if (prices.length === 0) {
+      return res.status(200).json({ median: null, low: null, high: null, count: 0 });
+    }
+
+    // Trim outliers top and bottom 15%
+    const trimStart = Math.floor(prices.length * 0.15);
+    const trimEnd = Math.ceil(prices.length * 0.85);
     const trimmed = prices.slice(trimStart, trimEnd);
 
     const count = trimmed.length;
-    if (count === 0) return res.status(200).json({ median: null, low: null, high: null, count: 0 });
-
     const low = trimmed[0];
     const high = trimmed[count - 1];
     const mid = Math.floor(count / 2);
@@ -66,7 +80,7 @@ export default async function handler(req, res) {
       low: Math.round(low * 100) / 100,
       high: Math.round(high * 100) / 100,
       count: prices.length,
-      items: items.slice(0, 5).map(item => ({
+      items: pool.slice(0, 5).map(item => ({
         title: item?.title,
         price: parseFloat(item?.price?.value),
         url: item?.itemWebUrl
