@@ -1782,37 +1782,47 @@
     const isLocal = localPickup;
 
     const compTitles = compItems.length > 0
-      ? compItems.map((item, i) => `${i + 1}. "${item.title}" — $${item.price}`).join('\n')
-      : 'No comp data available';
+  ? compItems.map((item, i) => `${i + 1}. "${item.title}" — $${item.price}`).join('\n')
+  : 'No comp data available';
 
-    const prompt = `You are the listing agent for LAC Speed Shop — a precision performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced.
+const prompt = `You are an expert eBay seller specializing in auto parts. Your job is to write a listing that will rank and convert on eBay by modeling EXACTLY after the top selling listings below.
 
-Your job: write a complete eBay listing that reads EXACTLY like the top-selling listings below — same terminology, same keyword structure, same professional tone. Use the seller's facts as your foundation but write in the proven style of what converts on eBay for this exact part.
-
-TOP-SELLING EBAY LISTINGS FOR THIS PART (search: "${searchQuery}"):
+STEP 1 — STUDY THESE TOP SELLING EBAY LISTINGS FOR "${searchQuery}":
 ${compTitles}
 
-SELLER'S PART DESCRIPTION:
-"${description || 'Used OEM part removed from a ' + (vehicle || 'customer vehicle') + ' during a performance upgrade.'}"
+STEP 2 — EXTRACT the winning patterns from those titles:
+- What year/make/model format do they use?
+- What part name do they use exactly?
+- What spec callouts appear (MPH rating, cylinder count, OHC, etc)?
+- What condition words convert ("OEM", "Genuine", "Works", "Tested", "Great Shape")?
+- What's the average character length?
 
-VEHICLE: ${vehicle || 'Not specified'}
-PART NUMBER: ${partNum || 'Not visible on part'}
-SHIPPING: ${isLocal ? 'Local pickup only — too large to ship' : 'USPS calculated shipping, buyer pays'}
-CONDITION: Used OEM — removed during a professional performance upgrade at LAC Speed Shop
-RETURNS: No returns accepted
-LIVE EBAY MEDIAN: $${median} from ${comps} comparable listings (range $${low}–$${high})
+STEP 3 — BUILD the listing using ONLY those patterns plus the seller's facts below.
 
-WRITING INSTRUCTIONS:
-- TITLE: Mirror the keyword structure of the top listings above. Include year, make/model, part name, OEM/Genuine callout. Max 80 characters.
-- DESCRIPTION paragraph 1: Establish provenance — this part came off a customer vehicle during a professional performance upgrade at LAC Speed Shop.
-- DESCRIPTION paragraph 2: Detailed condition — be specific and honest using the seller's exact observations.
-- DESCRIPTION paragraph 3: Fitment and compatibility.
-- DESCRIPTION paragraph 4: Practical info — shipping or pickup, no returns, invite questions. End with "— LAC Speed Shop"
-- Write the way the TOP listings write — confident, specific, keyword-rich, honest. Not generic.
+SELLER'S FACTS:
+Description: "${description || 'Used OEM part removed during a performance upgrade.'}"
+Vehicle: ${vehicle || 'Not specified'}
+Part Number: ${partNum || 'Not visible'}
+Shipping: ${isLocal ? 'Local pickup only' : 'Ships USPS, buyer pays'}
+Condition: Used OEM — removed during professional upgrade at LAC Speed Shop
+Returns: No returns accepted
+eBay median: $${median} from ${comps} live comps (range $${low}–$${high})
+
+TITLE RULES — this is the most important field:
+- Copy the EXACT keyword structure of the top listings above
+- Include: year + make/model + exact part name + key spec + condition word
+- Do NOT start with "OEM" — put year/make first like the top listings do
+- Max 80 characters
+- Example pattern from comps: "1968 Camaro Speedometer 120 MPH w/Speed Warning OEM Works"
+
+DESCRIPTION RULES:
+- Paragraph 1: Provenance — removed during professional performance upgrade at LAC Speed Shop
+- Paragraph 2: Condition — use seller's exact words, be specific
+- Paragraph 3: Fitment — what it fits, any compatibility notes from the comp titles
+- Paragraph 4: Closing — shipping/pickup, no returns, questions welcome, end with "— LAC Speed Shop"
 
 Respond ONLY with valid JSON, no markdown:
-{"title":"eBay title max 80 chars","category":"Most precise eBay Motors subcategory","categoryId":"numeric eBay category ID if known, else empty string","price":${median},"description":"Four paragraphs as instructed","fbCopy":"3-4 casual sentences. Price, condition, LAC Speed Shop context.","transcriptSummary":"2-3 sentence professional summary confirming you understood the seller's full description"}`;
-
+{"title":"title modeled after top comps, max 80 chars","category":"most specific eBay Motors subcategory","categoryId":"numeric eBay category ID if known","price":${median},"description":"four paragraphs","fbCopy":"3-4 casual sentences with price and LAC Speed Shop context","transcriptSummary":"2-3 sentences confirming you understood the seller's description"}`;
     try {
       // ── Call /api/generate proxy (not Anthropic directly) ──────────────────
       const res = await fetch('/api/generate', {
