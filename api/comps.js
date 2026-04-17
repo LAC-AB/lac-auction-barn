@@ -3,21 +3,13 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   const { query } = req.query;
-
-  if (!query) {
-    return res.status(400).json({ error: 'No query provided' });
-  }
+  if (!query) return res.status(400).json({ error: 'No query provided' });
 
   const appId = process.env.EBAY_APP_ID;
-
-  if (!appId) {
-    return res.status(500).json({ error: 'eBay credentials not configured' });
-  }
+  if (!appId) return res.status(500).json({ error: 'No App ID found in environment' });
 
   try {
     const searchUrl = `https://svcs.ebay.com/services/search/FindingService/v1?` +
@@ -34,11 +26,15 @@ export default async function handler(req, res) {
     const response = await fetch(searchUrl);
     const data = await response.json();
 
-    const items = data?.findCompletedItemsResponse?.[0]
-      ?.searchResult?.[0]?.item || [];
+    const ackValue = data?.findCompletedItemsResponse?.[0]?.ack?.[0];
+    const errorMessage = data?.findCompletedItemsResponse?.[0]?.errorMessage?.[0];
+    const items = data?.findCompletedItemsResponse?.[0]?.searchResult?.[0]?.item || [];
 
     if (items.length === 0) {
-      return res.status(200).json({ median: null, low: null, high: null, count: 0 });
+      return res.status(200).json({
+        median: null, low: null, high: null, count: 0,
+        debug: { ack: ackValue, error: errorMessage, appIdUsed: appId.substring(0, 10) + '...' }
+      });
     }
 
     const prices = items
@@ -65,6 +61,6 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Failed to fetch comps', detail: error.message });
+    return res.status(500).json({ error: error.message });
   }
 }
