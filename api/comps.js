@@ -23,7 +23,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to get token', detail: tokenData });
     }
 
-    // Search without category filter — broader but we filter by relevance
     const searchResponse = await fetch(
       `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&filter=buyingOptions:{FIXED_PRICE}&limit=50&sort=relevance`,
       {
@@ -42,45 +41,28 @@ export default async function handler(req, res) {
       return res.status(200).json({ median: null, low: null, high: null, count: 0 });
     }
 
-    // Filter to only items priced above $10 to remove junk listings
-    const queryWords = query.toLowerCase().split(' ').filter(w => w.length > 3);
-    const relevant = items.filter(item => {
-      const price = parseFloat(item?.price?.value);
-      const title = (item?.title || '').toLowerCase();
-      if (isNaN(price) || price < 10) return false;
-      // Must match at least half the query words in the title
-      const matches = queryWords.filter(w => title.includes(w));
-      return matches.length >= Math.floor(queryWords.length * 0.5);
-    });
-
-    const pool = relevant.length >= 5 ? relevant : items.filter(i => parseFloat(i?.price?.value) >= 10);
-
-    const prices = pool
+    // Only filter out items under $10 — no aggressive trimming
+    const prices = items
       .map(item => parseFloat(item?.price?.value))
-      .filter(p => !isNaN(p) && p > 10)
+      .filter(p => !isNaN(p) && p >= 10)
       .sort((a, b) => a - b);
 
     if (prices.length === 0) {
       return res.status(200).json({ median: null, low: null, high: null, count: 0 });
     }
 
-    // Trim outliers top and bottom 15%
-    const trimStart = Math.floor(prices.length * 0.15);
-    const trimEnd = Math.ceil(prices.length * 0.85);
-    const trimmed = prices.slice(trimStart, trimEnd);
-
-    const count = trimmed.length;
-    const low = trimmed[0];
-    const high = trimmed[count - 1];
+    const count = prices.length;
+    const low = prices[0];
+    const high = prices[count - 1];
     const mid = Math.floor(count / 2);
-    const median = count % 2 !== 0 ? trimmed[mid] : (trimmed[mid - 1] + trimmed[mid]) / 2;
+    const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
 
     return res.status(200).json({
       median: Math.round(median * 100) / 100,
       low: Math.round(low * 100) / 100,
       high: Math.round(high * 100) / 100,
-      count: prices.length,
-      items: pool.slice(0, 5).map(item => ({
+      count,
+      items: items.slice(0, 5).map(item => ({
         title: item?.title,
         price: parseFloat(item?.price?.value),
         url: item?.itemWebUrl
