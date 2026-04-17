@@ -186,7 +186,7 @@
 </header>
 <main>
   <div id="view-upload">
-    <div class="pending-row"><span>▷</span><span>Live eBay comp research now active. eBay posting coming next.</span></div>
+    <div class="pending-row"><span>▷</span><span>Live eBay comp research active. eBay posting coming next.</span></div>
     <div class="audio-hero">
       <div class="hero-pinstripe"><div></div><div></div><div></div></div>
       <span class="audio-hero-icon">🎙</span>
@@ -199,7 +199,7 @@
       <div class="agent-steps">
         <div class="agent-step-row"><div class="agent-step-num">01</div><div><div class="agent-step-title">Transcribes Your Audio</div><div class="agent-step-desc">Every detail you spoke — condition, history, fitment, what works</div></div></div>
         <div class="agent-step-row"><div class="agent-step-num">02</div><div><div class="agent-step-title">Pulls Live eBay Sold Comps</div><div class="agent-step-desc">Real median prices from actual recent eBay sales — not estimates</div></div></div>
-        <div class="agent-step-row"><div class="agent-step-num">03</div><div><div class="agent-step-title">Writes A Precision Listing</div><div class="agent-step-desc">Your authentic knowledge combined with proven sales language</div></div></div>
+        <div class="agent-step-row"><div class="agent-step-num">03</div><div><div class="agent-step-title">Models After Top Selling Listings</div><div class="agent-step-desc">Studies what the highest converting listings said and writes like them</div></div></div>
         <div class="agent-step-row"><div class="agent-step-num">04</div><div><div class="agent-step-title">Extracts Photographs From Your Video</div><div class="agent-step-desc">Selects the clearest frames automatically — no separate photo session needed</div></div></div>
       </div>
     </div>
@@ -455,34 +455,43 @@
     document.getElementById('processingView').style.display='block';
     document.getElementById('resultsView').classList.add('hidden');
     setStep(2);
+
     const description=document.getElementById('partDescription').value.trim();
     const year=document.getElementById('partYear').value.trim();
     const make=document.getElementById('partMake').value.trim();
     const model=document.getElementById('partModel').value.trim();
     const partNum=document.getElementById('partNumber').value.trim();
     const vehicle=[year,make,model].filter(Boolean).join(' ');
+
     await tick('Listening To Your Video','transcribing your description…',1400);
     setStep(3);
-    await tick('Pulling Live eBay Comps','searching real sold listings…',800);
-    let median,low,high,comps;
+    await tick('Pulling Live eBay Comps','searching real listings…',800);
+
+    // ── LIVE EBAY COMP RESEARCH ──
+    let median=45,low=20,high=120,comps=0,compItems=[];
     try{
-      const searchQuery=vehicle?(vehicle+' '+(description.split(' ').slice(0,3).join(' '))).trim():description.split(' ').slice(0,4).join(' ');
+      const searchQuery=vehicle?(vehicle+' '+description.split(' ').slice(0,3).join(' ')).trim():description.split(' ').slice(0,5).join(' ');
       const compRes=await fetch('/api/comps?query='+encodeURIComponent(searchQuery));
       const compData=await compRes.json();
       if(compData.count>0){
         median=compData.median;low=compData.low;high=compData.high;comps=compData.count;
+        compItems=compData.items||[];
       } else {
-        const broadRes=await fetch('/api/comps?query='+encodeURIComponent((make+' '+model).trim()||description.split(' ').slice(0,2).join(' ')));
+        const broadRes=await fetch('/api/comps?query='+encodeURIComponent((make+' '+model+' '+description.split(' ')[0]).trim()));
         const broadData=await broadRes.json();
-        median=broadData.median||45;low=broadData.low||20;high=broadData.high||120;comps=broadData.count||0;
+        if(broadData.count>0){
+          median=broadData.median;low=broadData.low;high=broadData.high;comps=broadData.count;compItems=broadData.items||[];
+        }
       }
-    }catch(e){median=45;low=20;high=120;comps=0;}
-    await tick('Analysing Top-Selling Listings','identifying what drove the highest conversions…',1000);
+    }catch(e){console.log('comp error',e);}
+
+    await tick('Studying Top-Selling Listings','modelling after highest converting comps…',1000);
     setStep(4);
     await tick('Writing Your Listing','combining your words with proven sales language…',1600);
     await tick('Preparing Facebook Copy','formatting marketplace post…',700);
     setStep(5);
-    await generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps);
+
+    await generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps,compItems);
   }
 
   function tick(step,label,delay){
@@ -500,30 +509,45 @@
     }
   }
 
-  async function generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps){
+  async function generateListing(description,year,make,model,partNum,vehicle,median,low,high,comps,compItems){
     const isLocal=localPickup;
-    const prompt=`You are the listing agent for LAC Auction Barn — a precision speed and performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced. Your tone is professional, honest, and confident.
 
-You have transcribed the seller's walkaround video and the live eBay market data shows a median sold price of $${median} from ${comps} recent comparable listings.
+    // Format top comp titles for the AI to study
+    const compTitles=compItems.length>0
+      ? compItems.map((item,i)=>`${i+1}. "${item.title}" — $${item.price}`).join('\n')
+      : 'No comp titles available';
 
-SELLER VIDEO TRANSCRIPTION:
-"${description||'Used OEM part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade at our shop.'}"
+    const prompt=`You are the listing agent for LAC Auction Barn — a precision speed and performance shop that upgrades customer vehicles and resells the original OEM parts that are replaced.
+
+You have access to REAL live eBay listing data for this exact part. Study the top-selling listings below and model your title and description after their keyword patterns, terminology, and style — these are what buyers actually search for and click on.
+
+TOP LIVE EBAY LISTINGS FOR THIS PART:
+${compTitles}
+
+SELLER'S DESCRIPTION OF THIS SPECIFIC PART:
+"${description||'Used OEM part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade.'}"
 
 VEHICLE: ${vehicle||'Not specified'}
-PART NUMBER: ${partNum||'Not visible on part'}
-SHIPPING: ${isLocal?'Local pickup only — item is too large or heavy to ship':'USPS calculated shipping, buyer pays'}
-CONDITION: Used OEM — removed during performance upgrade
-RETURNS: No returns accepted
-LIVE EBAY MEDIAN PRICE: $${median} (from ${comps} real sold comps, range $${low}–$${high})
+PART NUMBER: ${partNum||'Not visible'}
+SHIPPING: ${isLocal?'Local pickup only':'USPS calculated, buyer pays'}
+CONDITION: Used OEM — removed during performance upgrade at LAC Auction Barn Speed Shop
+RETURNS: No returns
+LIVE EBAY MEDIAN PRICE: $${median} (${comps} comparable listings, range $${low}–$${high})
 
-Respond ONLY with valid JSON, no markdown, no backticks:
-{"title":"eBay title max 80 chars. Year/make/model first. OEM callout. Keyword-rich.","category":"Most precise eBay Motors parts subcategory","price":${median},"description":"Four paragraphs: (1) Part and vehicle provenance — removed at LAC Auction Barn Speed Shop during professional performance upgrade. (2) Honest detailed condition from seller description. (3) Fitment and compatibility. (4) Shipping/pickup, no returns, invite questions. Professional and precise.","fbCopy":"3-4 casual sentences for Facebook Marketplace. Price, condition, speed shop context.","transcriptSummary":"Clean 2-3 sentence professional summary of what the seller described — confirm you understood correctly."}`;
+INSTRUCTIONS:
+- Your title MUST use the same keywords and terminology as the top listings above — buyers search for exactly those terms
+- Your description should open with the shop provenance (removed at LAC Auction Barn during upgrade), then give honest condition details from the seller's description, then fitment, then shipping/returns
+- Write like an expert who knows these parts — confident, specific, honest
+- Price at the median: $${median}
+
+Respond ONLY with valid JSON, no markdown:
+{"title":"eBay title max 80 chars — keyword-rich, modelled after top listings above","category":"Most precise eBay Motors parts subcategory","price":${median},"description":"Four clear paragraphs as instructed. Professional, specific, honest.","fbCopy":"3-4 casual sentences. Price, condition, speed shop context.","transcriptSummary":"Clean 2-3 sentence summary of what the seller described — confirm you understood."}`;
 
     try{
       const res=await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
       });
       const data=await res.json();
       const raw=data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
@@ -532,10 +556,10 @@ Respond ONLY with valid JSON, no markdown, no backticks:
       showResults(listing,median,low,high,comps,isLocal);
     }catch(err){
       const fb={
-        title:(vehicle+' OEM Used Part Removed Performance Upgrade').substring(0,80),
+        title:(vehicle+' OEM '+description.split(' ').slice(0,4).join(' ')+' Used').substring(0,80),
         category:'Auto Parts & Accessories',
         price:median,
-        description:'Part removed from a '+(vehicle||'customer vehicle')+' during a performance upgrade at LAC Auction Barn Speed Shop.\n\n'+(description||'Good used condition, fully functional when removed.')+'\n\nFits '+(vehicle||'see description')+'. '+(isLocal?'Local pickup only.':'Ships USPS. Buyer pays shipping.')+' No returns. Questions welcome.\n\n— LAC Auction Barn',
+        description:'This part was removed from a '+(vehicle||'customer vehicle')+' during a professional performance upgrade at LAC Auction Barn Speed Shop.\n\n'+(description||'Good used condition, fully functional when removed.')+'\n\nFits '+(vehicle||'see description')+'. '+(isLocal?'Local pickup only.':'Ships USPS. Buyer pays shipping.')+' No returns. Questions welcome — we know our parts.\n\n— LAC Auction Barn',
         fbCopy:'Selling a used '+(vehicle?vehicle+' ':'')+'OEM part from our speed shop. $'+median+'. '+(isLocal?'Local pickup only.':'Can ship USPS.')+' Message with questions.',
         transcriptSummary:description?'The seller describes: '+description.substring(0,220):'OEM part removed from '+(vehicle||'customer vehicle')+' during performance upgrade at LAC Auction Barn.'
       };
@@ -598,4 +622,3 @@ Respond ONLY with valid JSON, no markdown, no backticks:
 </script>
 </body>
 </html>
-
