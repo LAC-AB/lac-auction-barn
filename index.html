@@ -470,7 +470,7 @@
     // ── LIVE EBAY COMP RESEARCH ──
     let median=45,low=20,high=120,comps=0,compItems=[];
     try{
-      const searchQuery=vehicle?(vehicle+' '+description.split(' ').slice(0,3).join(' ')).trim():description.split(' ').slice(0,5).join(' ');
+      const searchQuery=vehicle?(year+' '+make+' '+model+' '+(description.split(' ').filter(w=>w.length>4)[0]||'')).trim():description.split(' ').slice(0,4).join(' ');
       const compRes=await fetch('/api/comps?query='+encodeURIComponent(searchQuery));
       const compData=await compRes.json();
       if(compData.count>0){
