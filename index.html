@@ -1829,9 +1829,10 @@ Respond ONLY with valid JSON, no markdown:
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          max_tokens: 1400,
-          messages: [{ role: 'user', content: prompt }]
-        })
+  max_tokens: 1400,
+  messages: [{ role: 'user', content: prompt }],
+  compItems: compItems
+})
       });
 
       const data = await res.json();
