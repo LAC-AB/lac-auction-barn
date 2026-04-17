@@ -290,7 +290,7 @@ export default async function handler(req, res) {
               'User-Agent': 'Mozilla/5.0 (compatible; LAC-Auction-Barn/1.0)',
               'Accept': 'text/html'
             },
-            signal: AbortSignal.timeout(5000)
+            signal: AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined
           });
  
           if (!r.ok) return null;
