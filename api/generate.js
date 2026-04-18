@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       : null;
 
     // Extract the original prompt content from the frontend
-    const originalContent = messages && messages[0] ? messages[0].content : '';
+    const { messages, max_tokens = 1400, system, compItems, facts } = req.body;
 
     // Build a powerful replacement prompt
     const powerPrompt = `You are writing an eBay listing for LAC Speed Shop, a professional speed shop in Los Angeles. Your listings are known for being specific, credible, and honest — they convert because buyers trust them.
