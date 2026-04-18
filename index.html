@@ -1796,6 +1796,20 @@
       compItems: compItems
     })
   });, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      max_tokens: 1400,
+      messages: [{ role: 'user', content: 'generate' }],
+      facts: {
+        description,
+        year, make, model, partNum, vehicle,
+        median, low, high, comps,
+        isLocal: isLocalPickup
+      },
+      compItems: compItems
+    })
+  });, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
