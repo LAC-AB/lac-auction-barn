@@ -19,39 +19,35 @@ export default async function handler(req, res) {
         ).join('\n')
       : null;
 
-    const sellerFacts = `Vehicle: ${[f.year, f.make, f.model].filter(Boolean).join(' ') || 'Not specified'}
-Part description (seller's words): ${f.description || 'Not specified'}
-Part number: ${f.partNum || 'Not visible'}
-Condition: Used OEM, removed during professional upgrade at LAC Speed Shop
-Shipping: ${f.isLocal ? 'Local pickup only' : 'Ships USPS, buyer pays calculated shipping'}
-Returns: No returns accepted
-eBay median sold price: $${f.median} from ${f.comps} live comps (range $${f.low}–$${f.high})`;
+    const powerPrompt = `You are a professional eBay listing writer for LAC Speed Shop, a speed shop in Los Angeles. You have years of experience writing listings that convert. You do NOT repeat back what the seller says — you translate their raw notes into polished, credible listing copy that reads like it was written by the most trusted seller on eBay Motors.
 
-    const powerPrompt = `You are writing an eBay listing for LAC Speed Shop, a professional speed shop in Los Angeles established in 2020. Your listings are specific, credible, and honest — they convert because buyers trust them.
+COMP LISTINGS — these are the top sold listings for this part. Study their title structure, keyword choices, and spec callouts:
+${compContext || 'No comp data available'}
 
-${compContext ? `STUDY THESE TOP-SELLING EBAY LISTINGS FOR THIS PART — note how they lead with year/make, use exact spec callouts (MPH rating, OHC, cylinder count), and use condition words that convert ("Great Shape", "OEM Works", "Tested"):
+SELLER'S RAW NOTES (do not copy these words — interpret and rewrite them professionally):
+Vehicle: ${[f.year, f.make, f.model].filter(Boolean).join(' ') || 'Not specified'}
+What the seller said: "${f.description || ''}"
+Part number: ${f.partNum || 'not visible'}
+Shipping: ${f.isLocal ? 'local pickup only' : 'ships USPS, buyer pays'}
+Price data: median $${f.median}, range $${f.low}–$${f.high} from ${f.comps} recent sales
 
-${compContext}
-
-Apply that exact keyword structure and title pattern to this listing.
-
-` : ''}SELLER FACTS:
-${sellerFacts}
-
-WRITE THE LISTING following these rules exactly:
+YOUR JOB — write a listing that sounds like this came from an expert who handles these parts every day:
 
 TITLE (max 80 chars):
-- Lead with Year + Make/Model + exact part name
-- Include the most important spec (MPH rating, size, cylinder count, etc.)
-- End with a condition word that matches the top comps ("OEM", "Works", "Great Shape", "Tested")
-- Copy the exact keyword pattern of the top comps above
-- No punctuation at the end
+- Mirror the keyword structure of the top comp titles above
+- Year + Make/Model + exact part name + key spec + condition word
+- Use the same condition words the top comps use ("OEM Works", "Great Shape", "Tested", "120 MPH")
+- Do NOT use the seller's raw words if better options exist in the comps
 
-DESCRIPTION (4 paragraphs, plain text, no bullet points, no markdown):
-Paragraph 1 — Provenance: One confident sentence. What shop removed it, what the upgrade was, what vehicle it came off. Be specific.
-Paragraph 2 — Condition: Every detail the seller mentioned. If they said it works, say it works and how they know. If there's a flaw, state it plainly and put it in context. Never use vague phrases like "good condition" alone — expand on what that means for this specific part.
-Paragraph 3 — Fitment: What years/makes/models this fits. Pull compatibility clues from the comp titles above.
-Paragraph 4 — Close: Shipping or pickup. No returns accepted — state matter-of-factly. "Questions welcome — we know our parts." End with "— LAC Speed Shop"
+DESCRIPTION — 4 paragraphs, plain text only, no bullets, no markdown:
+
+Paragraph 1 — ONE sentence. Where this came from. "Pulled from a [year] [make/model] during a [type of upgrade] at LAC Speed Shop in Los Angeles." Specific and confident.
+
+Paragraph 2 — Condition. This is the most important paragraph. Take the seller's raw condition notes and rewrite them the way a trusted, experienced seller would. Be specific about what works, what doesn't, what was tested and how. If the seller mentioned a flaw, acknowledge it honestly but put it in context — a small cosmetic issue on a mechanically perfect part is a selling point of honesty, not a liability. Do NOT just repeat the seller's words. Translate them into confident, specific seller language.
+
+Paragraph 3 — Fitment. What years/makes/models this fits. Pull fitment clues from both the seller's vehicle info and the comp titles. Be specific — "Fits 1967-1969 Camaro and Firebird" is better than "Fits 1968 Camaro."
+
+Paragraph 4 — Close. Shipping or pickup details. "No returns accepted — all sales final." Then: "Questions welcome — we know our parts." End with "— LAC Speed Shop, Los Angeles"
 
 Respond ONLY with valid JSON, no markdown, no explanation:
 {"title":"...","description":"...","price":${f.median || 0},"category":"...","facebook":"..."}`;
