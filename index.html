@@ -1778,54 +1778,24 @@
   }
 
   // ── Generate listing via /api/generate proxy ───────────────────────────────
-  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {
-    const isLocal = localPickup;
+  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, isLocal) {
+  const isLocalPickup = localPickup;
 
-    const compTitles = compItems.length > 0
-  ? compItems.map((item, i) => `${i + 1}. "${item.title}" — $${item.price}`).join('\n')
-  : 'No comp data available';
-
-const prompt = `You are an expert eBay seller specializing in auto parts. Your job is to write a listing that will rank and convert on eBay by modeling EXACTLY after the top selling listings below.
-
-STEP 1 — STUDY THESE TOP SELLING EBAY LISTINGS FOR "${searchQuery}":
-${compTitles}
-
-STEP 2 — EXTRACT the winning patterns from those titles:
-- What year/make/model format do they use?
-- What part name do they use exactly?
-- What spec callouts appear (MPH rating, cylinder count, OHC, etc)?
-- What condition words convert ("OEM", "Genuine", "Works", "Tested", "Great Shape")?
-- What's the average character length?
-
-STEP 3 — BUILD the listing using ONLY those patterns plus the seller's facts below.
-
-SELLER'S FACTS:
-Description: "${description || 'Used OEM part removed during a performance upgrade.'}"
-Vehicle: ${vehicle || 'Not specified'}
-Part Number: ${partNum || 'Not visible'}
-Shipping: ${isLocal ? 'Local pickup only' : 'Ships USPS, buyer pays'}
-Condition: Used OEM — removed during professional upgrade at LAC Speed Shop
-Returns: No returns accepted
-eBay median: $${median} from ${comps} live comps (range $${low}–$${high})
-
-TITLE RULES — this is the most important field:
-- Copy the EXACT keyword structure of the top listings above
-- Include: year + make/model + exact part name + key spec + condition word
-- Do NOT start with "OEM" — put year/make first like the top listings do
-- Max 80 characters
-- Example pattern from comps: "1968 Camaro Speedometer 120 MPH w/Speed Warning OEM Works"
-
-DESCRIPTION RULES:
-- Paragraph 1: Provenance — removed during professional performance upgrade at LAC Speed Shop
-- Paragraph 2: Condition — use seller's exact words, be specific
-- Paragraph 3: Fitment — what it fits, any compatibility notes from the comp titles
-- Paragraph 4: Closing — shipping/pickup, no returns, questions welcome, end with "— LAC Speed Shop"
-
-Respond ONLY with valid JSON, no markdown:
-{"title":"title modeled after top comps, max 80 chars","category":"most specific eBay Motors subcategory","categoryId":"numeric eBay category ID if known","price":${median},"description":"four paragraphs","fbCopy":"3-4 casual sentences with price and LAC Speed Shop context","transcriptSummary":"2-3 sentences confirming you understood the seller's description"}`;
-    try {
-      // ── Call /api/generate proxy (not Anthropic directly) ──────────────────
-      const res = await fetch('/api/generate', {
+  const res = await fetch('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      max_tokens: 1400,
+      messages: [{ role: 'user', content: 'generate' }],
+      facts: {
+        description,
+        year, make, model, partNum, vehicle,
+        median, low, high, comps,
+        isLocal: isLocalPickup
+      },
+      compItems: compItems
+    })
+  });, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
