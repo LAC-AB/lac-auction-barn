@@ -1,8 +1,8 @@
 {
   "functions": {
-    "api/comps.js": { "runtime": "nodejs20" },
-    "api/generate.js": { "runtime": "nodejs20" },
-    "api/notify.js": { "runtime": "nodejs20" },
-    "api/post-listing.js": { "runtime": "nodejs20" }
+    "api/comps.js": { "maxDuration": 30 },
+    "api/generate.js": { "maxDuration": 30 },
+    "api/notify.js": { "maxDuration": 30 },
+    "api/post-listing.js": { "maxDuration": 30 }
   }
 }
