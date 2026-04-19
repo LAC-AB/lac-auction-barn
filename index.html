@@ -1778,13 +1778,14 @@
   }
 
   // ── Generate listing via /api/generate proxy ───────────────────────────────
-async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {    try {
+// ── Generate listing via /api/generate proxy ───────────────────────────────
+  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {    
+    try {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           max_tokens: 1400,
-          messages: [{ role: 'user', content: 'generate' }],
           compItems: compItems,
           facts: {
             description,
@@ -1805,7 +1806,7 @@ async function generateListing(description, year, make, model, partNum, vehicle,
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'generate failed');
+        throw new Error(data.error?.error?.message || data.error || 'generate failed');
       }
 
       const raw = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
@@ -1819,7 +1820,6 @@ async function generateListing(description, year, make, model, partNum, vehicle,
       alert('Listing generation failed: ' + err.message);
     }
   }
-
       
   // ── Render results ─────────────────────────────────────────────────────────
   function showResults(listing, median, low, high, comps, isLocal) {
