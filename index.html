@@ -1778,10 +1778,9 @@
   }
 
   // ── Generate listing via /api/generate proxy ───────────────────────────────
-  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, isLocal) {
-  const isLocalPickup = localPickup;
-
-        const res = await fetch('/api/generate', {
+  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {
+    try {
+      const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1804,22 +1803,25 @@
         })
       });
 
+      const data = await res.json();
 
-      console.error(err);
-      const fb = {
-        title: (vehicle + ' OEM ' + description.split(' ').slice(0, 4).join(' ') + ' Used').substring(0, 80),
-        category: 'Auto Parts & Accessories',
-        categoryId: '',
-        price: median,
-        description: 'This part was professionally removed from a ' + (vehicle || 'customer vehicle') + ' during a performance upgrade at LAC Speed Shop.\n\n' + description + '\n\nFits ' + (vehicle || '— please verify compatibility') + '. ' + (isLocal ? 'Available for local pickup only.' : 'Ships USPS. Buyer pays calculated shipping.') + ' No returns accepted. Questions welcome — we know our parts.\n\n— LAC Speed Shop',
-        fbCopy: 'Selling a used ' + (vehicle ? vehicle + ' ' : '') + 'OEM part from LAC Speed Shop — came off during a performance upgrade. $' + median + '. ' + (isLocal ? 'Local pickup only.' : 'Can ship USPS.') + ' Message with questions.',
-        transcriptSummary: 'The seller describes: ' + description
-      };
-      currentListing = fb;
-      showResults(fb, median, low, high, comps, isLocal);
+      if (!res.ok) {
+        throw new Error(data.error || 'generate failed');
+      }
+
+      const raw = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+      const listing = JSON.parse(raw);
+      listing.transcriptSummary = description;
+      currentListing = listing;
+      showResults(listing, median, low, high, comps, localPickup);
+
+    } catch (err) {
+      console.error('Generate failed:', err);
+      alert('Listing generation failed: ' + err.message);
     }
   }
 
+      
   // ── Render results ─────────────────────────────────────────────────────────
   function showResults(listing, median, low, high, comps, isLocal) {
     document.getElementById('processingPanel').style.display = 'none';
