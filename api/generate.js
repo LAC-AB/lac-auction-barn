@@ -2,9 +2,13 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  console.log('METHOD:', req.method);
+  console.log('BODY KEYS:', Object.keys(req.body || {}));
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set' });
@@ -12,6 +16,9 @@ export default async function handler(req, res) {
 
   try {
     const { max_tokens = 1400, system, compItems, facts } = req.body;
+
+    console.log('FACTS:', JSON.stringify(facts));
+    console.log('COMP ITEMS COUNT:', compItems?.length);
 
     const f = facts || {};
 
@@ -45,11 +52,11 @@ DESCRIPTION — 4 paragraphs, plain text only, no bullets, no markdown:
 
 Paragraph 1 — ONE sentence. Where this came from. "Pulled from a [year] [make/model] during a [type of upgrade] at LAC Speed Shop in Los Angeles." Specific and confident.
 
-Paragraph 2 — Condition. This is the most important paragraph. Take the seller's raw condition notes and rewrite them the way a trusted, experienced seller would. Be specific about what works, what doesn't, what was tested and how. If the seller mentioned a flaw, acknowledge it honestly but put it in context — a small cosmetic issue on a mechanically perfect part is a selling point of honesty, not a liability. Do NOT just repeat the seller's words. Translate them into confident, specific seller language.
+Paragraph 2 — Condition. Take the seller's raw condition notes and rewrite them the way a trusted, experienced seller would. Be specific about what works, what was tested, and any flaws in context. Do NOT just repeat the seller's words.
 
-Paragraph 3 — Fitment. What years/makes/models this fits. Pull fitment clues from both the seller's vehicle info and the comp titles. Be specific — "Fits 1967-1969 Camaro and Firebird" is better than "Fits 1968 Camaro."
+Paragraph 3 — Fitment. What years/makes/models this fits. Pull fitment clues from the comp titles.
 
-Paragraph 4 — Close. Shipping or pickup details. "No returns accepted — all sales final." Then: "Questions welcome — we know our parts." End with "— LAC Speed Shop, Los Angeles"
+Paragraph 4 — Close. Shipping or pickup. "No returns accepted — all sales final." Then: "Questions welcome — we know our parts." End with "— LAC Speed Shop, Los Angeles"
 
 Respond ONLY with valid JSON, no markdown, no explanation:
 {"title":"...","description":"...","price":${f.median || 0},"category":"...","facebook":"..."}`;
@@ -71,11 +78,15 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       body: JSON.stringify(body),
     });
 
+    console.log('CLAUDE RESPONSE STATUS:', upstream.status);
     const data = await upstream.json();
+    console.log('CLAUDE CONTENT TYPE:', data.content?.[0]?.type);
+
     if (!upstream.ok) return res.status(upstream.status).json({ error: data });
     return res.status(200).json(data);
 
   } catch (err) {
+    console.log('ERROR:', err.message);
     return res.status(500).json({ error: err.message });
   }
 }
