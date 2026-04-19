@@ -12,44 +12,41 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Parse body — handles both string and object (ES module compatibility)
-    const parsed = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const { max_tokens = 1400, system, compItems, facts } = parsed;
+    // Vercel parses JSON bodies automatically. This covers all bases.
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    const { max_tokens = 1400, compItems = [], facts = {} } = body;
 
-    const f = facts || {};
+    console.log("RECEIVED FACTS:", facts); // So you can verify in Vercel logs
 
     const compContext = (compItems && compItems.length > 0)
       ? compItems.slice(0, 5).map((item, i) =>
           `${i + 1}. "${item.title}" — $${item.price}`
         ).join('\n')
-      : null;
+      : 'No comp data available';
 
-    const powerPrompt = `You are a professional eBay listing writer for LAC Speed Shop, a speed shop in Los Angeles. You do NOT repeat back what the seller says — you translate their raw notes into polished listing copy that reads like it was written by the most trusted seller on eBay Motors.
+    const powerPrompt = `Here is the data for an eBay Motors listing.
 
-COMP LISTINGS — top sold listings for this part. Study their title structure, keyword choices, spec callouts, and condition language. This is the primary source for how to write the listing:
-${compContext || 'No comp data available'}
+COMP LISTINGS (Study their titles, keywords, and specs):
+${compContext}
 
-SELLER RAW NOTES — interpret and rewrite, do not copy:
-Vehicle: ${[f.year, f.make, f.model].filter(Boolean).join(' ') || 'Not specified'}
-What the seller said: "${f.description || ''}"
-Part number: ${f.partNum || 'not visible'}
-Shipping: ${f.isLocal ? 'local pickup only' : 'ships USPS, buyer pays'}
-Price data: median $${f.median}, range $${f.low}–$${f.high} from ${f.comps} recent sales
+PART DETAILS & SELLER NOTES:
+- Vehicle: ${[facts.year, facts.make, facts.model].filter(Boolean).join(' ') || 'Not specified'}
+- Part number: ${facts.partNum || 'not visible'}
+- Shipping: ${facts.isLocal ? 'local pickup only' : 'ships USPS, buyer pays'}
+- Price data: median $${facts.median}, range $${facts.low}–$${facts.high}
+- Seller's Raw Transcript: "${facts.description || 'No description provided.'}"
 
-WRITE THE LISTING:
+TASK:
+Do NOT just repeat the seller's raw transcript. Synthesize the facts into a professional, high-converting eBay listing. Expand on fitment and condition using the style of a trusted auto parts business.
 
-TITLE (max 80 chars): Mirror the keyword structure of the comp titles. Year + Make/Model + exact part name + key spec + condition word. Use condition words from the comps ("OEM Works", "Great Shape", "Tested", "120 MPH"). No punctuation at end.
-
-DESCRIPTION — 4 paragraphs, plain text, no bullets, no markdown:
-P1: One sentence. Where this came from — what shop, what upgrade, what vehicle.
-P2: Condition. Rewrite the seller's notes the way a trusted experienced seller would. Specific about what works, what was tested, any flaws in context. Never copy the seller's words verbatim.
-P3: Fitment. What years/makes/models this fits. Use clues from the comp titles to expand beyond what the seller said.
-P4: Shipping or pickup. "No returns accepted — all sales final." "Questions welcome — we know our parts." End with "— LAC Speed Shop, Los Angeles"
-
-FACEBOOK: One casual paragraph for Marketplace. Friendly, local, no jargon.
-
-Respond ONLY with valid JSON, no markdown:
-{"title":"...","description":"...","price":${f.median || 0},"category":"...","facebook":"..."}`;
+Output ONLY a JSON object with these exact keys (no markdown formatting, no code blocks):
+{
+  "title": "SEO optimized title using year/make/model and part name (max 80 chars)",
+  "description": "Paragraph 1: What this is and what it came off of.\\n\\nParagraph 2: Detailed condition report (rewrite the seller notes professionally).\\n\\nParagraph 3: Fitment details.\\n\\nParagraph 4: Shipping and trusted seller sign-off (LAC Speed Shop, Los Angeles).",
+  "price": ${facts.median || 0},
+  "category": "eBay Category name/number based on part",
+  "facebook": "A short, friendly, local Facebook Marketplace post."
+}`;
 
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -59,17 +56,20 @@ Respond ONLY with valid JSON, no markdown:
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-3-5-haiku-20241022', // <-- The CORRECT model name
         max_tokens,
+        system: "You are a top-tier eBay Motors copywriter. You translate rough notes into professional, highly readable listings. You ALWAYS reply with raw, valid JSON.",
         messages: [{ role: 'user', content: powerPrompt }]
       }),
     });
 
     const data = await upstream.json();
     if (!upstream.ok) return res.status(upstream.status).json({ error: data });
+
     return res.status(200).json(data);
 
   } catch (err) {
+    console.error("Generate API Error:", err);
     return res.status(500).json({ error: err.message });
   }
 }
