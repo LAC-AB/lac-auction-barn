@@ -62,7 +62,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
 {"title":"...","description":"...","price":${f.median || 0},"category":"...","facebook":"..."}`;
 
     const body = {
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-opus-4-5',
       max_tokens,
       messages: [{ role: 'user', content: powerPrompt }]
     };
