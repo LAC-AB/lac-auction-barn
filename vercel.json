@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/comps.js": { "runtime": "nodejs20.x" },
+    "api/generate.js": { "runtime": "nodejs20.x" },
+    "api/notify.js": { "runtime": "nodejs20.x" },
+    "api/post-listing.js": { "runtime": "nodejs20.x" }
+  }
+}
