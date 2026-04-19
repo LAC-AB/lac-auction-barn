@@ -1778,8 +1778,7 @@
   }
 
   // ── Generate listing via /api/generate proxy ───────────────────────────────
-  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {
-    try {
+async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {    try {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
