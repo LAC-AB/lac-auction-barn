@@ -200,6 +200,15 @@
   .comp-count { text-align: right; padding-top: 16px; position: relative; z-index: 1; }
   .comp-number { font-family: var(--serif); font-weight: 900; font-size: 50px; color: var(--ivory); line-height: 1; opacity: 0.8; }
   .comp-label { font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 3px; }
+
+  /* ── COMP CARDS ─────────────────────────── */
+  .comp-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; font-size: 12px; }
+  .comp-card a { display: block; padding: 8px; color: inherit; text-decoration: none; }
+  .comp-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; }
+  .comp-card-title { margin-top: 6px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ivory); }
+  .comp-card-price { color: #4ade80; font-weight: bold; margin-top: 4px; }
+  .comp-card-condition { color: #888; margin-top: 2px; }
+
   .offer-table { border: 1px solid var(--line); margin-bottom: 2px; background: var(--ivory); overflow: hidden; }
   .offer-table-header { background: var(--parchment); border-bottom: 1px solid var(--line2); padding: 7px 14px; font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 5px; color: var(--mid); text-transform: uppercase; }
   .offer-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 10px; }
@@ -405,6 +414,9 @@
           <div class="comp-label">Live comps</div>
         </div>
       </div>
+
+      <!-- COMP CARDS -->
+      <div id="compGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:16px 0;"></div>
 
       <div class="offer-table">
         <div class="offer-table-header">Offer Rules</div>
@@ -707,10 +719,10 @@
     const descWords = description.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/);
     const partNoun  = descWords.find(w => w.length > 3 && !skipWords.has(w) && isNaN(w)) || descWords.filter(w => w.length > 3)[0] || '';
     const searchQuery = partNum
-  ? (vehicle + ' ' + partNum).trim()
-  : vehicle
-    ? (year + ' ' + model + ' ' + partNoun).trim()
-    : description.split(' ').slice(0, 5).join(' ');
+      ? (vehicle + ' ' + partNum).trim()
+      : vehicle
+        ? (year + ' ' + model + ' ' + partNoun).trim()
+        : description.split(' ').slice(0, 5).join(' ');
 
     let median = 45, low = 20, high = 120, comps = 0, compItems = [];
     try {
@@ -824,7 +836,7 @@
     document.getElementById('listingMeta').innerHTML =
       '<span class="meta-tag hi">$' + listing.price + '</span>' +
       '<span class="meta-tag">' + listing.category + '</span>' +
-      '<span class="meta-tag">Used OEM</span>' +
+      '<span class="meta-tag">' + (listing.condition || 'Used') + '</span>' +
       '<span class="meta-tag">' + (isLocal ? 'Local Pickup' : 'Ships USPS') + '</span>' +
       '<span class="meta-tag">No Returns</span>';
 
@@ -836,22 +848,23 @@
     document.getElementById('fbCopy').textContent = listing.facebook || listing.fbCopy || '';
 
     // Comp cards
-      const compGrid = document.getElementById('compGrid');
-      if (compGrid) {
-        compGrid.innerHTML = '';
-        (compItems || []).forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'comp-card';
-          card.innerHTML = `
-            <a href="${item.url}" target="_blank">
-              <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
-              <div class="comp-card-title">${item.title}</div>
-              <div class="comp-card-price">$${item.price}</div>
-              <div class="comp-card-condition">${item.condition || ''}</div>
-            </a>`;
-          compGrid.appendChild(card);
-        });
-      }
+    const compGrid = document.getElementById('compGrid');
+    if (compGrid) {
+      compGrid.innerHTML = '';
+      (compItems || []).forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'comp-card';
+        card.innerHTML = `
+          <a href="${item.url}" target="_blank">
+            <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
+            <div class="comp-card-title">${item.title}</div>
+            <div class="comp-card-price">$${item.price}</div>
+            <div class="comp-card-condition">${item.condition || ''}</div>
+          </a>`;
+        compGrid.appendChild(card);
+      });
+    }
+
     const btn = document.getElementById('postEbayBtn');
     btn.disabled = false;
     btn.textContent = '✦   Post to eBay';
