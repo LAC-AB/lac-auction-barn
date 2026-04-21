@@ -772,8 +772,7 @@
       const listing = JSON.parse(raw);
       listing.transcriptSummary = description;
       currentListing = listing;
-      showResults(listing, median, low, high, comps, localPickup);
-
+      showResults(listing, median, low, high, comps, localPickup, compItems);
     } catch (err) {
       console.error('Generate failed:', err);
       alert('Listing generation failed: ' + err.message);
@@ -781,7 +780,7 @@
   }
 
   // ── Render results ────────────────────────────────────────────────────────
-  function showResults(listing, median, low, high, comps, isLocal) {
+  function showResults(listing, median, low, high, comps, isLocal, compItems = []) {
     document.getElementById('processingPanel').style.display = 'none';
     document.getElementById('resultsView').classList.remove('hidden');
 
@@ -836,6 +835,23 @@
     document.getElementById('editCategory').value = listing.category;
     document.getElementById('fbCopy').textContent = listing.facebook || listing.fbCopy || '';
 
+    // Comp cards
+      const compGrid = document.getElementById('compGrid');
+      if (compGrid) {
+        compGrid.innerHTML = '';
+        (compItems || []).forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'comp-card';
+          card.innerHTML = `
+            <a href="${item.url}" target="_blank">
+              <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
+              <div class="comp-card-title">${item.title}</div>
+              <div class="comp-card-price">$${item.price}</div>
+              <div class="comp-card-condition">${item.condition || ''}</div>
+            </a>`;
+          compGrid.appendChild(card);
+        });
+      }
     const btn = document.getElementById('postEbayBtn');
     btn.disabled = false;
     btn.textContent = '✦   Post to eBay';
