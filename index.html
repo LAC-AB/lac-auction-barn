@@ -706,7 +706,11 @@
     const skipWords = new Set(['removed','during','installed','aftermarket','performance','upgrade','original','factory','when','glass','clean','needle','works','tabs','intact','chrome','bezel','light','patina','consistent','with','age','from','this','that','have','been','were','they','came','what','some','very','just']);
     const descWords = description.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/);
     const partNoun  = descWords.find(w => w.length > 3 && !skipWords.has(w) && isNaN(w)) || descWords.filter(w => w.length > 3)[0] || '';
-    const searchQuery = vehicle ? (year + ' ' + model + ' ' + partNoun).trim() : description.split(' ').slice(0, 5).join(' ');
+    const searchQuery = partNum
+  ? (vehicle + ' ' + partNum).trim()
+  : vehicle
+    ? (year + ' ' + model + ' ' + partNoun).trim()
+    : description.split(' ').slice(0, 5).join(' ');
 
     let median = 45, low = 20, high = 120, comps = 0, compItems = [];
     try {
