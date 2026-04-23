@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const appId = process.env.EBAY_APP_ID;
 
   try {
-    // eBay Finding API — findCompletedItems returns SOLD listings only
+    // eBay Finding API — findCompletedItems with SoldItemsOnly=true
     const url =
       'https://svcs.ebay.com/services/search/FindingService/v1' +
       '?OPERATION-NAME=findCompletedItems' +
@@ -18,31 +18,20 @@ export default async function handler(req, res) {
       '&REST-PAYLOAD' +
       '&keywords=' + encodeURIComponent(query) +
       '&itemFilter(0).name=SoldItemsOnly&itemFilter(0).value=true' +
-      '&itemFilter(1).name=ListingType&itemFilter(1).value=AuctionWithBIN' +
-      '&itemFilter(2).name=ListingType&itemFilter(2).value(0)=FixedPrice&itemFilter(2).value(1)=Auction' +
       '&sortOrder=BestMatch' +
       '&paginationInput.entriesPerPage=50';
 
-    const searchResponse = await fetch(url, {
-      headers: { 'Content-Type': 'application/json' }
-    });
-
+    const searchResponse = await fetch(url);
     const searchData = await searchResponse.json();
 
     const rawItems =
       searchData?.findCompletedItemsResponse?.[0]?.searchResult?.[0]?.item || [];
 
-    // Only include items that actually sold (have a soldPrice or sellingStatus ENDED)
-    const soldItems = rawItems.filter(item => {
-      const status = item?.sellingStatus?.[0]?.sellingState?.[0];
-      return status === 'EndedWithSales';
-    });
-
-    if (soldItems.length === 0) {
+    if (rawItems.length === 0) {
       return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [] });
     }
 
-    const prices = soldItems
+    const prices = rawItems
       .map(item => parseFloat(item?.sellingStatus?.[0]?.currentPrice?.[0]?.__value__))
       .filter(p => !isNaN(p) && p >= 10)
       .sort((a, b) => a - b);
@@ -51,10 +40,10 @@ export default async function handler(req, res) {
       return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [] });
     }
 
-    const count = prices.length;
-    const low = prices[0];
-    const high = prices[count - 1];
-    const mid = Math.floor(count / 2);
+    const count  = prices.length;
+    const low    = prices[0];
+    const high   = prices[count - 1];
+    const mid    = Math.floor(count / 2);
     const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
 
     return res.status(200).json({
@@ -62,7 +51,7 @@ export default async function handler(req, res) {
       low:    Math.round(low    * 100) / 100,
       high:   Math.round(high   * 100) / 100,
       count,
-      items: soldItems.slice(0, 8).map(item => ({
+      items: rawItems.slice(0, 8).map(item => ({
         title:     item?.title?.[0] || '',
         price:     parseFloat(item?.sellingStatus?.[0]?.currentPrice?.[0]?.__value__),
         url:       item?.viewItemURL?.[0] || '',
