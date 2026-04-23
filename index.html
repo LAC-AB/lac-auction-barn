@@ -42,35 +42,10 @@
       radial-gradient(ellipse at -10% -5%, rgba(232,160,32,0.12) 0%, transparent 55%),
       radial-gradient(ellipse at 110% 90%, rgba(200,168,75,0.06) 0%, transparent 50%);
   }
-  header {
-    background: var(--black);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    top: -40px; left: -60px;
-    width: 300px; height: 120px;
-    background: radial-gradient(ellipse, rgba(232,160,32,0.25) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header-gold-line {
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--amber) 50%, var(--gold) 80%, transparent 100%);
-  }
-  .header-inner {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 12px 20px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1;
-  }
+  header { background: var(--black); position: sticky; top: 0; z-index: 100; overflow: hidden; }
+  header::before { content: ''; position: absolute; top: -40px; left: -60px; width: 300px; height: 120px; background: radial-gradient(ellipse, rgba(232,160,32,0.25) 0%, transparent 70%); pointer-events: none; }
+  .header-gold-line { height: 2px; background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--amber) 50%, var(--gold) 80%, transparent 100%); }
+  .header-inner { max-width: 680px; margin: 0 auto; padding: 12px 20px 10px; display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
   .logo-lac { font-family: var(--serif); font-weight: 900; font-size: 36px; color: var(--gold); line-height: 1; letter-spacing: -1px; display: block; text-shadow: 0 0 30px rgba(200,168,75,0.4); }
   .logo-tagline { font-family: var(--sans); font-weight: 200; font-size: 9px; letter-spacing: 5px; color: var(--muted); text-transform: uppercase; display: block; margin-top: 1px; }
   .header-center { text-align: center; flex: 1; padding: 0 16px; }
@@ -116,53 +91,21 @@
   .process-num { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--gold); flex-shrink: 0; width: 22px; line-height: 1; margin-top: 1px; }
   .process-title { font-family: var(--sans); font-weight: 600; font-size: 9px; letter-spacing: 3px; color: var(--ivory); text-transform: uppercase; margin-bottom: 2px; }
   .process-desc { font-family: var(--sans); font-weight: 200; font-size: 11px; color: var(--muted); line-height: 1.6; letter-spacing: 0.3px; }
-
-  /* ── MIC BUTTON ─────────────────────────── */
-  .mic-zone {
-    border: 1px solid var(--line2);
-    padding: 32px 18px;
-    text-align: center;
-    background: var(--warm);
-    margin-bottom: 12px;
-  }
-  .mic-btn {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: var(--black);
-    border: 2px solid var(--gold2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 14px;
-    cursor: pointer;
-    font-size: 32px;
-    transition: all 0.2s;
-  }
+  .mic-zone { border: 1px solid var(--line2); padding: 32px 18px; text-align: center; background: var(--warm); margin-bottom: 12px; }
+  .mic-btn { width: 80px; height: 80px; border-radius: 50%; background: var(--black); border: 2px solid var(--gold2); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; cursor: pointer; font-size: 32px; transition: all 0.2s; }
   .mic-btn:hover { border-color: var(--gold); background: #2a2010; }
   .mic-btn.recording { border-color: var(--red); background: var(--red2); animation: pulse-red 1s infinite; }
   @keyframes pulse-red { 0%,100% { box-shadow: 0 0 0 0 rgba(192,41,26,0.4); } 50% { box-shadow: 0 0 0 12px rgba(192,41,26,0); } }
   .mic-label { font-family: var(--sans); font-weight: 600; font-size: 9px; letter-spacing: 4px; color: var(--mid); text-transform: uppercase; margin-bottom: 5px; }
   .mic-status { font-family: var(--sans); font-weight: 200; font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
   .mic-status.active { color: var(--red); }
-
-  /* ── PHOTO UPLOAD ───────────────────────── */
-  .photo-upload-zone {
-    border: 1px dashed var(--line2);
-    padding: 24px 18px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    background: var(--warm);
-    margin-bottom: 12px;
-  }
+  .photo-upload-zone { border: 1px dashed var(--line2); padding: 24px 18px; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; background: var(--warm); margin-bottom: 12px; }
   .photo-upload-zone:hover { border-color: var(--gold); background: var(--parchment); }
   .photo-upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin-bottom: 12px; }
   .photo-thumb { aspect-ratio: 1; background: var(--parchment); border: 1px solid var(--line); overflow: hidden; cursor: pointer; position: relative; }
   .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .photo-thumb .remove { position: absolute; top: 2px; right: 2px; background: var(--red); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
   .field-label { font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; display: block; }
   input[type="text"], textarea { width: 100%; background: var(--ivory); border: 1px solid var(--line); border-radius: 0; color: var(--ink); font-family: var(--body); font-size: 14px; padding: 10px 13px; resize: vertical; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; letter-spacing: 0.2px; }
   input:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,75,0.1); }
@@ -193,7 +136,7 @@
   .proc-label { font-family: var(--sans); font-weight: 200; font-size: 9px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; }
   .price-banner { background: var(--black); border: 1px solid #3a3020; padding: 22px 18px 18px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2px; position: relative; overflow: hidden; }
   .price-banner::before { content: ''; position: absolute; top: -60px; left: -40px; width: 300px; height: 180px; background: radial-gradient(ellipse, rgba(232,160,32,0.15) 0%, transparent 65%); pointer-events: none; }
-  .price-banner::after { content: '✦  live ebay comps  ✦'; position: absolute; top: 7px; left: 0; right: 0; text-align: center; font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; }
+  .price-banner::after { content: '✦  live ebay sold comps  ✦'; position: absolute; top: 7px; left: 0; right: 0; text-align: center; font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; }
   .price-label { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 4px; color: #666; text-transform: uppercase; margin-bottom: 5px; margin-top: 14px; position: relative; z-index: 1; }
   .price-value { font-family: var(--serif); font-weight: 900; font-size: 58px; color: var(--gold); letter-spacing: -1px; line-height: 1; position: relative; z-index: 1; }
   .price-range { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: #555; margin-top: 5px; text-transform: uppercase; position: relative; z-index: 1; }
@@ -202,12 +145,18 @@
   .comp-label { font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 3px; }
 
   /* ── COMP CARDS ─────────────────────────── */
-  .comp-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; font-size: 12px; }
+  .comp-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; font-size: 12px; position: relative; transition: opacity 0.2s; }
+  .comp-card.excluded { opacity: 0.35; }
+  .comp-card.excluded .comp-card-price { text-decoration: line-through; color: #666; }
   .comp-card a { display: block; padding: 8px; color: inherit; text-decoration: none; }
   .comp-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; }
   .comp-card-title { margin-top: 6px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ivory); }
   .comp-card-price { color: #4ade80; font-weight: bold; margin-top: 4px; }
   .comp-card-condition { color: #888; margin-top: 2px; }
+  .comp-exclude-btn { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: rgba(192,41,26,0.85); border: none; border-radius: 50%; color: white; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; line-height: 1; transition: background 0.2s; }
+  .comp-exclude-btn:hover { background: var(--red); }
+  .comp-card.excluded .comp-exclude-btn { background: #555; }
+  .comp-exclude-hint { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: #888; text-transform: uppercase; text-align: right; margin: 8px 0 6px; }
 
   .offer-table { border: 1px solid var(--line); margin-bottom: 2px; background: var(--ivory); overflow: hidden; }
   .offer-table-header { background: var(--parchment); border-bottom: 1px solid var(--line2); padding: 7px 14px; font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 5px; color: var(--mid); text-transform: uppercase; }
@@ -306,7 +255,7 @@
       <div class="process-steps">
         <div class="process-step"><div class="process-num">I</div><div><div class="process-title">Speak your description</div><div class="process-desc">Tap the mic, describe the part — condition, history, fitment, what works</div></div></div>
         <div class="process-step"><div class="process-num">II</div><div><div class="process-title">Add photos</div><div class="process-desc">Upload stills directly from your phone camera</div></div></div>
-        <div class="process-step"><div class="process-num">III</div><div><div class="process-title">Pulls live eBay comparable sales</div><div class="process-desc">Real median prices from actual recent listings — never estimates</div></div></div>
+        <div class="process-step"><div class="process-num">III</div><div><div class="process-title">Pulls live eBay comparable sales</div><div class="process-desc">Real median prices from actual sold listings — never estimates</div></div></div>
         <div class="process-step"><div class="process-num">IV</div><div><div class="process-title">Writes in the style of top sellers</div><div class="process-desc">Studies the highest-converting listings and writes like them — using your facts as the foundation</div></div></div>
       </div>
     </div>
@@ -317,44 +266,26 @@
         <div class="panel-ref">Step I</div>
       </div>
       <div class="panel-body">
-
-        <!-- MIC -->
         <div class="mic-zone">
           <div class="mic-btn" id="micBtn" onclick="toggleMic()">🎙</div>
           <div class="mic-label" id="micLabel">Tap to speak</div>
           <div class="mic-status" id="micStatus">Chrome speech recognition · no account needed</div>
         </div>
-
         <div class="field-group">
           <label class="field-label">Description — speak above or type here</label>
           <textarea id="partDescription" placeholder="Describe the part — condition, history, what works, any flaws…"></textarea>
         </div>
-
         <hr class="rule-gold">
-
-        <!-- PHOTOS -->
-        <div class="section-label">
-          <span class="section-label-text">Photos</span>
-          <div class="section-label-line"></div>
-        </div>
-
+        <div class="section-label"><span class="section-label-text">Photos</span><div class="section-label-line"></div></div>
         <div class="photo-upload-zone" id="photoUploadZone">
           <input type="file" id="photoInput" accept="image/*" multiple capture="environment" />
           <div style="font-size:28px;margin-bottom:8px;opacity:0.5">📷</div>
           <span style="font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);display:block;margin-bottom:4px">Add Photos</span>
           <div style="font-family:var(--sans);font-weight:200;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase">Tap to shoot or select from camera roll</div>
         </div>
-
         <div class="photo-grid" id="photoGrid"></div>
-
         <hr class="rule-gold">
-
-        <!-- VEHICLE -->
-        <div class="section-label">
-          <span class="section-label-text">Vehicle</span>
-          <div class="section-label-line"></div>
-        </div>
-
+        <div class="section-label"><span class="section-label-text">Vehicle</span><div class="section-label-line"></div></div>
         <div class="field-row">
           <div class="field-group" style="margin:0"><label class="field-label">Year</label><input type="text" id="partYear" placeholder="1968" /></div>
           <div class="field-group" style="margin:0"><label class="field-label">Make</label><input type="text" id="partMake" placeholder="Chevrolet" /></div>
@@ -363,9 +294,7 @@
           <div class="field-group" style="margin:0"><label class="field-label">Model</label><input type="text" id="partModel" placeholder="Camaro" /></div>
           <div class="field-group" style="margin:0"><label class="field-label">Part Number</label><input type="text" id="partNumber" placeholder="If visible" /></div>
         </div>
-
         <hr class="rule-gold">
-
         <div class="toggle-row">
           <div>
             <div class="toggle-label">Local pickup only</div>
@@ -373,9 +302,7 @@
           </div>
           <div class="toggle" id="localPickupToggle" onclick="togglePickup()"></div>
         </div>
-
         <hr class="rule">
-
         <button class="btn btn-primary" id="analyzeBtn" onclick="startAnalysis()" disabled>
           ✦ &nbsp; Analyse &amp; Build Listing
         </button>
@@ -390,7 +317,7 @@
         <div class="processing" id="processingView" style="display:block">
           <span class="proc-icon">⚙</span>
           <div class="proc-step" id="processingStep">Researching comps</div>
-          <div class="proc-label" id="processingLabel">searching live eBay data…</div>
+          <div class="proc-label" id="processingLabel">searching live eBay sold data…</div>
         </div>
       </div>
     </div>
@@ -411,12 +338,12 @@
         </div>
         <div class="comp-count">
           <div class="comp-number" id="compCount">—</div>
-          <div class="comp-label">Live comps</div>
+          <div class="comp-label">Sold comps</div>
         </div>
       </div>
 
-      <!-- COMP CARDS -->
-      <div id="compGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:16px 0;"></div>
+      <div class="comp-exclude-hint">Tap ✕ to exclude a comp · tap ↩ to restore</div>
+      <div id="compGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:0 0 16px;"></div>
 
       <div class="offer-table">
         <div class="offer-table-header">Offer Rules</div>
@@ -428,7 +355,6 @@
       </div>
 
       <div class="section-label"><span class="section-label-text">eBay listing draft</span><div class="section-label-line"></div></div>
-
       <div class="result-photo-strip" id="resultPhotoStrip"></div>
 
       <div class="listing-preview">
@@ -441,7 +367,6 @@
       </div>
 
       <div class="section-label"><span class="section-label-text">Refine before posting</span><div class="section-label-line"></div></div>
-
       <div class="field-group">
         <label class="field-label">Listing title</label>
         <input type="text" id="editTitle" maxlength="80" />
@@ -549,6 +474,10 @@
   let recognition = null;
   let isRecording = false;
 
+  // Comp exclusion state
+  let activeCompItems = [];
+  let excludedIndices = new Set();
+
   window.addEventListener('load', () => {
     const num = localStorage.getItem('attNumber');
     if (num) { document.getElementById('attNumber').value = num; document.getElementById('attGatewayDisplay').value = num + '@txt.att.net'; }
@@ -589,11 +518,7 @@
       alert('Speech recognition requires Chrome. Please use Chrome on your Chromebook.');
       return;
     }
-    if (isRecording) {
-      stopMic();
-    } else {
-      startMic();
-    }
+    if (isRecording) { stopMic(); } else { startMic(); }
   }
 
   function startMic() {
@@ -602,10 +527,8 @@
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
-
     const existing = document.getElementById('partDescription').value.trim();
     let finalTranscript = existing ? existing + ' ' : '';
-
     recognition.onstart = () => {
       isRecording = true;
       document.getElementById('micBtn').classList.add('recording');
@@ -614,27 +537,17 @@
       document.getElementById('micStatus').textContent = 'Listening…';
       document.getElementById('micStatus').classList.add('active');
     };
-
     recognition.onresult = (e) => {
       let interim = '';
       for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) {
-          finalTranscript += e.results[i][0].transcript + ' ';
-        } else {
-          interim += e.results[i][0].transcript;
-        }
+        if (e.results[i].isFinal) { finalTranscript += e.results[i][0].transcript + ' '; }
+        else { interim += e.results[i][0].transcript; }
       }
       document.getElementById('partDescription').value = finalTranscript + interim;
       checkReady();
     };
-
-    recognition.onerror = (e) => {
-      if (e.error !== 'aborted') showToast('Mic error: ' + e.error);
-      stopMic();
-    };
-
+    recognition.onerror = (e) => { if (e.error !== 'aborted') showToast('Mic error: ' + e.error); stopMic(); };
     recognition.onend = () => { stopMic(); };
-
     recognition.start();
   }
 
@@ -654,10 +567,7 @@
     const files = Array.from(e.target.files);
     files.forEach(file => {
       const reader = new FileReader();
-      reader.onload = (ev) => {
-        selectedPhotos.push(ev.target.result);
-        renderPhotoGrid();
-      };
+      reader.onload = (ev) => { selectedPhotos.push(ev.target.result); renderPhotoGrid(); };
       reader.readAsDataURL(file);
     });
     this.value = '';
@@ -674,10 +584,7 @@
     });
   }
 
-  function removePhoto(i) {
-    selectedPhotos.splice(i, 1);
-    renderPhotoGrid();
-  }
+  function removePhoto(i) { selectedPhotos.splice(i, 1); renderPhotoGrid(); }
 
   // ── Ready check ───────────────────────────────────────────────────────────
   function checkReady() {
@@ -693,6 +600,62 @@
     document.getElementById('titleCount').textContent = this.value.length + ' of 80 characters';
   });
 
+  // ── Comp exclusion & live reprice ─────────────────────────────────────────
+  function toggleCompExclusion(index) {
+    if (excludedIndices.has(index)) {
+      excludedIndices.delete(index);
+    } else {
+      excludedIndices.add(index);
+    }
+    const card = document.querySelector(`[data-comp-index="${index}"]`);
+    if (card) {
+      card.classList.toggle('excluded', excludedIndices.has(index));
+      const btn = card.querySelector('.comp-exclude-btn');
+      if (btn) btn.textContent = excludedIndices.has(index) ? '↩' : '✕';
+    }
+    recalcPricing();
+  }
+
+  function recalcPricing() {
+    const activePrices = activeCompItems
+      .filter((_, i) => !excludedIndices.has(i))
+      .map(item => item.price)
+      .filter(p => !isNaN(p) && p >= 10)
+      .sort((a, b) => a - b);
+
+    if (activePrices.length === 0) {
+      document.getElementById('medianPrice').textContent = '$—';
+      document.getElementById('priceRange').textContent = 'All comps excluded';
+      document.getElementById('compCount').textContent = '—';
+      document.getElementById('acceptFloor').textContent = '—';
+      document.getElementById('reviewRange').textContent = '—';
+      document.getElementById('declineFloor').textContent = '—';
+      return;
+    }
+
+    const count = activePrices.length;
+    const low   = activePrices[0];
+    const high  = activePrices[count - 1];
+    const mid   = Math.floor(count / 2);
+    const median = count % 2 !== 0 ? activePrices[mid] : (activePrices[mid - 1] + activePrices[mid]) / 2;
+    const m = Math.round(median * 100) / 100;
+
+    document.getElementById('medianPrice').textContent = '$' + m;
+    document.getElementById('priceRange').textContent  = 'Range $' + Math.round(low) + ' – $' + Math.round(high) + ' · ' + count + ' sold comps';
+    document.getElementById('compCount').textContent   = count;
+
+    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
+    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
+    const accept  = Math.round(m * acceptPct);
+    const revLow  = Math.round(m * declinePct);
+    const revHigh = accept - 1;
+    const decline = revLow - 1;
+
+    document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
+    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + revHigh;
+    document.getElementById('declineFloor').textContent  = 'Below $' + decline + ' (under ' + Math.round(declinePct * 100) + '%)';
+  }
+
   // ── Analysis pipeline ─────────────────────────────────────────────────────
   async function startAnalysis() {
     if (isRecording) stopMic();
@@ -704,6 +667,9 @@
     document.getElementById('ebayConfirm').style.display = 'none';
     setStep(3);
 
+    activeCompItems = [];
+    excludedIndices = new Set();
+
     const description = document.getElementById('partDescription').value.trim();
     const year        = document.getElementById('partYear').value.trim();
     const make        = document.getElementById('partMake').value.trim();
@@ -713,7 +679,7 @@
 
     currentMeta = { year, make, model, partNum, isLocal: localPickup };
 
-    await tick('Pulling live eBay comps', 'searching real sold listings…', 800);
+    await tick('Pulling live eBay sold comps', 'searching real sold listings…', 800);
 
     const skipWords = new Set(['removed','during','installed','aftermarket','performance','upgrade','original','factory','when','glass','clean','needle','works','tabs','intact','chrome','bezel','light','patina','consistent','with','age','from','this','that','have','been','were','they','came','what','some','very','just']);
     const descWords = description.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/);
@@ -726,17 +692,19 @@
 
     let median = 45, low = 20, high = 120, comps = 0, compItems = [];
     try {
-      const compRes = await fetch('/api/comps?query=' + encodeURIComponent(searchQuery));
+      const compRes  = await fetch('/api/comps?query=' + encodeURIComponent(searchQuery));
       const compData = await compRes.json();
       if (compData.count > 0) {
         median = compData.median; low = compData.low; high = compData.high;
-        comps = compData.count; compItems = compData.items || [];
+        comps  = compData.count; compItems = compData.items || [];
       } else {
         const fallback = await fetch('/api/comps?query=' + encodeURIComponent((year + ' ' + model).trim()));
         const fd = await fallback.json();
         if (fd.count > 0) { median = fd.median; low = fd.low; high = fd.high; comps = fd.count; compItems = fd.items || []; }
       }
     } catch (e) { console.log('comp error', e); }
+
+    activeCompItems = compItems;
 
     await tick('Studying top-selling listings', 'modelling after the highest converting comps…', 1200);
     setStep(4);
@@ -770,16 +738,11 @@
         body: JSON.stringify({
           max_tokens: 1400,
           compItems: compItems,
-          facts: {
-            description, year, make, model, partNum, vehicle,
-            median, low, high, comps, isLocal: localPickup
-          }
+          facts: { description, year, make, model, partNum, vehicle, median, low, high, comps, isLocal: localPickup }
         })
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.error?.error?.message || data.error || 'generate failed');
-
       const raw = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
       const listing = JSON.parse(raw);
       listing.transcriptSummary = description;
@@ -800,10 +763,10 @@
     document.getElementById('transcriptionBox').style.display = 'block';
 
     document.getElementById('medianPrice').textContent = '$' + median;
-    document.getElementById('priceRange').textContent = comps > 0
-      ? 'Range $' + low + ' – $' + high + ' · ' + comps + ' live comps'
-      : 'No comps found — using estimate';
-    document.getElementById('compCount').textContent = comps > 0 ? comps : '—';
+    document.getElementById('priceRange').textContent  = comps > 0
+      ? 'Range $' + low + ' – $' + high + ' · ' + comps + ' sold comps'
+      : 'No sold comps found — this part may be rare';
+    document.getElementById('compCount').textContent   = comps > 0 ? comps : '—';
 
     const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
     const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
@@ -822,7 +785,6 @@
       ? 'Sale alert will be sent to ' + attNum + '@txt.att.net'
       : 'Add your AT&T number in Settings to receive sale alerts';
 
-    // Photos
     const strip = document.getElementById('resultPhotoStrip');
     strip.innerHTML = '';
     selectedPhotos.forEach(src => {
@@ -831,8 +793,8 @@
       strip.appendChild(img);
     });
 
-    document.getElementById('listingTitle').textContent = listing.title;
-    document.getElementById('listingDesc').textContent  = listing.description;
+    document.getElementById('listingTitle').textContent  = listing.title;
+    document.getElementById('listingDesc').textContent   = listing.description;
     document.getElementById('listingMeta').innerHTML =
       '<span class="meta-tag hi">$' + listing.price + '</span>' +
       '<span class="meta-tag">' + listing.category + '</span>' +
@@ -840,21 +802,23 @@
       '<span class="meta-tag">' + (isLocal ? 'Local Pickup' : 'Ships USPS') + '</span>' +
       '<span class="meta-tag">No Returns</span>';
 
-    document.getElementById('editTitle').value   = listing.title;
+    document.getElementById('editTitle').value    = listing.title;
     document.getElementById('titleCount').textContent = listing.title.length + ' of 80 characters';
-    document.getElementById('editPrice').value   = '$' + listing.price;
-    document.getElementById('editDesc').value    = listing.description;
+    document.getElementById('editPrice').value    = '$' + listing.price;
+    document.getElementById('editDesc').value     = listing.description;
     document.getElementById('editCategory').value = listing.category;
     document.getElementById('fbCopy').textContent = listing.facebook || listing.fbCopy || '';
 
-    // Comp cards
+    // Comp cards with X exclusion buttons
     const compGrid = document.getElementById('compGrid');
     if (compGrid) {
       compGrid.innerHTML = '';
-      (compItems || []).forEach(item => {
+      (compItems || []).forEach((item, index) => {
         const card = document.createElement('div');
         card.className = 'comp-card';
+        card.dataset.compIndex = index;
         card.innerHTML = `
+          <button class="comp-exclude-btn" onclick="toggleCompExclusion(${index})">✕</button>
           <a href="${item.url}" target="_blank">
             <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
             <div class="comp-card-title">${item.title}</div>
@@ -877,11 +841,11 @@
     const btn = document.getElementById('postEbayBtn');
     btn.disabled = true;
     btn.textContent = '⚙  Posting to eBay…';
-    const title       = document.getElementById('editTitle').value.trim();
-    const description = document.getElementById('editDesc').value.trim();
-    const rawPrice    = document.getElementById('editPrice').value.replace(/[^0-9.]/g, '');
-    const price       = parseFloat(rawPrice) || currentListing.price;
-    const category    = currentListing.categoryId || '';
+    const title        = document.getElementById('editTitle').value.trim();
+    const description  = document.getElementById('editDesc').value.trim();
+    const rawPrice     = document.getElementById('editPrice').value.replace(/[^0-9.]/g, '');
+    const price        = parseFloat(rawPrice) || currentListing.price;
+    const category     = currentListing.categoryId || '';
     const categoryName = document.getElementById('editCategory').value.trim();
     try {
       const res = await fetch('/api/post-listing', {
@@ -931,6 +895,8 @@
   function resetForm() {
     ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id => document.getElementById(id).value = '');
     selectedPhotos = [];
+    activeCompItems = [];
+    excludedIndices = new Set();
     document.getElementById('photoGrid').innerHTML = '';
     document.getElementById('analyzeBtn').disabled = true;
     const btn = document.getElementById('postEbayBtn');
