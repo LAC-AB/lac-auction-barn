@@ -61,7 +61,10 @@ export default async function handler(req, res) {
       low:    Math.round(low    * 100) / 100,
       high:   Math.round(high   * 100) / 100,
       count,
-      items: items.slice(0, 8).map(item => ({
+      items: items
+  .filter(item => parseFloat(item?.price?.value) >= 10 && parseFloat(item?.price?.value) <= 5000)
+  .sort((a, b) => parseFloat(a?.price?.value) - parseFloat(b?.price?.value))
+  .slice(0, 8).map(item => ({
         title:     item?.title,
         price:     parseFloat(item?.price?.value),
         url:       item?.itemWebUrl,
