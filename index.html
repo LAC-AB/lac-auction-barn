@@ -690,8 +690,8 @@ const partNoun = partNounIdx >= 0
 const searchQuery = partNum
   ? (vehicle + ' ' + partNum).trim()
   : vehicle
-    ? (year + ' ' + model + ' ' + partNoun).trim()
-    : description.split(' ').slice(0, 5).join(' ');
+    ? (vehicle + ' ' + description.split(' ').slice(0, 4).join(' ')).trim()
+    : description.split(' ').slice(0, 6).join(' ');
 
     let median = 45, low = 20, high = 120, comps = 0, compItems = [];
     try {
