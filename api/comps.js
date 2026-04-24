@@ -8,6 +8,8 @@ export default async function handler(req, res) {
   const appId  = process.env.EBAY_APP_ID;
   const certId = process.env.EBAY_CERT_ID;
 
+  let findingDebug = null;
+
   // ── 1. Try Finding API for SOLD listings ──────────────────────────────────
   try {
     const findingUrl =
@@ -24,7 +26,14 @@ export default async function handler(req, res) {
 
     const findingRes  = await fetch(findingUrl);
     const findingData = await findingRes.json();
-    const soldItems   = findingData?.findCompletedItemsResponse?.[0]?.searchResult?.[0]?.item || [];
+
+    // Capture raw response for debug
+    const ack      = findingData?.findCompletedItemsResponse?.[0]?.ack?.[0];
+    const errMsg   = findingData?.findCompletedItemsResponse?.[0]?.errorMessage || null;
+    const count    = findingData?.findCompletedItemsResponse?.[0]?.searchResult?.[0]?.['@count'] || '0';
+    const soldItems = findingData?.findCompletedItemsResponse?.[0]?.searchResult?.[0]?.item || [];
+
+    findingDebug = { ack, errMsg, count, itemsReturned: soldItems.length };
 
     if (soldItems.length > 0) {
       const prices = soldItems
@@ -40,11 +49,12 @@ export default async function handler(req, res) {
         const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
 
         return res.status(200).json({
-          median:   Math.round(median * 100) / 100,
-          low:      Math.round(low    * 100) / 100,
-          high:     Math.round(high   * 100) / 100,
+          median:      Math.round(median * 100) / 100,
+          low:         Math.round(low    * 100) / 100,
+          high:        Math.round(high   * 100) / 100,
           count,
-          soldData: true,
+          soldData:    true,
+          findingDebug,
           items: soldItems.slice(0, 8).map(item => ({
             title:     item?.title?.[0] || '',
             price:     parseFloat(item?.sellingStatus?.[0]?.currentPrice?.[0]?.__value__),
@@ -56,7 +66,7 @@ export default async function handler(req, res) {
       }
     }
   } catch (e) {
-    console.log('Finding API error:', e.message);
+    findingDebug = { error: e.message };
   }
 
   // ── 2. Fall back to Browse API for ACTIVE listings ────────────────────────
@@ -72,7 +82,7 @@ export default async function handler(req, res) {
 
     const tokenData = await tokenResponse.json();
     if (!tokenData.access_token) {
-      return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [] });
+      return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [], findingDebug });
     }
 
     const browseRes = await fetch(
@@ -90,7 +100,7 @@ export default async function handler(req, res) {
     const items = browseData?.itemSummaries || [];
 
     if (items.length === 0) {
-      return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [] });
+      return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [], findingDebug });
     }
 
     const prices = items
@@ -99,7 +109,7 @@ export default async function handler(req, res) {
       .sort((a, b) => a - b);
 
     if (prices.length === 0) {
-      return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [] });
+      return res.status(200).json({ median: null, low: null, high: null, count: 0, items: [], findingDebug });
     }
 
     const count  = prices.length;
@@ -109,11 +119,12 @@ export default async function handler(req, res) {
     const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
 
     return res.status(200).json({
-      median:   Math.round(median * 100) / 100,
-      low:      Math.round(low    * 100) / 100,
-      high:     Math.round(high   * 100) / 100,
+      median:      Math.round(median * 100) / 100,
+      low:         Math.round(low    * 100) / 100,
+      high:        Math.round(high   * 100) / 100,
       count,
-      soldData: false,
+      soldData:    false,
+      findingDebug,
       items: items.slice(0, 8).map(item => ({
         title:     item?.title,
         price:     parseFloat(item?.price?.value),
@@ -124,6 +135,6 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message, findingDebug });
   }
 }
