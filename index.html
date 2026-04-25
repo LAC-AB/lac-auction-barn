@@ -619,7 +619,7 @@
 
     // Facebook — full desc, shipping only if not local
     const fbShipping = localPickup ? 'Local pickup only — Los Angeles.' : 'Ships USPS. Buyer pays shipping.';
-    const fbDesc = localPickup ? descNoShipping : desc;
+    const fbDesc = descNoShipping;
     document.getElementById('fbCopy').value =
       title + '\n\n$' + price + ' — ' + fbShipping + '\n\n' + fbDesc + urlLine;
 
