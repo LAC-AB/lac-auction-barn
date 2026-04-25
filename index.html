@@ -396,6 +396,16 @@
           <div class="field-group" style="margin:0"><label class="field-label">Part Number</label><input type="text" id="partNumber" placeholder="If visible" /></div>
         </div>
         <hr class="rule-red">
+        <div class="section-label"><span class="section-label-text">Box Dimensions &amp; Weight</span><div class="section-label-line"></div></div>
+        <div class="field-row">
+          <div class="field-group" style="margin:0"><label class="field-label">Length (in)</label><input type="text" id="boxLength" placeholder="12" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Width (in)</label><input type="text" id="boxWidth" placeholder="8" /></div>
+        </div>
+        <div class="field-row" style="margin-top:10px">
+          <div class="field-group" style="margin:0"><label class="field-label">Height (in)</label><input type="text" id="boxHeight" placeholder="6" /></div>
+          <div class="field-group" style="margin:0"><label class="field-label">Weight (lbs)</label><input type="text" id="boxWeight" placeholder="2.5" /></div>
+        </div>
+        <hr class="rule-red">
         <div class="toggle-row">
           <div>
             <div class="toggle-label">Local pickup only</div>
@@ -984,7 +994,14 @@
     const model = document.getElementById('partModel').value.trim();
     const partNum = document.getElementById('partNumber').value.trim();
     const vehicle = [year, make, model].filter(Boolean).join(' ');
-    currentMeta  = { year, make, model, partNum, isLocal: localPickup };
+    currentMeta  = {
+      year, make, model, partNum, isLocal: localPickup,
+      length:    parseFloat(document.getElementById('boxLength').value)  || 12,
+      width:     parseFloat(document.getElementById('boxWidth').value)   || 8,
+      height:    parseFloat(document.getElementById('boxHeight').value)  || 6,
+      weightLbs: parseFloat(document.getElementById('boxWeight').value)  || 2,
+      weightOz:  0,
+    };
     currentFacts = { description, year, make, model, partNum, vehicle };
     await tick('Pulling Live eBay Comps', 'asking Claude to interpret your description…', 800);
     let searchQuery;
