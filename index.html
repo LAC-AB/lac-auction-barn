@@ -1159,7 +1159,7 @@
   }
 
   function resetForm() {
-    ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id => document.getElementById(id).value = '');
+    ['partDescription','partYear','partMake','partModel','partNumber','boxLength','boxWidth','boxHeight','boxWeight'].forEach(id => document.getElementById(id).value = '');
     selectedPhotos = []; activeCompItems = []; excludedIndices = new Set();
     currentCondition = 'any'; lastSearchQuery = ''; currentEbayUrl = '';
     currentFacts = {}; currentListing = null; currentMeta = {};
