@@ -618,18 +618,17 @@
     const descNoShipping = stripShipping(desc);
 
     // Facebook — full desc, shipping only if not local
-    const fbShipping = localPickup ? 'Local pickup only — Los Angeles.' : 'Ships USPS. Buyer pays shipping.';
-    const fbDesc = descNoShipping;
-    document.getElementById('fbCopy').value =
-      title + '\n\n$' + price + ' — ' + fbShipping + '\n\n' + fbDesc + urlLine;
+    const localLine = '$' + price + ' — Cash firm · Local pickup · Los Angeles\n\nAny price negotiations will be handled in person. Low-ballers, expect a wasted trip 👋😂';
+document.getElementById('fbCopy').value =
+  title + '\n\n' + localLine + '\n\n' + descNoShipping + urlLine;
 
     // OfferUp — always local, no shipping sentences
     document.getElementById('ouCopy').value =
-      title + '\n\n$' + price + ' — Local pickup · Los Angeles\n\n' + descNoShipping + urlLine;
+  title + '\n\n' + localLine + '\n\n' + descNoShipping + urlLine;
 
     // Craigslist — always local, no shipping sentences
     document.getElementById('clCopy').value =
-      title + '\n\nAsking: $' + price + '\nLocation: Los Angeles, CA\nPickup only — no shipping\n\n' + descNoShipping + urlLine;
+  title + '\n\n' + localLine + '\nLocation: Los Angeles, CA\n\n' + descNoShipping + urlLine;
   }
 
   // ── Update offer rules ────────────────────────────────────────────────────
