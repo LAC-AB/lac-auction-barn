@@ -13,11 +13,32 @@ export default async function handler(req, res) {
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const { description, year, make, model, partNum } = body;
+    const { description, year, make, model, partNum, compTitles } = body;
 
-    const vehicle = [year, make, model].filter(Boolean).join(' ');
+    let prompt;
 
-    const prompt = `You are an expert automotive parts researcher. Extract the optimal eBay search query from this part description.
+    if (compTitles) {
+      // Mode 2: Refine from good comp titles
+      prompt = `You are an expert automotive parts researcher. These are eBay listing titles the user confirmed are accurate comps for the part they are selling:
+
+${compTitles}
+
+Extract the most precise common search keywords that appear across these listings. These keywords will be used to search eBay for more accurate comps.
+
+RULES:
+- Return ONLY the search keywords, nothing else — no explanation, no punctuation, no quotes
+- Maximum 6 words
+- Focus on what makes these listings specific — part name, vehicle fitment, brand if consistent
+- Ignore condition words like "used", "new", "oem", "nice"
+- Ignore seller words like "fits", "for sale", "fast shipping"
+
+Return only the search keywords:`;
+
+    } else {
+      // Mode 1: Extract from description
+      const vehicle = [year, make, model].filter(Boolean).join(' ');
+
+      prompt = `You are an expert automotive parts researcher. Extract the optimal eBay search query from this part description.
 
 RULES:
 - Return ONLY the search keywords, nothing else — no explanation, no punctuation, no quotes
@@ -34,6 +55,7 @@ PART NUMBER: ${partNum || 'none'}
 DESCRIPTION: "${description}"
 
 Return only the search keywords:`;
+    }
 
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -52,7 +74,7 @@ Return only the search keywords:`;
     const data = await upstream.json();
     if (!upstream.ok) return res.status(upstream.status).json({ error: data });
 
-    const query = data.content?.[0]?.text?.trim() || description.split(' ').slice(0, 5).join(' ');
+    const query = data.content?.[0]?.text?.trim() || '';
 
     return res.status(200).json({ query });
 
