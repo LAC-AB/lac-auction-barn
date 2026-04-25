@@ -599,7 +599,21 @@
   document.getElementById('editTitle').addEventListener('input', function () {
     document.getElementById('titleCount').textContent = this.value.length + ' of 80 characters';
   });
-
+document.getElementById('editPrice').addEventListener('input', function () {
+    const newPrice = parseFloat(this.value.replace(/[^0-9.]/g, ''));
+    if (!isNaN(newPrice) && newPrice > 0) {
+      const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
+      const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
+      const accept  = Math.round(newPrice * acceptPct);
+      const revLow  = Math.round(newPrice * declinePct);
+      const revHigh = accept - 1;
+      const decline = revLow - 1;
+      document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
+      document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + revHigh;
+      document.getElementById('declineFloor').textContent  = 'Below $' + decline + ' (under ' + Math.round(declinePct * 100) + '%)';
+      document.getElementById('medianPrice').textContent   = '$' + newPrice;
+    }
+  });
   // ── Comp exclusion & live reprice ─────────────────────────────────────────
   function toggleCompExclusion(index) {
     if (excludedIndices.has(index)) {
