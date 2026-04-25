@@ -23,7 +23,6 @@
     --mid:       #786858;
     --muted:     #a89880;
     --green:     #2a5830;
-    --sky:       #4a7fa8;
     --line:      #d8cdb0;
     --line2:     #c4b898;
     --serif:     'Playfair Display', Georgia, serif;
@@ -31,17 +30,7 @@
     --body:      'Libre Baskerville', Georgia, serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--ivory);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-weight: 300;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      radial-gradient(ellipse at -10% -5%, rgba(232,160,32,0.12) 0%, transparent 55%),
-      radial-gradient(ellipse at 110% 90%, rgba(200,168,75,0.06) 0%, transparent 50%);
-  }
+  body { background: var(--ivory); color: var(--ink); font-family: var(--sans); font-weight: 300; min-height: 100vh; overflow-x: hidden; background-image: radial-gradient(ellipse at -10% -5%, rgba(232,160,32,0.12) 0%, transparent 55%), radial-gradient(ellipse at 110% 90%, rgba(200,168,75,0.06) 0%, transparent 50%); }
   header { background: var(--black); position: sticky; top: 0; z-index: 100; overflow: hidden; }
   header::before { content: ''; position: absolute; top: -40px; left: -60px; width: 300px; height: 120px; background: radial-gradient(ellipse, rgba(232,160,32,0.25) 0%, transparent 70%); pointer-events: none; }
   .header-gold-line { height: 2px; background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--amber) 50%, var(--gold) 80%, transparent 100%); }
@@ -129,9 +118,6 @@
   .btn-primary:disabled { background: var(--tan); color: var(--muted); cursor: not-allowed; border-color: var(--line2); }
   .btn-secondary { background: var(--ivory); color: var(--ink); border: 1px solid var(--line2); font-size: 9px; padding: 12px; }
   .btn-secondary:hover { border-color: var(--gold); color: var(--gold2); }
-  .btn-gold { background: var(--black); color: var(--gold); border: 1px solid var(--gold2); font-size: 9px; padding: 12px; }
-  .btn-gold:hover { background: #2a2010; border-color: var(--gold); }
-  .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
   .processing { display: none; text-align: center; padding: 56px 18px; }
   .proc-icon { font-size: 34px; display: block; margin-bottom: 20px; animation: spin-slow 4s linear infinite; }
   @keyframes spin-slow { to { transform: rotate(360deg); } }
@@ -146,12 +132,24 @@
   .comp-count { text-align: right; padding-top: 16px; position: relative; z-index: 1; }
   .comp-number { font-family: var(--serif); font-weight: 900; font-size: 50px; color: var(--ivory); line-height: 1; opacity: 0.8; }
   .comp-label { font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 3px; }
-  .condition-bar { display: flex; align-items: center; gap: 8px; margin: 12px 0 8px; }
+
+  /* ── SEARCH BAR ─────────────────────────── */
+  .search-bar { display: flex; gap: 6px; margin: 12px 0 8px; }
+  .search-input { flex: 1; background: var(--black); border: 1px solid var(--gold2); color: var(--ivory); font-family: var(--sans); font-size: 11px; padding: 8px 12px; letter-spacing: 1px; border-radius: 0; -webkit-appearance: none; }
+  .search-input:focus { outline: none; border-color: var(--gold); }
+  .search-input::placeholder { color: #555; }
+  .search-go-btn { background: var(--gold2); border: none; color: var(--black); font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; padding: 8px 14px; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .search-go-btn:hover { background: var(--gold); }
+
+  /* ── CONDITION FILTER ───────────────────── */
+  .condition-bar { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; }
   .condition-label { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
   .condition-btns { display: flex; gap: 4px; }
   .condition-btn { font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--line2); background: var(--ivory); color: var(--mid); cursor: pointer; transition: all 0.2s; }
   .condition-btn.active { background: var(--black); color: var(--gold); border-color: var(--gold2); }
   .condition-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold2); }
+
+  /* ── COMP CARDS ─────────────────────────── */
   .comp-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; font-size: 12px; position: relative; transition: opacity 0.2s; }
   .comp-card.excluded { opacity: 0.35; }
   .comp-card.excluded .comp-card-price { text-decoration: line-through; color: #666; }
@@ -166,6 +164,14 @@
   .comp-exclude-hint { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: #888; text-transform: uppercase; text-align: right; margin: 4px 0 6px; }
   .refine-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 16px; gap: 10px; }
   .refine-status { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; flex: 1; }
+
+  /* ── REGEN INDICATOR ────────────────────── */
+  .regen-indicator { display: none; align-items: center; gap: 8px; padding: 8px 14px; background: var(--warm); border: 1px solid var(--line); border-left: 3px solid var(--gold); margin-bottom: 8px; }
+  .regen-indicator.visible { display: flex; }
+  .regen-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse-gold 1s infinite; flex-shrink: 0; }
+  @keyframes pulse-gold { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .regen-text { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 3px; color: var(--gold2); text-transform: uppercase; }
+
   .offer-table { border: 1px solid var(--line); margin-bottom: 2px; background: var(--ivory); overflow: hidden; }
   .offer-table-header { background: var(--parchment); border-bottom: 1px solid var(--line2); padding: 7px 14px; font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 5px; color: var(--mid); text-transform: uppercase; }
   .offer-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 10px; }
@@ -263,10 +269,7 @@
     <div class="hero">
       <span class="hero-icon">🎙</span>
       <div class="hero-title">Just <em>speak.</em><br>We handle everything.</div>
-      <div class="hero-sub">
-        Describe the part out loud. Add photos.<br>
-        The agent researches live eBay data and writes your listing.
-      </div>
+      <div class="hero-sub">Describe the part out loud. Add photos.<br>The agent researches live eBay data and writes your listing.</div>
       <div class="hero-example">
         <div class="hero-example-label">✦  Speak naturally — just like this</div>
         <div class="hero-example-text">"Passenger mirror off a 2003 Silverado — came off when we upgraded to aftermarket fenders. Glass is perfect, no chips. Motor works, I tested it. Small scuff on the bottom edge, maybe an inch — doesn't affect function at all."</div>
@@ -361,6 +364,12 @@
         </div>
       </div>
 
+      <!-- EDITABLE SEARCH BAR -->
+      <div class="search-bar">
+        <input class="search-input" type="text" id="compSearchInput" placeholder="eBay search query…" />
+        <button class="search-go-btn" onclick="manualSearch()">Search eBay</button>
+      </div>
+
       <div class="condition-bar">
         <span class="condition-label">Condition</span>
         <div class="condition-btns">
@@ -375,9 +384,15 @@
 
       <div class="refine-row">
         <span class="refine-status" id="refineStatus"></span>
-        <button class="btn-gold" id="refineBtn" onclick="refineComps()" style="font-family:var(--sans);font-weight:600;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:10px 16px;border:1px solid var(--gold2);background:var(--black);color:var(--gold);cursor:pointer;white-space:nowrap;">
+        <button id="refineBtn" onclick="refineComps()" style="font-family:var(--sans);font-weight:600;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:10px 16px;border:1px solid var(--gold2);background:var(--black);color:var(--gold);cursor:pointer;white-space:nowrap;">
           ✦ Refine from Good Comps
         </button>
+      </div>
+
+      <!-- REGEN INDICATOR -->
+      <div class="regen-indicator" id="regenIndicator">
+        <div class="regen-dot"></div>
+        <span class="regen-text">Updating listing copy to match new comps…</span>
       </div>
 
       <div class="offer-table">
@@ -536,6 +551,10 @@
   let currentCondition = 'any';
   let lastSearchQuery = '';
   let currentEbayUrl = '';
+  let regenDebounceTimer = null;
+
+  // Core description and facts used for regeneration
+  let currentFacts = {};
 
   window.addEventListener('load', () => {
     const num = localStorage.getItem('attNumber');
@@ -571,67 +590,175 @@
     document.getElementById('localPickupToggle').classList.toggle('on', localPickup);
   }
 
-  // ── Platform copy helper ──────────────────────────────────────────────────
-  function copyPlatform(id, btn) {
-    const text = document.getElementById(id).value;
-    navigator.clipboard.writeText(text)
-      .then(() => { btn.textContent = '✓ Copied'; setTimeout(() => btn.textContent = 'Copy', 2000); })
-      .catch(() => showToast('Copy failed'));
+  // ── Shipping strip for local platform copies ──────────────────────────────
+  function stripShipping(text) {
+    // Remove sentences that mention shipping, usps, tracking, buyer pays
+    return text.split(/(?<=[.!?])\s+/).filter(sentence => {
+      const lower = sentence.toLowerCase();
+      return !lower.includes('ship') && !lower.includes('usps') && !lower.includes('tracking') && !lower.includes('buyer pays') && !lower.includes('buyer covers') && !lower.includes('postage');
+    }).join(' ').trim();
   }
 
-  // ── Build platform copies from listing data ───────────────────────────────
-  function buildPlatformCopies(listing, price, ebayUrl) {
-    const title = listing.title || document.getElementById('editTitle').value;
-    const desc  = listing.description || document.getElementById('editDesc').value;
-    const p     = price || listing.price;
+  // ── Build platform copies from editDesc + editPrice ───────────────────────
+  function buildPlatformCopies(ebayUrl) {
+    const title = document.getElementById('editTitle').value;
+    const desc  = document.getElementById('editDesc').value;
+    const price = document.getElementById('editPrice').value.replace(/[^0-9.]/g, '') || '—';
     const url   = ebayUrl || currentEbayUrl || '';
     const urlLine = url ? '\n\neBay listing: ' + url : '';
 
-    // Facebook — conversational, mentions shipping if not local
-    const fbShipping = localPickup ? 'Local pickup only — Los Angeles area.' : 'Ships USPS. Buyer pays shipping.';
-    const fb = title + '\n\n$' + p + ' — ' + fbShipping + '\n\n' + desc + urlLine;
+    const descNoShipping = stripShipping(desc);
 
-    // OfferUp — local pickup always, short and punchy
-    const ou = title + '\n\n$' + p + ' — Local pickup · Los Angeles\n\n' + desc + urlLine;
+    // Facebook — full desc, shipping only if not local
+    const fbShipping = localPickup ? 'Local pickup only — Los Angeles.' : 'Ships USPS. Buyer pays shipping.';
+    const fbDesc = localPickup ? descNoShipping : desc;
+    document.getElementById('fbCopy').value =
+      title + '\n\n$' + price + ' — ' + fbShipping + '\n\n' + fbDesc + urlLine;
 
-    // Craigslist — local pickup always, slightly more structured
-    const cl = title + '\n\nAsking: $' + p + '\nLocation: Los Angeles, CA\nPickup only — no shipping\n\n' + desc + urlLine;
+    // OfferUp — always local, no shipping sentences
+    document.getElementById('ouCopy').value =
+      title + '\n\n$' + price + ' — Local pickup · Los Angeles\n\n' + descNoShipping + urlLine;
 
-    document.getElementById('fbCopy').value = fb;
-    document.getElementById('ouCopy').value = ou;
-    document.getElementById('clCopy').value = cl;
+    // Craigslist — always local, no shipping sentences
+    document.getElementById('clCopy').value =
+      title + '\n\nAsking: $' + price + '\nLocation: Los Angeles, CA\nPickup only — no shipping\n\n' + descNoShipping + urlLine;
+  }
+
+  // ── Update offer rules ────────────────────────────────────────────────────
+  function updateOfferRules(price) {
+    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
+    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
+    const accept  = Math.round(price * acceptPct);
+    const revLow  = Math.round(price * declinePct);
+    document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
+    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
+    document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
+  }
+
+  // ── Regenerate listing copy from updated comps ────────────────────────────
+  async function regenListing(compItems, median) {
+    if (!currentFacts.description) return;
+    document.getElementById('regenIndicator').classList.add('visible');
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          max_tokens: 1400,
+          compItems: compItems,
+          facts: { ...currentFacts, median, isLocal: localPickup }
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error('generate failed');
+      const raw = data.content.map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+      const listing = JSON.parse(raw);
+      currentListing = listing;
+
+      // Update edit fields
+      document.getElementById('editTitle').value = listing.title;
+      document.getElementById('titleCount').textContent = listing.title.length + ' of 80 characters';
+      document.getElementById('editDesc').value  = listing.description;
+
+      // Update listing preview
+      document.getElementById('listingTitle').textContent = listing.title;
+      document.getElementById('listingDesc').textContent  = listing.description;
+      document.getElementById('listingMeta').innerHTML =
+        '<span class="meta-tag hi">$' + median + '</span>' +
+        '<span class="meta-tag">' + (listing.category || '') + '</span>' +
+        '<span class="meta-tag">' + (listing.condition || 'Used') + '</span>' +
+        '<span class="meta-tag">' + (localPickup ? 'Local Pickup' : 'Ships USPS') + '</span>' +
+        '<span class="meta-tag">No Returns</span>';
+
+      // Rebuild all platform copies from fresh description
+      buildPlatformCopies(currentEbayUrl);
+
+    } catch (err) {
+      console.error('Regen failed:', err);
+    }
+    document.getElementById('regenIndicator').classList.remove('visible');
+  }
+
+  // ── Schedule regen with debounce (for exclusion taps) ────────────────────
+  function scheduleRegen(compItems, median) {
+    clearTimeout(regenDebounceTimer);
+    regenDebounceTimer = setTimeout(() => {
+      regenListing(compItems, median);
+    }, 2000);
+  }
+
+  // ── Platform copy button ──────────────────────────────────────────────────
+  function copyPlatform(id, btn) {
+    navigator.clipboard.writeText(document.getElementById(id).value)
+      .then(() => { btn.textContent = '✓ Copied'; setTimeout(() => btn.textContent = 'Copy', 2000); })
+      .catch(() => showToast('Copy failed'));
   }
 
   // ── Condition filter ──────────────────────────────────────────────────────
   async function setCondition(cond) {
     if (cond === currentCondition) return;
     currentCondition = cond;
-    ['any','used','new'].forEach(c => {
-      document.getElementById('condBtn-' + c).classList.toggle('active', c === cond);
-    });
+    ['any','used','new'].forEach(c => document.getElementById('condBtn-' + c).classList.toggle('active', c === cond));
     if (!lastSearchQuery) return;
-    document.getElementById('refineStatus').textContent = 'Filtering by condition…';
-    await fetchAndRenderComps(lastSearchQuery);
+    document.getElementById('refineStatus').textContent = 'Filtering…';
+    const compData = await fetchAndRenderComps(lastSearchQuery);
     document.getElementById('refineStatus').textContent = '';
+    if (compData && compData.count > 0) {
+      regenListing(compData.items || [], compData.median);
+    }
   }
+
+  // ── Manual search bar ─────────────────────────────────────────────────────
+  async function manualSearch() {
+    const query = document.getElementById('compSearchInput').value.trim();
+    if (!query) return;
+    lastSearchQuery = query;
+    document.getElementById('refineStatus').textContent = 'Searching…';
+    const compData = await fetchAndRenderComps(query);
+    document.getElementById('refineStatus').textContent = compData && compData.count > 0
+      ? '✓ ' + compData.count + ' results for: ' + query
+      : 'No results';
+    if (compData && compData.count > 0) {
+      regenListing(compData.items || [], compData.median);
+    }
+  }
+
+  // Allow Enter key in search bar
+  document.getElementById('compSearchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') manualSearch();
+  });
 
   async function fetchAndRenderComps(query) {
     const url = '/api/comps?query=' + encodeURIComponent(query) +
       (currentCondition !== 'any' ? '&condition=' + currentCondition : '');
-    const compRes  = await fetch(url);
-    const compData = await compRes.json();
+    try {
+      const compRes  = await fetch(url);
+      const compData = await compRes.json();
 
-    if (compData.conditionFallback) {
-      showToast('No ' + currentCondition + ' results — showing all conditions');
-    }
+      if (compData.conditionFallback) showToast('No ' + currentCondition + ' results — showing all');
 
-    if (compData.count > 0) {
-      activeCompItems = compData.items || [];
-      excludedIndices = new Set();
-      renderCompCards(activeCompItems);
-      updatePricingFromMedian(compData.median, compData.low, compData.high, compData.count);
+      if (compData.count > 0) {
+        activeCompItems = compData.items || [];
+        excludedIndices = new Set();
+        renderCompCards(activeCompItems);
+
+        // Update price banner
+        document.getElementById('medianPrice').textContent = '$' + compData.median;
+        document.getElementById('priceRange').textContent  = 'Range $' + Math.round(compData.low) + ' – $' + Math.round(compData.high) + ' · ' + compData.count + ' comps';
+        document.getElementById('compCount').textContent   = compData.count;
+
+        // Update price field and offer rules
+        document.getElementById('editPrice').value = '$' + compData.median;
+        updateOfferRules(compData.median);
+
+        // Update search input to show current query
+        document.getElementById('compSearchInput').value = query;
+      }
+      return compData;
+    } catch (e) {
+      console.error('Fetch comps error:', e);
+      return null;
     }
-    return compData;
   }
 
   function renderCompCards(items) {
@@ -653,32 +780,10 @@
     });
   }
 
-  function updatePricingFromMedian(median, low, high, count) {
-    const m = Math.round(median * 100) / 100;
-    document.getElementById('medianPrice').textContent = '$' + m;
-    document.getElementById('priceRange').textContent  = 'Range $' + Math.round(low) + ' – $' + Math.round(high) + ' · ' + count + ' comps';
-    document.getElementById('compCount').textContent   = count;
-
-    // Update edit price field and platform copies with new median
-    document.getElementById('editPrice').value = '$' + m;
-    updateOfferRules(m);
-    if (currentListing) buildPlatformCopies(currentListing, m, currentEbayUrl);
-  }
-
-  function updateOfferRules(price) {
-    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
-    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
-    const accept  = Math.round(price * acceptPct);
-    const revLow  = Math.round(price * declinePct);
-    document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
-    document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
-  }
-
   // ── Speech Recognition ────────────────────────────────────────────────────
   function toggleMic() {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Speech recognition requires Chrome. Please use Chrome on your Chromebook.');
+      alert('Speech recognition requires Chrome.');
       return;
     }
     if (isRecording) { stopMic(); } else { startMic(); }
@@ -725,7 +830,6 @@
     checkReady();
   }
 
-  // ── Photo Upload ──────────────────────────────────────────────────────────
   document.getElementById('photoInput').addEventListener('change', function(e) {
     const files = Array.from(e.target.files);
     files.forEach(file => {
@@ -762,17 +866,23 @@
     document.getElementById('titleCount').textContent = this.value.length + ' of 80 characters';
   });
 
-  // Price field — update banner, offer rules, and all platform copies
+  // Price edit — update banner, offer rules, rebuild platform copies
   document.getElementById('editPrice').addEventListener('input', function () {
     const newPrice = parseFloat(this.value.replace(/[^0-9.]/g, ''));
     if (!isNaN(newPrice) && newPrice > 0) {
       document.getElementById('medianPrice').textContent = '$' + newPrice;
       updateOfferRules(newPrice);
-      if (currentListing) buildPlatformCopies(currentListing, newPrice, currentEbayUrl);
     }
+    buildPlatformCopies(currentEbayUrl);
   });
 
-  // ── Comp exclusion & live reprice ─────────────────────────────────────────
+  // Description edit — rebuild platform copies live
+  document.getElementById('editDesc').addEventListener('input', function () {
+    buildPlatformCopies(currentEbayUrl);
+    document.getElementById('listingDesc').textContent = this.value;
+  });
+
+  // ── Comp exclusion ────────────────────────────────────────────────────────
   function toggleCompExclusion(index) {
     if (excludedIndices.has(index)) { excludedIndices.delete(index); }
     else { excludedIndices.add(index); }
@@ -782,10 +892,8 @@
       const btn = card.querySelector('.comp-exclude-btn');
       if (btn) btn.textContent = excludedIndices.has(index) ? '↩' : '✕';
     }
-    recalcPricing();
-  }
 
-  function recalcPricing() {
+    // Recalc pricing from active comps
     const activePrices = activeCompItems
       .filter((_, i) => !excludedIndices.has(i))
       .map(item => item.price)
@@ -796,16 +904,13 @@
       document.getElementById('medianPrice').textContent = '$—';
       document.getElementById('priceRange').textContent = 'All comps excluded';
       document.getElementById('compCount').textContent = '—';
-      document.getElementById('acceptFloor').textContent = '—';
-      document.getElementById('reviewRange').textContent = '—';
-      document.getElementById('declineFloor').textContent = '—';
       return;
     }
 
-    const count = activePrices.length;
-    const low   = activePrices[0];
-    const high  = activePrices[count - 1];
-    const mid   = Math.floor(count / 2);
+    const count  = activePrices.length;
+    const low    = activePrices[0];
+    const high   = activePrices[count - 1];
+    const mid    = Math.floor(count / 2);
     const median = count % 2 !== 0 ? activePrices[mid] : (activePrices[mid - 1] + activePrices[mid]) / 2;
     const m = Math.round(median * 100) / 100;
 
@@ -814,7 +919,11 @@
     document.getElementById('compCount').textContent   = count;
     document.getElementById('editPrice').value = '$' + m;
     updateOfferRules(m);
-    if (currentListing) buildPlatformCopies(currentListing, m, currentEbayUrl);
+    buildPlatformCopies(currentEbayUrl);
+
+    // Debounced regen — fires 2s after last tap
+    const activeItems = activeCompItems.filter((_, i) => !excludedIndices.has(i));
+    scheduleRegen(activeItems, m);
   }
 
   // ── Refine comps ──────────────────────────────────────────────────────────
@@ -822,10 +931,7 @@
     const goodComps = activeCompItems.filter((_, i) => !excludedIndices.has(i));
     const badComps  = activeCompItems.filter((_, i) =>  excludedIndices.has(i));
 
-    if (goodComps.length === 0) {
-      showToast('No good comps to refine from');
-      return;
-    }
+    if (goodComps.length === 0) { showToast('No good comps to refine from'); return; }
 
     const btn = document.getElementById('refineBtn');
     const status = document.getElementById('refineStatus');
@@ -844,23 +950,24 @@
       });
       const extractData = await extractRes.json();
       const refinedQuery = extractData.query;
-      if (!refinedQuery) throw new Error('No refined query returned');
+      if (!refinedQuery) throw new Error('No refined query');
 
-      status.textContent = 'Searching eBay with refined query…';
+      status.textContent = 'Searching eBay…';
       lastSearchQuery = refinedQuery;
-
       const compData = await fetchAndRenderComps(refinedQuery);
 
-      if (!compData.count) {
+      if (!compData || !compData.count) {
         showToast('No results — try excluding different comps');
-        status.textContent = 'No results for refined query';
+        status.textContent = 'No results';
       } else {
-        status.textContent = '✓ Refined: ' + refinedQuery;
+        status.textContent = '✓ ' + refinedQuery;
         showToast('Comps refined');
+        // Immediate regen on refine (no debounce — user explicitly asked)
+        await regenListing(compData.items || [], compData.median);
       }
     } catch (err) {
       console.error('Refine error:', err);
-      showToast('Refine failed — try again');
+      showToast('Refine failed');
       status.textContent = '';
     }
 
@@ -883,9 +990,7 @@
     excludedIndices = new Set();
     currentCondition = 'any';
     currentEbayUrl = '';
-    ['any','used','new'].forEach(c => {
-      document.getElementById('condBtn-' + c).classList.toggle('active', c === 'any');
-    });
+    ['any','used','new'].forEach(c => document.getElementById('condBtn-' + c).classList.toggle('active', c === 'any'));
 
     const description = document.getElementById('partDescription').value.trim();
     const year        = document.getElementById('partYear').value.trim();
@@ -894,7 +999,8 @@
     const partNum     = document.getElementById('partNumber').value.trim();
     const vehicle     = [year, make, model].filter(Boolean).join(' ');
 
-    currentMeta = { year, make, model, partNum, isLocal: localPickup };
+    currentMeta  = { year, make, model, partNum, isLocal: localPickup };
+    currentFacts = { description, year, make, model, partNum, vehicle };
 
     await tick('Pulling live eBay comps', 'asking Claude to interpret your description…', 800);
 
@@ -916,6 +1022,7 @@
     }
 
     lastSearchQuery = searchQuery;
+    document.getElementById('compSearchInput').value = searchQuery;
 
     let median = 45, low = 20, high = 120, comps = 0, compItems = [];
     try {
@@ -932,13 +1039,14 @@
     } catch (e) { console.log('comp error', e); }
 
     activeCompItems = compItems;
+    currentFacts = { ...currentFacts, median, low, high, comps };
 
     await tick('Studying top-selling listings', 'modelling after the highest converting comps…', 1200);
     setStep(4);
     await tick('Writing your listing', 'combining your facts with proven sales language…', 1600);
     setStep(5);
 
-    await generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery);
+    await generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems);
   }
 
   function tick(step, label, delay) {
@@ -956,7 +1064,7 @@
     }
   }
 
-  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {
+  async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems) {
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
@@ -994,7 +1102,7 @@
     document.getElementById('compCount').textContent   = comps > 0 ? comps : '—';
 
     updateOfferRules(median);
-    document.getElementById('shippingRule').textContent  = isLocal ? 'Local pickup only' : 'USPS calculated · Buyer pays';
+    document.getElementById('shippingRule').textContent = isLocal ? 'Local pickup only' : 'USPS calculated · Buyer pays';
 
     const attNum = localStorage.getItem('attNumber');
     document.getElementById('notifyRowText').textContent = attNum
@@ -1024,7 +1132,8 @@
     document.getElementById('editDesc').value     = listing.description;
     document.getElementById('editCategory').value = listing.category;
 
-    buildPlatformCopies(listing, listing.price, '');
+    // Build platform copies from initial listing
+    buildPlatformCopies('');
 
     document.getElementById('refineStatus').textContent = '';
     document.getElementById('refineBtn').disabled = false;
@@ -1064,8 +1173,7 @@
         confirm.style.display = 'block';
         btn.textContent = '✓  Listed — eBay #' + data.itemId;
         btn.style.background = 'var(--green)';
-        // Update all platform copies with eBay URL
-        buildPlatformCopies(currentListing, price, data.listingUrl);
+        buildPlatformCopies(data.listingUrl);
         addInventoryItem(title, price, data.itemId);
         const attNum = localStorage.getItem('attNumber');
         if (attNum) await sendSaleNotification({ phone: attNum, itemTitle: title, salePrice: price, itemId: data.itemId, orderId: '' });
@@ -1094,18 +1202,17 @@
 
   function resetForm() {
     ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id => document.getElementById(id).value = '');
-    selectedPhotos = [];
-    activeCompItems = [];
-    excludedIndices = new Set();
-    currentCondition = 'any';
-    lastSearchQuery = '';
-    currentEbayUrl = '';
+    selectedPhotos = []; activeCompItems = []; excludedIndices = new Set();
+    currentCondition = 'any'; lastSearchQuery = ''; currentEbayUrl = '';
+    currentFacts = {}; currentListing = null; currentMeta = {};
+    clearTimeout(regenDebounceTimer);
     document.getElementById('photoGrid').innerHTML = '';
     document.getElementById('analyzeBtn').disabled = true;
     const btn = document.getElementById('postEbayBtn');
     btn.disabled = false; btn.textContent = '✦   Post to eBay'; btn.style.background = '';
     document.getElementById('ebayConfirm').style.display = 'none';
-    localPickup = false; currentListing = null; currentMeta = {};
+    document.getElementById('regenIndicator').classList.remove('visible');
+    localPickup = false;
     document.getElementById('localPickupToggle').classList.remove('on');
     for (let i = 1; i <= 5; i++) { const el = document.getElementById('step' + i); el.classList.remove('active','done'); if (i===1) el.classList.add('active'); }
     showView('upload');
