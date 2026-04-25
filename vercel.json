@@ -3,6 +3,7 @@
     "api/comps.js": { "maxDuration": 30 },
     "api/generate.js": { "maxDuration": 30 },
     "api/notify.js": { "maxDuration": 30 },
-    "api/post-listing.js": { "maxDuration": 30 }
+    "api/post-listing.js": { "maxDuration": 30 },
+    "api/extract-query.js": { "maxDuration": 30 }
   }
 }
