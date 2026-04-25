@@ -69,19 +69,24 @@ export default async function handler(req, res) {
 
   // ── Shipping details ───────────────────────────────────────────────────────
   const shippingXml = shippingLocal
-    ? `<ShippingDetails>
-        <ShippingType>Calculated</ShippingType>
-        <NoShipping>true</NoShipping>
-      </ShippingDetails>
-      <PickupInStoreDetails>
-        <EligibleForPickupInStore>true</EligibleForPickupInStore>
-      </PickupInStoreDetails>`
     : `<ShippingDetails>
         <ShippingType>Calculated</ShippingType>
         <CalculatedShippingRate>
           <ShippingPackage>PackageThickEnvelope</ShippingPackage>
-          <WeightMajor measurementSystem="English" unit="lbs">2</WeightMajor>
-          <WeightMinor measurementSystem="English" unit="oz">0</WeightMinor>
+          <WeightMajor measurementSystem="English" unit="lbs">${Math.floor(weightLbs)}</WeightMajor>
+          <WeightMinor measurementSystem="English" unit="oz">${Math.round(weightOz)}</WeightMinor>
+          <PackagingHandlingCosts currencyID="USD">0.00</PackagingHandlingCosts>
+          <MeasurementUnit>English</MeasurementUnit>
+          <PackageLength measurementSystem="English" unit="in">${Math.round(length || 12)}</PackageLength>
+          <PackageWidth measurementSystem="English" unit="in">${Math.round(width || 8)}</PackageWidth>
+          <PackageDepth measurementSystem="English" unit="in">${Math.round(height || 6)}</PackageDepth>
+        </CalculatedShippingRate>
+        <ShippingServiceOptions>
+          <ShippingServicePriority>1</ShippingServicePriority>
+          <ShippingService>USPSPriority</ShippingService>
+          <ShippingServiceAdditionalCost currencyID="USD">0.00</ShippingServiceAdditionalCost>
+        </ShippingServiceOptions>
+      </ShippingDetails>`;
         </CalculatedShippingRate>
         <ShippingServiceOptions>
           <ShippingServicePriority>1</ShippingServicePriority>
