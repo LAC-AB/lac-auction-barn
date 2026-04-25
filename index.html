@@ -131,6 +131,7 @@
   .btn-secondary:hover { border-color: var(--gold); color: var(--gold2); }
   .btn-gold { background: var(--black); color: var(--gold); border: 1px solid var(--gold2); font-size: 9px; padding: 12px; }
   .btn-gold:hover { background: #2a2010; border-color: var(--gold); }
+  .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
   .processing { display: none; text-align: center; padding: 56px 18px; }
   .proc-icon { font-size: 34px; display: block; margin-bottom: 20px; animation: spin-slow 4s linear infinite; }
   @keyframes spin-slow { to { transform: rotate(360deg); } }
@@ -145,6 +146,16 @@
   .comp-count { text-align: right; padding-top: 16px; position: relative; z-index: 1; }
   .comp-number { font-family: var(--serif); font-weight: 900; font-size: 50px; color: var(--ivory); line-height: 1; opacity: 0.8; }
   .comp-label { font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 3px; }
+
+  /* ── CONDITION FILTER ───────────────────── */
+  .condition-bar { display: flex; align-items: center; gap: 8px; margin: 12px 0 8px; }
+  .condition-label { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+  .condition-btns { display: flex; gap: 4px; }
+  .condition-btn { font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--line2); background: var(--ivory); color: var(--mid); cursor: pointer; transition: all 0.2s; }
+  .condition-btn.active { background: var(--black); color: var(--gold); border-color: var(--gold2); }
+  .condition-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold2); }
+
+  /* ── COMP CARDS ─────────────────────────── */
   .comp-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; font-size: 12px; position: relative; transition: opacity 0.2s; }
   .comp-card.excluded { opacity: 0.35; }
   .comp-card.excluded .comp-card-price { text-decoration: line-through; color: #666; }
@@ -156,9 +167,10 @@
   .comp-exclude-btn { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: rgba(192,41,26,0.85); border: none; border-radius: 50%; color: white; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; line-height: 1; transition: background 0.2s; }
   .comp-exclude-btn:hover { background: var(--red); }
   .comp-card.excluded .comp-exclude-btn { background: #555; }
-  .comp-exclude-hint { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: #888; text-transform: uppercase; text-align: right; margin: 8px 0 6px; }
-  .refine-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 16px; }
-  .refine-status { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .comp-exclude-hint { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: #888; text-transform: uppercase; text-align: right; margin: 4px 0 6px; }
+  .refine-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 16px; gap: 10px; }
+  .refine-status { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; flex: 1; }
+
   .offer-table { border: 1px solid var(--line); margin-bottom: 2px; background: var(--ivory); overflow: hidden; }
   .offer-table-header { background: var(--parchment); border-bottom: 1px solid var(--line2); padding: 7px 14px; font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 5px; color: var(--mid); text-transform: uppercase; }
   .offer-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 10px; }
@@ -255,7 +267,7 @@
       <div class="process-steps">
         <div class="process-step"><div class="process-num">I</div><div><div class="process-title">Speak your description</div><div class="process-desc">Tap the mic, describe the part — condition, history, fitment, what works</div></div></div>
         <div class="process-step"><div class="process-num">II</div><div><div class="process-title">Add photos</div><div class="process-desc">Upload stills directly from your phone camera</div></div></div>
-        <div class="process-step"><div class="process-num">III</div><div><div class="process-title">Pulls live eBay comparable sales</div><div class="process-desc">Real median prices from actual sold listings — never estimates</div></div></div>
+        <div class="process-step"><div class="process-num">III</div><div><div class="process-title">Pulls live eBay comparable sales</div><div class="process-desc">Real median prices from actual listings — never estimates</div></div></div>
         <div class="process-step"><div class="process-num">IV</div><div><div class="process-title">Writes in the style of top sellers</div><div class="process-desc">Studies the highest-converting listings and writes like them — using your facts as the foundation</div></div></div>
       </div>
     </div>
@@ -332,7 +344,7 @@
       <div class="section-label"><span class="section-label-text">Live eBay comparable sales</span><div class="section-label-line"></div></div>
       <div class="price-banner">
         <div>
-          <div class="price-label">Median sold price</div>
+          <div class="price-label">Median price</div>
           <div class="price-value" id="medianPrice">$—</div>
           <div class="price-range" id="priceRange">—</div>
         </div>
@@ -342,14 +354,24 @@
         </div>
       </div>
 
+      <!-- CONDITION FILTER -->
+      <div class="condition-bar">
+        <span class="condition-label">Condition</span>
+        <div class="condition-btns">
+          <button class="condition-btn active" id="condBtn-any" onclick="setCondition('any')">Any</button>
+          <button class="condition-btn" id="condBtn-used" onclick="setCondition('used')">Used</button>
+          <button class="condition-btn" id="condBtn-new" onclick="setCondition('new')">New</button>
+        </div>
+      </div>
+
       <div class="comp-exclude-hint">Tap ✕ to exclude · tap ↩ to restore</div>
       <div id="compGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:0 0 8px;"></div>
 
-      <!-- REFINE COMPS ROW -->
+      <!-- REFINE ROW -->
       <div class="refine-row">
         <span class="refine-status" id="refineStatus"></span>
-        <button class="btn btn-gold" id="refineBtn" onclick="refineComps()" style="width:auto;padding:10px 20px;">
-          ✦ Refine Search from Good Comps
+        <button class="btn-gold" id="refineBtn" onclick="refineComps()" style="font-family:var(--sans);font-weight:600;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:10px 16px;border:1px solid var(--gold2);background:var(--black);color:var(--gold);cursor:pointer;white-space:nowrap;">
+          ✦ Refine from Good Comps
         </button>
       </div>
 
@@ -481,10 +503,10 @@
   let currentMeta = {};
   let recognition = null;
   let isRecording = false;
-
-  // Comp exclusion state
   let activeCompItems = [];
   let excludedIndices = new Set();
+  let currentCondition = 'any';
+  let lastSearchQuery = '';
 
   window.addEventListener('load', () => {
     const num = localStorage.getItem('attNumber');
@@ -518,6 +540,82 @@
   function togglePickup() {
     localPickup = !localPickup;
     document.getElementById('localPickupToggle').classList.toggle('on', localPickup);
+  }
+
+  // ── Condition filter ──────────────────────────────────────────────────────
+  async function setCondition(cond) {
+    if (cond === currentCondition) return;
+    currentCondition = cond;
+    ['any','used','new'].forEach(c => {
+      document.getElementById('condBtn-' + c).classList.toggle('active', c === cond);
+    });
+    if (!lastSearchQuery) return;
+    document.getElementById('refineStatus').textContent = 'Filtering by condition…';
+    await fetchAndRenderComps(lastSearchQuery);
+    document.getElementById('refineStatus').textContent = '';
+  }
+
+  async function fetchAndRenderComps(query) {
+    const url = '/api/comps?query=' + encodeURIComponent(query) +
+      (currentCondition !== 'any' ? '&condition=' + currentCondition : '');
+    const compRes  = await fetch(url);
+    const compData = await compRes.json();
+
+    if (compData.conditionFallback) {
+      showToast('No ' + currentCondition + ' results — showing all conditions');
+    }
+
+    if (compData.count > 0) {
+      activeCompItems = compData.items || [];
+      excludedIndices = new Set();
+      renderCompCards(activeCompItems);
+      updatePricingFromItems(activeCompItems);
+      document.getElementById('priceRange').textContent =
+        'Range $' + Math.round(compData.low) + ' – $' + Math.round(compData.high) + ' · ' + compData.count + ' comps';
+      document.getElementById('compCount').textContent = compData.count;
+      document.getElementById('medianPrice').textContent = '$' + compData.median;
+    }
+    return compData;
+  }
+
+  function renderCompCards(items) {
+    const compGrid = document.getElementById('compGrid');
+    compGrid.innerHTML = '';
+    items.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'comp-card';
+      card.dataset.compIndex = index;
+      card.innerHTML = `
+        <button class="comp-exclude-btn" onclick="toggleCompExclusion(${index})">✕</button>
+        <a href="${item.url}" target="_blank">
+          <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
+          <div class="comp-card-title">${item.title}</div>
+          <div class="comp-card-price">$${item.price}</div>
+          <div class="comp-card-condition">${item.condition || ''}</div>
+        </a>`;
+      compGrid.appendChild(card);
+    });
+  }
+
+  function updatePricingFromItems(items) {
+    const prices = items.map(i => i.price).filter(p => !isNaN(p) && p >= 10).sort((a, b) => a - b);
+    if (prices.length === 0) return;
+    const count  = prices.length;
+    const low    = prices[0];
+    const high   = prices[count - 1];
+    const mid    = Math.floor(count / 2);
+    const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
+    const m = Math.round(median * 100) / 100;
+    document.getElementById('medianPrice').textContent = '$' + m;
+    document.getElementById('priceRange').textContent  = 'Range $' + Math.round(low) + ' – $' + Math.round(high) + ' · ' + count + ' comps';
+    document.getElementById('compCount').textContent   = count;
+    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
+    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
+    const accept  = Math.round(m * acceptPct);
+    const revLow  = Math.round(m * declinePct);
+    document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
+    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
+    document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
   }
 
   // ── Speech Recognition ────────────────────────────────────────────────────
@@ -594,7 +692,6 @@
 
   function removePhoto(i) { selectedPhotos.splice(i, 1); renderPhotoGrid(); }
 
-  // ── Ready check ───────────────────────────────────────────────────────────
   function checkReady() {
     const ok = document.getElementById('partDescription').value.trim().length > 5
       || (document.getElementById('partYear').value && document.getElementById('partMake').value);
@@ -615,22 +712,17 @@
       const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
       const accept  = Math.round(newPrice * acceptPct);
       const revLow  = Math.round(newPrice * declinePct);
-      const revHigh = accept - 1;
-      const decline = revLow - 1;
       document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-      document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + revHigh;
-      document.getElementById('declineFloor').textContent  = 'Below $' + decline + ' (under ' + Math.round(declinePct * 100) + '%)';
+      document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
+      document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
       document.getElementById('medianPrice').textContent   = '$' + newPrice;
     }
   });
 
   // ── Comp exclusion & live reprice ─────────────────────────────────────────
   function toggleCompExclusion(index) {
-    if (excludedIndices.has(index)) {
-      excludedIndices.delete(index);
-    } else {
-      excludedIndices.add(index);
-    }
+    if (excludedIndices.has(index)) { excludedIndices.delete(index); }
+    else { excludedIndices.add(index); }
     const card = document.querySelector(`[data-comp-index="${index}"]`);
     if (card) {
       card.classList.toggle('excluded', excludedIndices.has(index));
@@ -672,17 +764,16 @@
     const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
     const accept  = Math.round(m * acceptPct);
     const revLow  = Math.round(m * declinePct);
-    const revHigh = accept - 1;
-    const decline = revLow - 1;
-
     document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + revHigh;
-    document.getElementById('declineFloor').textContent  = 'Below $' + decline + ' (under ' + Math.round(declinePct * 100) + '%)';
+    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
+    document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
   }
 
-  // ── Refine comps from good titles ─────────────────────────────────────────
+  // ── Refine comps ──────────────────────────────────────────────────────────
   async function refineComps() {
     const goodComps = activeCompItems.filter((_, i) => !excludedIndices.has(i));
+    const badComps  = activeCompItems.filter((_, i) =>  excludedIndices.has(i));
+
     if (goodComps.length === 0) {
       showToast('No good comps to refine from');
       return;
@@ -695,12 +786,13 @@
     status.textContent = 'Claude is analyzing your good comps…';
 
     try {
-      // Send good comp titles to Claude to extract refined search terms
-      const titles = goodComps.map(c => c.title).join('\n');
       const extractRes = await fetch('/api/extract-query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ compTitles: titles })
+        body: JSON.stringify({
+          compTitles: goodComps.map(c => c.title).join('\n'),
+          excludedTitles: badComps.map(c => c.title).join('\n')
+        })
       });
       const extractData = await extractRes.json();
       const refinedQuery = extractData.query;
@@ -708,64 +800,17 @@
       if (!refinedQuery) throw new Error('No refined query returned');
 
       status.textContent = 'Searching eBay with refined query…';
+      lastSearchQuery = refinedQuery;
 
-      // Fire new eBay search
-      const compRes  = await fetch('/api/comps?query=' + encodeURIComponent(refinedQuery));
-      const compData = await compRes.json();
+      const compData = await fetchAndRenderComps(refinedQuery);
 
-      if (compData.count === 0) {
+      if (!compData.count) {
         showToast('No results — try excluding different comps');
         status.textContent = 'No results for refined query';
-        btn.disabled = false;
-        btn.textContent = '✦ Refine Search from Good Comps';
-        return;
+      } else {
+        status.textContent = '✓ Refined using: ' + refinedQuery;
+        showToast('Comps refined');
       }
-
-      // Reset exclusions and update comp pool
-      activeCompItems = compData.items || [];
-      excludedIndices = new Set();
-
-      // Re-render comp cards
-      const compGrid = document.getElementById('compGrid');
-      compGrid.innerHTML = '';
-      activeCompItems.forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'comp-card';
-        card.dataset.compIndex = index;
-        card.innerHTML = `
-          <button class="comp-exclude-btn" onclick="toggleCompExclusion(${index})">✕</button>
-          <a href="${item.url}" target="_blank">
-            <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
-            <div class="comp-card-title">${item.title}</div>
-            <div class="comp-card-price">$${item.price}</div>
-            <div class="comp-card-condition">${item.condition || ''}</div>
-          </a>`;
-        compGrid.appendChild(card);
-      });
-
-      // Update pricing
-      const prices = activeCompItems.map(i => i.price).filter(p => !isNaN(p) && p >= 10).sort((a, b) => a - b);
-      if (prices.length > 0) {
-        const count  = prices.length;
-        const low    = prices[0];
-        const high   = prices[count - 1];
-        const mid    = Math.floor(count / 2);
-        const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
-        const m = Math.round(median * 100) / 100;
-        document.getElementById('medianPrice').textContent = '$' + m;
-        document.getElementById('priceRange').textContent  = 'Range $' + Math.round(low) + ' – $' + Math.round(high) + ' · ' + count + ' comps';
-        document.getElementById('compCount').textContent   = count;
-        const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
-        const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
-        const accept  = Math.round(m * acceptPct);
-        const revLow  = Math.round(m * declinePct);
-        document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-        document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
-        document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
-      }
-
-      status.textContent = '✓ Refined using: ' + refinedQuery;
-      showToast('Comps refined');
 
     } catch (err) {
       console.error('Refine error:', err);
@@ -774,7 +819,7 @@
     }
 
     btn.disabled = false;
-    btn.textContent = '✦ Refine Search from Good Comps';
+    btn.textContent = '✦ Refine from Good Comps';
   }
 
   // ── Analysis pipeline ─────────────────────────────────────────────────────
@@ -790,6 +835,10 @@
 
     activeCompItems = [];
     excludedIndices = new Set();
+    currentCondition = 'any';
+    ['any','used','new'].forEach(c => {
+      document.getElementById('condBtn-' + c).classList.toggle('active', c === 'any');
+    });
 
     const description = document.getElementById('partDescription').value.trim();
     const year        = document.getElementById('partYear').value.trim();
@@ -800,7 +849,7 @@
 
     currentMeta = { year, make, model, partNum, isLocal: localPickup };
 
-    await tick('Pulling live eBay comps', 'searching real listings…', 800);
+    await tick('Pulling live eBay comps', 'asking Claude to interpret your description…', 800);
 
     let searchQuery;
     if (partNum) {
@@ -818,6 +867,8 @@
         searchQuery = (vehicle + ' ' + description.split(' ').slice(0, 4).join(' ')).trim();
       }
     }
+
+    lastSearchQuery = searchQuery;
 
     let median = 45, low = 20, high = 120, comps = 0, compItems = [];
     try {
@@ -858,7 +909,6 @@
     }
   }
 
-  // ── Generate listing ──────────────────────────────────────────────────────
   async function generateListing(description, year, make, model, partNum, vehicle, median, low, high, comps, compItems, searchQuery) {
     try {
       const res = await fetch('/api/generate', {
@@ -883,7 +933,6 @@
     }
   }
 
-  // ── Render results ────────────────────────────────────────────────────────
   function showResults(listing, median, low, high, comps, isLocal, compItems = []) {
     document.getElementById('processingPanel').style.display = 'none';
     document.getElementById('resultsView').classList.remove('hidden');
@@ -938,30 +987,11 @@
     document.getElementById('editCategory').value = listing.category;
     document.getElementById('fbCopy').textContent = listing.facebook || listing.fbCopy || '';
 
-    // Reset refine status
     document.getElementById('refineStatus').textContent = '';
     document.getElementById('refineBtn').disabled = false;
-    document.getElementById('refineBtn').textContent = '✦ Refine Search from Good Comps';
+    document.getElementById('refineBtn').textContent = '✦ Refine from Good Comps';
 
-    // Comp cards
-    const compGrid = document.getElementById('compGrid');
-    if (compGrid) {
-      compGrid.innerHTML = '';
-      (compItems || []).forEach((item, index) => {
-        const card = document.createElement('div');
-        card.className = 'comp-card';
-        card.dataset.compIndex = index;
-        card.innerHTML = `
-          <button class="comp-exclude-btn" onclick="toggleCompExclusion(${index})">✕</button>
-          <a href="${item.url}" target="_blank">
-            <img src="${item.image}" alt="${item.title}" onerror="this.style.display='none'">
-            <div class="comp-card-title">${item.title}</div>
-            <div class="comp-card-price">$${item.price}</div>
-            <div class="comp-card-condition">${item.condition || ''}</div>
-          </a>`;
-        compGrid.appendChild(card);
-      });
-    }
+    renderCompCards(compItems);
 
     const btn = document.getElementById('postEbayBtn');
     btn.disabled = false;
@@ -969,7 +999,6 @@
     window.scrollTo(0, 0);
   }
 
-  // ── Post to eBay ──────────────────────────────────────────────────────────
   async function postToEbay() {
     if (!currentListing) return;
     const btn = document.getElementById('postEbayBtn');
@@ -1031,6 +1060,8 @@
     selectedPhotos = [];
     activeCompItems = [];
     excludedIndices = new Set();
+    currentCondition = 'any';
+    lastSearchQuery = '';
     document.getElementById('photoGrid').innerHTML = '';
     document.getElementById('analyzeBtn').disabled = true;
     const btn = document.getElementById('postEbayBtn');
