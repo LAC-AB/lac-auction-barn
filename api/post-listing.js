@@ -23,6 +23,11 @@ export default async function handler(req, res) {
     year,
     make,
     model,
+    length,
+    width,
+    height,
+    weightLbs = 2,
+    weightOz  = 0,,
   } = req.body;
 
   const token    = process.env.EBAY_USER_TOKEN;
