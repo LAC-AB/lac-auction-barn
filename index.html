@@ -1119,7 +1119,9 @@
     try {
       const res = await fetch('/api/post-listing', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, price, category, categoryName, shippingLocal: currentMeta.isLocal, images: selectedPhotos.slice(0, 8), partNumber: currentMeta.partNum, year: currentMeta.year, make: currentMeta.make, model: currentMeta.model })
+        body: JSON.stringify({ title, description, price, category, categoryName, shippingLocal: currentMeta.isLocal, images: selectedPhotos.slice(0, 8), partNumber: currentMeta.partNum, year: currentMeta.year, make: currentMeta.make, model: currentMeta.model,
+            length: currentMeta.length, width: currentMeta.width, height: currentMeta.height,
+            weightLbs: currentMeta.weightLbs, weightOz: currentMeta.weightOz
       });
       const data = await res.json();
       if (data.success) {
