@@ -592,12 +592,20 @@
 
   // ── Shipping strip for local platform copies ──────────────────────────────
   function stripShipping(text) {
-    // Remove sentences that mention shipping, usps, tracking, buyer pays
-    return text.split(/(?<=[.!?])\s+/).filter(sentence => {
-      const lower = sentence.toLowerCase();
-      return !lower.includes('ship') && !lower.includes('usps') && !lower.includes('tracking') && !lower.includes('buyer pays') && !lower.includes('buyer covers') && !lower.includes('postage');
-    }).join(' ').trim();
-  }
+  const shippingKeywords = ['ship', 'usps', 'tracking', 'buyer pays', 'buyer covers', 'postage', 'freight', 'delivery charge', 'shipping cost', 'ships via', 'shipping included'];
+  return text
+    .split(/\n/)
+    .map(line => {
+      return line.split(/(?<=[.!?—])\s+/)
+        .filter(sentence => {
+          const lower = sentence.toLowerCase();
+          return !shippingKeywords.some(kw => lower.includes(kw));
+        })
+        .join(' ');
+    })
+    .filter(line => line.trim().length > 0)
+    .join('\n');
+}
 
   // ── Build platform copies from editDesc + editPrice ───────────────────────
   function buildPlatformCopies(ebayUrl) {
