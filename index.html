@@ -146,16 +146,12 @@
   .comp-count { text-align: right; padding-top: 16px; position: relative; z-index: 1; }
   .comp-number { font-family: var(--serif); font-weight: 900; font-size: 50px; color: var(--ivory); line-height: 1; opacity: 0.8; }
   .comp-label { font-family: var(--sans); font-weight: 200; font-size: 7px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 3px; }
-
-  /* ── CONDITION FILTER ───────────────────── */
   .condition-bar { display: flex; align-items: center; gap: 8px; margin: 12px 0 8px; }
   .condition-label { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
   .condition-btns { display: flex; gap: 4px; }
   .condition-btn { font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--line2); background: var(--ivory); color: var(--mid); cursor: pointer; transition: all 0.2s; }
   .condition-btn.active { background: var(--black); color: var(--gold); border-color: var(--gold2); }
   .condition-btn:hover:not(.active) { border-color: var(--gold); color: var(--gold2); }
-
-  /* ── COMP CARDS ─────────────────────────── */
   .comp-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; font-size: 12px; position: relative; transition: opacity 0.2s; }
   .comp-card.excluded { opacity: 0.35; }
   .comp-card.excluded .comp-card-price { text-decoration: line-through; color: #666; }
@@ -170,7 +166,6 @@
   .comp-exclude-hint { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: #888; text-transform: uppercase; text-align: right; margin: 4px 0 6px; }
   .refine-row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 16px; gap: 10px; }
   .refine-status { font-family: var(--sans); font-weight: 200; font-size: 8px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; flex: 1; }
-
   .offer-table { border: 1px solid var(--line); margin-bottom: 2px; background: var(--ivory); overflow: hidden; }
   .offer-table-header { background: var(--parchment); border-bottom: 1px solid var(--line2); padding: 7px 14px; font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 5px; color: var(--mid); text-transform: uppercase; }
   .offer-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 10px; }
@@ -193,7 +188,19 @@
   .listing-desc-display { font-family: Georgia, serif; font-size: 13px; color: #333; line-height: 1.8; white-space: pre-wrap; }
   .result-photo-strip { display: flex; gap: 3px; overflow-x: auto; padding-bottom: 3px; margin-bottom: 2px; }
   .result-photo-strip img { height: 68px; width: auto; border: 1px solid var(--line); flex-shrink: 0; }
-  .fb-copy { background: white; border: 1px solid #1877f2; padding: 14px; font-family: var(--body); font-size: 13px; color: var(--ink); line-height: 1.7; white-space: pre-wrap; }
+
+  /* ── PLATFORM COPY BLOCKS ───────────────── */
+  .platform-block { margin-bottom: 12px; }
+  .platform-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .platform-label { font-family: var(--sans); font-weight: 600; font-size: 8px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; }
+  .platform-copy-btn { font-family: var(--sans); font-weight: 600; font-size: 7px; letter-spacing: 3px; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--line2); background: var(--ivory); color: var(--mid); cursor: pointer; transition: all 0.2s; }
+  .platform-copy-btn:hover { border-color: var(--gold); color: var(--gold2); }
+  .platform-textarea { width: 100%; background: var(--ivory); border: 1px solid var(--line); color: var(--ink); font-family: var(--body); font-size: 13px; padding: 12px 14px; resize: vertical; min-height: 140px; line-height: 1.7; letter-spacing: 0.2px; }
+  .platform-textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,75,0.1); }
+  .platform-fb { border-left: 3px solid #1877f2; }
+  .platform-ou { border-left: 3px solid #f96e2a; }
+  .platform-cl { border-left: 3px solid #582c83; }
+
   .notify-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f4faf5; border: 1px solid #b0d8b8; border-left: 3px solid var(--green); font-family: var(--sans); font-weight: 300; font-size: 9px; letter-spacing: 2px; color: var(--green); text-transform: uppercase; margin-bottom: 2px; }
   .pending-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: #fdf9f0; border: 1px solid var(--tan); border-left: 3px solid var(--gold); font-family: var(--sans); font-weight: 300; font-size: 8px; letter-spacing: 2px; color: var(--gold2); text-transform: uppercase; margin-bottom: 18px; line-height: 1.9; }
   .ebay-confirm { display: none; background: #edf7f0; border: 1px solid #7ec89a; border-left: 3px solid var(--green); padding: 14px 16px; margin-bottom: 8px; }
@@ -354,7 +361,6 @@
         </div>
       </div>
 
-      <!-- CONDITION FILTER -->
       <div class="condition-bar">
         <span class="condition-label">Condition</span>
         <div class="condition-btns">
@@ -367,7 +373,6 @@
       <div class="comp-exclude-hint">Tap ✕ to exclude · tap ↩ to restore</div>
       <div id="compGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:0 0 8px;"></div>
 
-      <!-- REFINE ROW -->
       <div class="refine-row">
         <span class="refine-status" id="refineStatus"></span>
         <button class="btn-gold" id="refineBtn" onclick="refineComps()" style="font-family:var(--sans);font-weight:600;font-size:8px;letter-spacing:3px;text-transform:uppercase;padding:10px 16px;border:1px solid var(--gold2);background:var(--black);color:var(--gold);cursor:pointer;white-space:nowrap;">
@@ -425,13 +430,36 @@
         <a class="ebay-confirm-link" id="ebayConfirmLink" href="#" target="_blank">—</a>
       </div>
 
-      <div class="section-label"><span class="section-label-text">Facebook Marketplace</span><div class="section-label-line"></div></div>
-      <div class="fb-copy" id="fbCopy">—</div>
+      <!-- PLATFORM COPIES -->
+      <div class="section-label"><span class="section-label-text">Local &amp; Social Listings</span><div class="section-label-line"></div></div>
+
+      <div class="platform-block">
+        <div class="platform-header">
+          <span class="platform-label">Facebook Marketplace</span>
+          <button class="platform-copy-btn" onclick="copyPlatform('fbCopy', this)">Copy</button>
+        </div>
+        <textarea class="platform-textarea platform-fb" id="fbCopy"></textarea>
+      </div>
+
+      <div class="platform-block">
+        <div class="platform-header">
+          <span class="platform-label">OfferUp</span>
+          <button class="platform-copy-btn" onclick="copyPlatform('ouCopy', this)">Copy</button>
+        </div>
+        <textarea class="platform-textarea platform-ou" id="ouCopy"></textarea>
+      </div>
+
+      <div class="platform-block">
+        <div class="platform-header">
+          <span class="platform-label">Craigslist</span>
+          <button class="platform-copy-btn" onclick="copyPlatform('clCopy', this)">Copy</button>
+        </div>
+        <textarea class="platform-textarea platform-cl" id="clCopy"></textarea>
+      </div>
 
       <hr class="rule-gold" style="margin-top:20px">
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
         <button class="btn btn-primary" id="postEbayBtn" onclick="postToEbay()">✦ &nbsp; Post to eBay</button>
-        <button class="btn btn-secondary" onclick="copyFBListing()">Copy Facebook Listing</button>
         <button class="btn btn-secondary" onclick="resetForm()">List Another Part</button>
       </div>
     </div>
@@ -507,6 +535,7 @@
   let excludedIndices = new Set();
   let currentCondition = 'any';
   let lastSearchQuery = '';
+  let currentEbayUrl = '';
 
   window.addEventListener('load', () => {
     const num = localStorage.getItem('attNumber');
@@ -542,6 +571,37 @@
     document.getElementById('localPickupToggle').classList.toggle('on', localPickup);
   }
 
+  // ── Platform copy helper ──────────────────────────────────────────────────
+  function copyPlatform(id, btn) {
+    const text = document.getElementById(id).value;
+    navigator.clipboard.writeText(text)
+      .then(() => { btn.textContent = '✓ Copied'; setTimeout(() => btn.textContent = 'Copy', 2000); })
+      .catch(() => showToast('Copy failed'));
+  }
+
+  // ── Build platform copies from listing data ───────────────────────────────
+  function buildPlatformCopies(listing, price, ebayUrl) {
+    const title = listing.title || document.getElementById('editTitle').value;
+    const desc  = listing.description || document.getElementById('editDesc').value;
+    const p     = price || listing.price;
+    const url   = ebayUrl || currentEbayUrl || '';
+    const urlLine = url ? '\n\neBay listing: ' + url : '';
+
+    // Facebook — conversational, mentions shipping if not local
+    const fbShipping = localPickup ? 'Local pickup only — Los Angeles area.' : 'Ships USPS. Buyer pays shipping.';
+    const fb = title + '\n\n$' + p + ' — ' + fbShipping + '\n\n' + desc + urlLine;
+
+    // OfferUp — local pickup always, short and punchy
+    const ou = title + '\n\n$' + p + ' — Local pickup · Los Angeles\n\n' + desc + urlLine;
+
+    // Craigslist — local pickup always, slightly more structured
+    const cl = title + '\n\nAsking: $' + p + '\nLocation: Los Angeles, CA\nPickup only — no shipping\n\n' + desc + urlLine;
+
+    document.getElementById('fbCopy').value = fb;
+    document.getElementById('ouCopy').value = ou;
+    document.getElementById('clCopy').value = cl;
+  }
+
   // ── Condition filter ──────────────────────────────────────────────────────
   async function setCondition(cond) {
     if (cond === currentCondition) return;
@@ -569,11 +629,7 @@
       activeCompItems = compData.items || [];
       excludedIndices = new Set();
       renderCompCards(activeCompItems);
-      updatePricingFromItems(activeCompItems);
-      document.getElementById('priceRange').textContent =
-        'Range $' + Math.round(compData.low) + ' – $' + Math.round(compData.high) + ' · ' + compData.count + ' comps';
-      document.getElementById('compCount').textContent = compData.count;
-      document.getElementById('medianPrice').textContent = '$' + compData.median;
+      updatePricingFromMedian(compData.median, compData.low, compData.high, compData.count);
     }
     return compData;
   }
@@ -597,22 +653,23 @@
     });
   }
 
-  function updatePricingFromItems(items) {
-    const prices = items.map(i => i.price).filter(p => !isNaN(p) && p >= 10).sort((a, b) => a - b);
-    if (prices.length === 0) return;
-    const count  = prices.length;
-    const low    = prices[0];
-    const high   = prices[count - 1];
-    const mid    = Math.floor(count / 2);
-    const median = count % 2 !== 0 ? prices[mid] : (prices[mid - 1] + prices[mid]) / 2;
+  function updatePricingFromMedian(median, low, high, count) {
     const m = Math.round(median * 100) / 100;
     document.getElementById('medianPrice').textContent = '$' + m;
     document.getElementById('priceRange').textContent  = 'Range $' + Math.round(low) + ' – $' + Math.round(high) + ' · ' + count + ' comps';
     document.getElementById('compCount').textContent   = count;
+
+    // Update edit price field and platform copies with new median
+    document.getElementById('editPrice').value = '$' + m;
+    updateOfferRules(m);
+    if (currentListing) buildPlatformCopies(currentListing, m, currentEbayUrl);
+  }
+
+  function updateOfferRules(price) {
     const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
     const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
-    const accept  = Math.round(m * acceptPct);
-    const revLow  = Math.round(m * declinePct);
+    const accept  = Math.round(price * acceptPct);
+    const revLow  = Math.round(price * declinePct);
     document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
     document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
     document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
@@ -705,17 +762,13 @@
     document.getElementById('titleCount').textContent = this.value.length + ' of 80 characters';
   });
 
+  // Price field — update banner, offer rules, and all platform copies
   document.getElementById('editPrice').addEventListener('input', function () {
     const newPrice = parseFloat(this.value.replace(/[^0-9.]/g, ''));
     if (!isNaN(newPrice) && newPrice > 0) {
-      const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
-      const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
-      const accept  = Math.round(newPrice * acceptPct);
-      const revLow  = Math.round(newPrice * declinePct);
-      document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-      document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
-      document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
-      document.getElementById('medianPrice').textContent   = '$' + newPrice;
+      document.getElementById('medianPrice').textContent = '$' + newPrice;
+      updateOfferRules(newPrice);
+      if (currentListing) buildPlatformCopies(currentListing, newPrice, currentEbayUrl);
     }
   });
 
@@ -759,14 +812,9 @@
     document.getElementById('medianPrice').textContent = '$' + m;
     document.getElementById('priceRange').textContent  = 'Range $' + Math.round(low) + ' – $' + Math.round(high) + ' · ' + count + ' comps';
     document.getElementById('compCount').textContent   = count;
-
-    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
-    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
-    const accept  = Math.round(m * acceptPct);
-    const revLow  = Math.round(m * declinePct);
-    document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + (accept - 1);
-    document.getElementById('declineFloor').textContent  = 'Below $' + (revLow - 1) + ' (under ' + Math.round(declinePct * 100) + '%)';
+    document.getElementById('editPrice').value = '$' + m;
+    updateOfferRules(m);
+    if (currentListing) buildPlatformCopies(currentListing, m, currentEbayUrl);
   }
 
   // ── Refine comps ──────────────────────────────────────────────────────────
@@ -796,7 +844,6 @@
       });
       const extractData = await extractRes.json();
       const refinedQuery = extractData.query;
-
       if (!refinedQuery) throw new Error('No refined query returned');
 
       status.textContent = 'Searching eBay with refined query…';
@@ -808,10 +855,9 @@
         showToast('No results — try excluding different comps');
         status.textContent = 'No results for refined query';
       } else {
-        status.textContent = '✓ Refined using: ' + refinedQuery;
+        status.textContent = '✓ Refined: ' + refinedQuery;
         showToast('Comps refined');
       }
-
     } catch (err) {
       console.error('Refine error:', err);
       showToast('Refine failed — try again');
@@ -836,6 +882,7 @@
     activeCompItems = [];
     excludedIndices = new Set();
     currentCondition = 'any';
+    currentEbayUrl = '';
     ['any','used','new'].forEach(c => {
       document.getElementById('condBtn-' + c).classList.toggle('active', c === 'any');
     });
@@ -946,16 +993,7 @@
       : 'No comps found — this part may be rare';
     document.getElementById('compCount').textContent   = comps > 0 ? comps : '—';
 
-    const acceptPct  = parseInt(localStorage.getItem('acceptPct')  || '85') / 100;
-    const declinePct = parseInt(localStorage.getItem('declinePct') || '70') / 100;
-    const accept  = Math.round(median * acceptPct);
-    const revLow  = Math.round(median * declinePct);
-    const revHigh = accept - 1;
-    const decline = revLow - 1;
-
-    document.getElementById('acceptFloor').textContent  = '$' + accept + ' and above (' + Math.round(acceptPct * 100) + '%)';
-    document.getElementById('reviewRange').textContent   = '$' + revLow + ' – $' + revHigh;
-    document.getElementById('declineFloor').textContent  = 'Below $' + decline + ' (under ' + Math.round(declinePct * 100) + '%)';
+    updateOfferRules(median);
     document.getElementById('shippingRule').textContent  = isLocal ? 'Local pickup only' : 'USPS calculated · Buyer pays';
 
     const attNum = localStorage.getItem('attNumber');
@@ -985,7 +1023,8 @@
     document.getElementById('editPrice').value    = '$' + listing.price;
     document.getElementById('editDesc').value     = listing.description;
     document.getElementById('editCategory').value = listing.category;
-    document.getElementById('fbCopy').textContent = listing.facebook || listing.fbCopy || '';
+
+    buildPlatformCopies(listing, listing.price, '');
 
     document.getElementById('refineStatus').textContent = '';
     document.getElementById('refineBtn').disabled = false;
@@ -1018,12 +1057,15 @@
       });
       const data = await res.json();
       if (data.success) {
+        currentEbayUrl = data.listingUrl;
         const confirm = document.getElementById('ebayConfirm');
         const link = document.getElementById('ebayConfirmLink');
         link.href = data.listingUrl; link.textContent = data.listingUrl;
         confirm.style.display = 'block';
         btn.textContent = '✓  Listed — eBay #' + data.itemId;
         btn.style.background = 'var(--green)';
+        // Update all platform copies with eBay URL
+        buildPlatformCopies(currentListing, price, data.listingUrl);
         addInventoryItem(title, price, data.itemId);
         const attNum = localStorage.getItem('attNumber');
         if (attNum) await sendSaleNotification({ phone: attNum, itemTitle: title, salePrice: price, itemId: data.itemId, orderId: '' });
@@ -1050,11 +1092,6 @@
     list.insertBefore(div, list.firstChild);
   }
 
-  function copyFBListing() {
-    navigator.clipboard.writeText(document.getElementById('fbCopy').textContent)
-      .then(() => showToast('Facebook listing copied')).catch(() => showToast('Copied'));
-  }
-
   function resetForm() {
     ['partDescription','partYear','partMake','partModel','partNumber'].forEach(id => document.getElementById(id).value = '');
     selectedPhotos = [];
@@ -1062,6 +1099,7 @@
     excludedIndices = new Set();
     currentCondition = 'any';
     lastSearchQuery = '';
+    currentEbayUrl = '';
     document.getElementById('photoGrid').innerHTML = '';
     document.getElementById('analyzeBtn').disabled = true;
     const btn = document.getElementById('postEbayBtn');
