@@ -395,16 +395,7 @@
           <div class="field-group" style="margin:0"><label class="field-label">Model</label><input type="text" id="partModel" placeholder="Camaro" /></div>
           <div class="field-group" style="margin:0"><label class="field-label">Part Number</label><input type="text" id="partNumber" placeholder="If visible" /></div>
         </div>
-        <hr class="rule-red">
-        <div class="section-label"><span class="section-label-text">Box Dimensions &amp; Weight</span><div class="section-label-line"></div></div>
-        <div class="field-row">
-          <div class="field-group" style="margin:0"><label class="field-label">Length (in)</label><input type="text" id="boxLength" placeholder="12" /></div>
-          <div class="field-group" style="margin:0"><label class="field-label">Width (in)</label><input type="text" id="boxWidth" placeholder="8" /></div>
-        </div>
-        <div class="field-row" style="margin-top:10px">
-          <div class="field-group" style="margin:0"><label class="field-label">Height (in)</label><input type="text" id="boxHeight" placeholder="6" /></div>
-          <div class="field-group" style="margin:0"><label class="field-label">Weight (lbs)</label><input type="text" id="boxWeight" placeholder="2.5" /></div>
-        </div>
+        
         <hr class="rule-red">
         <div class="toggle-row">
           <div>
@@ -560,7 +551,7 @@
 
       <hr class="rule-red" style="margin-top:20px">
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
-        <button class="btn btn-primary" id="postEbayBtn" onclick="postToEbay()">✦ &nbsp; Post to eBay</button>
+        <button class="btn btn-primary" id="postEbayBtn" onclick="openShippingModal()">✦ &nbsp; Post to eBay</button>
         <button class="btn btn-secondary" onclick="resetForm()">List Another Part</button>
       </div>
     </div>
@@ -622,6 +613,25 @@
   <div class="nav-item active" id="nav-list" onclick="showView('upload')"><span class="nav-item-icon">◻</span>List Part</div>
   <div class="nav-item" id="nav-inv" onclick="showView('inventory')"><span class="nav-item-icon">≡</span>Inventory</div>
   <div class="nav-item" id="nav-settings" onclick="showView('settings')"><span class="nav-item-icon">◯</span>Settings</div>
+</div>
+  <!-- SHIPPING MODAL -->
+<div id="shippingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;">
+  <div style="background:#161616;border:1px solid #333;border-top:3px solid #c41a1a;padding:28px 24px;width:90%;max-width:400px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:white;margin-bottom:6px;">Box Dimensions</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:3px;color:#777;text-transform:uppercase;margin-bottom:20px;">Enter packed box size before posting</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <div><label style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:3px;color:#777;display:block;margin-bottom:4px;">Length (in)</label><input type="text" id="boxLength" placeholder="12" style="width:100%;background:#080808;border:1px solid #333;color:white;font-size:14px;padding:9px 11px;border-radius:0;" /></div>
+      <div><label style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:3px;color:#777;display:block;margin-bottom:4px;">Width (in)</label><input type="text" id="boxWidth" placeholder="8" style="width:100%;background:#080808;border:1px solid #333;color:white;font-size:14px;padding:9px 11px;border-radius:0;" /></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;">
+      <div><label style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:3px;color:#777;display:block;margin-bottom:4px;">Height (in)</label><input type="text" id="boxHeight" placeholder="6" style="width:100%;background:#080808;border:1px solid #333;color:white;font-size:14px;padding:9px 11px;border-radius:0;" /></div>
+      <div><label style="font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:3px;color:#777;display:block;margin-bottom:4px;">Weight (lbs)</label><input type="text" id="boxWeight" placeholder="2.5" style="width:100%;background:#080808;border:1px solid #333;color:white;font-size:14px;padding:9px 11px;border-radius:0;" /></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="cancelShipping()" style="flex:1;padding:13px;background:transparent;border:1px solid #333;color:#777;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;cursor:pointer;">Cancel</button>
+      <button onclick="confirmPost()" style="flex:2;padding:13px;background:#c41a1a;border:none;color:white;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;cursor:pointer;">Confirm &amp; Post to eBay</button>
+    </div>
+  </div>
 </div>
 <div class="toast" id="toast">Done</div>
 
@@ -1187,7 +1197,24 @@
     for (let i = 1; i <= 5; i++) { const el = document.getElementById('step' + i); el.classList.remove('active','done'); if (i===1) el.classList.add('active'); }
     showView('upload');
   }
+function openShippingModal() {
+    if (!currentListing) return;
+    document.getElementById('shippingModal').style.display = 'flex';
+  }
 
+  function cancelShipping() {
+    document.getElementById('shippingModal').style.display = 'none';
+  }
+
+  function confirmPost() {
+    currentMeta.length    = parseFloat(document.getElementById('boxLength').value) || 12;
+    currentMeta.width     = parseFloat(document.getElementById('boxWidth').value)  || 8;
+    currentMeta.height    = parseFloat(document.getElementById('boxHeight').value) || 6;
+    currentMeta.weightLbs = parseFloat(document.getElementById('boxWeight').value) || 2;
+    currentMeta.weightOz  = 0;
+    document.getElementById('shippingModal').style.display = 'none';
+    postToEbay();
+  }
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
