@@ -6,6 +6,8 @@
 //   EBAY_DEV_ID      (Dev ID)
 //   EBAY_USER_TOKEN  (User access token — generated in eBay Developer portal)
 
+import { neon } from '@neondatabase/serverless';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
