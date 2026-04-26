@@ -1140,7 +1140,7 @@
         document.getElementById('ebayConfirmLink').href = data.listingUrl;
         document.getElementById('ebayConfirmLink').textContent = data.listingUrl;
         document.getElementById('ebayConfirm').style.display = 'block';
-        lbtn.textContent = '✓  Listed — eBay #' + data.itemId + (data.lotNumber ? '  ·  Lot #' + data.lotNumber : '');
+        btn.textContent = '✓  Listed — eBay #' + data.itemId + (data.lotNumber ? ' · Lot #'
         btn.style.background = 'var(--green)';
         currentLotNumber = data.lotNumber;
         const labelUrl = '/label.html?title=' + encodeURIComponent(title)
