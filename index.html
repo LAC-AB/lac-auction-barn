@@ -1133,7 +1133,17 @@
         lbtn.textContent = '✓  Listed — eBay #' + data.itemId + (data.lotNumber ? '  ·  Lot #' + data.lotNumber : '');
         btn.style.background = 'var(--green)';
         currentLotNumber = data.lotNumber;
-        buildPlatformCopies(data.listingUrl);
+        const labelUrl = '/label.html?title=' + encodeURIComponent(title)
+          + '&lot=' + (data.lotNumber || '')
+          + '&url=' + encodeURIComponent(data.listingUrl)
+          + '&year=' + encodeURIComponent(currentMeta.year || '')
+          + '&make=' + encodeURIComponent(currentMeta.make || '')
+          + '&model=' + encodeURIComponent(currentMeta.model || '')
+          + '&l=' + (currentMeta.length || '')
+          + '&w=' + (currentMeta.width || '')
+          + '&h=' + (currentMeta.height || '')
+          + '&wt=' + (currentMeta.weightLbs || '');
+        window.open(labelUrl, '_blank');
         addInventoryItem(title, price, data.itemId);
         const attNum = localStorage.getItem('attNumber');
         if (attNum) await sendSaleNotification({ phone: attNum, itemTitle: title, salePrice: price, itemId: data.itemId, orderId: '' });
