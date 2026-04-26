@@ -638,6 +638,7 @@
   let lastSearchQuery = '';
   let currentEbayUrl = '';
   let regenDebounceTimer = null;
+  let currentLotNumber = null;
   let currentFacts = {};
 
   window.addEventListener('load', () => {
@@ -1129,8 +1130,9 @@
         document.getElementById('ebayConfirmLink').href = data.listingUrl;
         document.getElementById('ebayConfirmLink').textContent = data.listingUrl;
         document.getElementById('ebayConfirm').style.display = 'block';
-        btn.textContent = '✓  Listed — eBay #' + data.itemId;
+        lbtn.textContent = '✓  Listed — eBay #' + data.itemId + (data.lotNumber ? '  ·  Lot #' + data.lotNumber : '');
         btn.style.background = 'var(--green)';
+        currentLotNumber = data.lotNumber;
         buildPlatformCopies(data.listingUrl);
         addInventoryItem(title, price, data.itemId);
         const attNum = localStorage.getItem('attNumber');
