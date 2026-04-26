@@ -174,10 +174,31 @@ export default async function handler(req, res) {
     const fees      = extractXml(responseText, 'ListingFee');
 
     if (ack === 'Success' || ack === 'Warning') {
+      let lotNumber = null;
+      try {
+        const sql = neon(process.env.DATABASE_URL);
+        const rows = await sql`
+          INSERT INTO listings
+            (shop_id, ebay_item_id, title, asking_price, status, ebay_url,
+             length_in, width_in, height_in, weight_lbs,
+             year, make, model, part_number)
+          VALUES
+            ('lac-001', ${itemId}, ${title}, ${Number(price)}, 'active',
+             ${'https://www.ebay.com/itm/' + itemId},
+             ${length || null}, ${width || null}, ${height || null}, ${weightLbs || null},
+             ${year || null}, ${make || null}, ${model || null}, ${partNumber || null})
+          RETURNING lot_number
+        `;
+        lotNumber = rows[0]?.lot_number || null;
+      } catch (dbErr) {
+        console.error('DB insert failed (listing still posted):', dbErr.message);
+      }
+
       return res.status(200).json({
         success: true,
         itemId,
         listingUrl: `https://www.ebay.com/itm/${itemId}`,
+        lotNumber,
         ack,
         fees,
         warning: ack === 'Warning' ? errorMsg : null,
