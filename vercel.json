@@ -4,6 +4,7 @@
     "api/generate.js": { "maxDuration": 30 },
     "api/notify.js": { "maxDuration": 30 },
     "api/post-listing.js": { "maxDuration": 30 },
-    "api/extract-query.js": { "maxDuration": 30 }
+    "api/extract-query.js": { "maxDuration": 30 },
+    "api/ebay-webhook.js":  { "maxDuration": 60 }
   }
 }
